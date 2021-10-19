@@ -1,0 +1,88 @@
+{
+  "condition":[
+    {
+      "p_productclscode":"01",
+      "p_countycode":"1101",
+      "p_regday":"2020-07-16",
+      "p_itemcategorycode":"100",
+      "p_itemcode":"111",
+      "p_kindcode":"01",
+      "p_productrankcode":"07",
+      "p_convert_kg_yn":"Y",
+      "p_key":"111",
+      "p_id":"222",
+      "p_returntype":"json"
+    }
+  ],
+  "data":{
+    "error_code":"000",
+    "item":[
+      {
+        "countyname":"평균",
+        "itemname":[
+
+        ],
+        "kindname":[
+
+        ],
+        "unit":"1kg",
+        "price":"2,561",
+        "weekprice":"2,565",
+        "monthprice":"2,573",
+        "yearprice":"2,587"
+      },
+      {
+        "countyname":"최고값",
+        "itemname":[
+
+        ],
+        "kindname":[
+
+        ],
+        "unit":"1kg",
+        "price":"2,700",
+        "weekprice":"2,700",
+        "monthprice":"2,700",
+        "yearprice":"2,715"
+      },
+      {
+        "countyname":"최저값",
+        "itemname":[
+
+        ],
+        "kindname":[
+
+        ],
+        "unit":"1kg",
+        "price":"2,345",
+        "weekprice":"2,395",
+        "monthprice":"2,345",
+        "yearprice":"2,395"
+      },
+      {
+        "countyname":"등락률",
+        "itemname":[
+
+        ],
+        "kindname":[
+
+        ],
+        "unit":"1kg",
+        "price":"-",
+        "weekprice":"-0.1",
+        "monthprice":"-0.5",
+        "yearprice":"-1.0"
+      },
+      {
+        "countyname":"서울",
+        "itemname":"쌀",
+        "kindname":"일반계",
+        "unit":"1kg",
+        "price":"2,561",
+        "weekprice":"2,565",
+        "monthprice":"2,573",
+        "yearprice":"2,587"
+      }
+    ]
+  }
+}
