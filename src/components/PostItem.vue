@@ -1,5 +1,5 @@
 <template>
-	<div class="l_col">
+	<div class="content-wrapper">
 		<RouterLink class="content-anchor"
 			:to="{ name: 'Post', params: {id: `${post.id}`}}">
 			<!-- <div class="content-address">
@@ -16,7 +16,7 @@
 					<span class="title__time">{{ post.created_at }}</span>
 				</div>
 				<div class="content-price">
-					<h2> {{ post.price }}</h2>
+					<h2>{{ post.price }}</h2>
 				</div>
 			</RouterLink>
 	</div>
@@ -40,70 +40,75 @@ export default {
 @import '../scss/typography.scss';
 @import '~/scss/main.scss';
 
-.content-anchor {
-	display: block;
-	background-color: $color_prime_white;
-	width: 240px;
-	height: 320px;
-	border: 1px solid #ccc;
-	margin: .5em auto 1em;
-	border-radius: .5em;
-	overflow: hidden;
-	&:hover {
-		box-shadow: 0 0 2px 1px $color_prime_green;
+.content-wrapper {
+	float: left;
+	.content-anchor {
+		color: inherit;
+		text-decoration: none;
+		display: block;
+		background-color: white;
+		width: 240px;
+		height: 320px;
+		border: 1px solid #aaa;
+		border-radius: .2em;
+		overflow: hidden;
+		&:hover {
+			background-color: $color_prime_white;
+			// box-shadow: 0 0 2px 1px $color_prime_green;
+		}
+		.content-address {
+			color: rgb(31, 31, 31);
+			text-align: center;
+			padding: .3em 0;
+			letter-spacing: .2em;
+		}
+		.content-img {
+			width: 100%;
+			height: 160px;
+		}
+		.content-title {
+			padding: .8em 1em .7em;
+			border-bottom: 1px solid #ccc;
+			.title__status {
+				float: left;
+				margin: .4em .5em 0 -.2em;
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+				background-color: $color_prime_green;
+				border-style: none;
+			}
+			.title__status-done {
+				background-color: #ccc;
+			}
+			.title__title {
+				line-height: 1.4;
+				font-weight: bold;
+				font-size: 1.4em;
+				padding-bottom: .4em;
+			}
+			.title__category {
+				font-size: 1.1em;
+				display: block;
+				font-weight: bold;
+				color: $color_prime_orange;
+			}
+			.title__writer {
+				margin-right: .3em;
+			}
+			.title__time {
+			}
+		}
 	}
-	.content-address {
-		color: rgb(31, 31, 31);
+	.content-price {
 		text-align: center;
-		padding: .3em 0;
-		letter-spacing: .2em;
-	}
-	.content-img {
-		width: 100%;
-		height: 160px;
-	}
-	.content-title {
-		padding: .8em 1em .7em;
-		border-bottom: 1px solid #ccc;
-		.title__status {
-			float: left;
-			margin: .4em .5em 0 -.2em;
-			width: 12px;
-			height: 12px;
-			border-radius: 50%;
-			background-color: $color_prime_green;
-			border-style: none;
+		padding: .4em;
+		color: #75871e;
+		font-weight: bold;
+		font-size: 1.1em;
+		h2::after {
+			content: '원';
 		}
-		.title__status-done {
-			background-color: #ccc;
-		}
-		.title__title {
-			line-height: 1.4;
-			font-weight: bold;
-			font-size: 1.4em;
-			padding-bottom: .4em;
-		}
-		.title__category {
-			font-size: 1.1em;
-			display: block;
-			font-weight: bold;
-			color: $color_prime_orange;
-		}
-		.title__writer {
-			margin-right: .3em;
-		}
-		.title__time {
-		}
-	}
-}
-.content-price {
-	text-align: center;
-	padding: .4em;
-	color: #75871e;
-	font-weight: bold;
-	font-size: 1.1em;
-	h2::after {
-		content: '원';
 	}
 }
 </style>

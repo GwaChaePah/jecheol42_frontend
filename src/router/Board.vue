@@ -14,7 +14,7 @@
 					<button class="menu-bar__list"
 					type="button">글쓰기</button>
 				</div>
-				<!-- <div v-else-if="!user">
+				<!-- <div>
 					<select
 						v-for="filter in filters"
 						v-model="$data[filter.name]"
@@ -79,9 +79,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState('auth', [
-			'user'
-		])
+		...mapState('auth', ['currentUser'])
   },
 }
 </script>
