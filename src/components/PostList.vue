@@ -1,9 +1,15 @@
 <template>
 	<div class="l_row clearfix">
+		<div v-if="loading" class="preload-content">
+			<h1>검색 중...</h1>
+		</div>
 		<PostItem
 			v-for="post in posts"
 			:key="post.id"
 			:post="post"/>
+		<div v-show="!posts.length" class="empty-content">
+			<h1>검색된 정보가 없습니다 따흐흑</h1>
+		</div>
 	</div>
 </template>
 
@@ -18,14 +24,14 @@ export default {
 		PostItem
 	},
 	computed: {
-    ...mapState('post', ['posts']),
-		// ...mapState('product', ['theSearch'])
+    ...mapState('post', [
+			'posts',
+			'loading'
+		]),
+		...mapState('product', ['postSearch'])
   },
 	created() {
-	// 	console.log(theSearch);
-		this.$store.dispatch('post/initPosts', {
-	// 		payload: 'theSearch'
-		});
+		this.$store.dispatch('post/initPosts', this.postSearch);
 	}
 }
 </script>
@@ -33,5 +39,17 @@ export default {
 <style lang="scss" scoped>
 @import '~/scss/commons.scss';
 @import '~/scss/main.scss';
+
+.empty-content,
+.preload-content {
+	max-width: 1000px;
+	width: 100%;
+	margin: 10px auto;
+	padding: 60px;
+	text-align: center;
+	h1 {
+		font-size: 1.6em;
+	}
+}
 
 </style>

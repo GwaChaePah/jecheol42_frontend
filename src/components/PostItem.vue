@@ -7,18 +7,19 @@
 			</div> -->
 			<img class="content-img"
 				:src="post.image"
-				:alt="`${post.user}_${post.title}`" />
-				<div class="content-title">
-					<button class="title__status"></button>
-					<h1 class="title__title ellipsis">{{ post.title }}</h1>
-					<h2 class="title__category">{{ post.option }}</h2>
-					<span class="title__writer">{{ post.user }}</span>
-					<span class="title__time">{{ post.created_at }}</span>
-				</div>
-				<div class="content-price">
-					<h2>{{ post.price }}</h2>
-				</div>
-			</RouterLink>
+				:alt="`${post.user}_${post.title}`"
+				onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"/>
+			<div class="content-title">
+				<button class="title__status"></button>
+				<h1 class="title__title ellipsis">{{ post.title }}</h1>
+				<h2 class="title__category">{{ post.option }}</h2>
+				<span class="title__writer">{{ post.user }}</span>
+				<span class="title__time">{{ post.created_at }}</span>
+			</div>
+			<div class="content-price">
+				<h2>{{ post.price }}</h2>
+			</div>
+		</RouterLink>
 	</div>
 </template>
 
@@ -43,18 +44,25 @@ export default {
 .content-wrapper {
 	float: left;
 	.content-anchor {
-		color: inherit;
-		text-decoration: none;
 		display: block;
 		background-color: white;
 		width: 240px;
 		height: 320px;
-		border: 1px solid #aaa;
-		border-radius: .2em;
+		border: 1px solid #F5F5F5;
+		border-radius: .1em;
 		overflow: hidden;
+		position: relative;
+		text-align: center;
 		&:hover {
-			background-color: $color_prime_white;
-			// box-shadow: 0 0 2px 1px $color_prime_green;
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				border: 4px solid lighten($color_prime_orange, 10%);
+			}
 		}
 		.content-address {
 			color: rgb(31, 31, 31);
@@ -68,7 +76,7 @@ export default {
 		}
 		.content-title {
 			padding: .8em 1em .7em;
-			border-bottom: 1px solid #ccc;
+			border-bottom: 1px solid #E8E8E8;
 			.title__status {
 				float: left;
 				margin: .4em .5em 0 -.2em;
@@ -101,6 +109,10 @@ export default {
 		}
 	}
 	.content-price {
+		position: absolute;
+		bottom: 3px;
+		left: 0;
+		right: 0;
 		text-align: center;
 		padding: .4em;
 		color: #75871e;
