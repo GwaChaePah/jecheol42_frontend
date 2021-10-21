@@ -3,7 +3,7 @@
 		<div class="l_wrapper">
 			<div class="menu-bar">
 				<div>
-					<select
+					<select class="dropdown"
 						@change="apply($event)">
 						<option
 							v-for="item in filters[1].items"
@@ -14,8 +14,8 @@
 					<button class="menu-bar__list"
 					type="button">글쓰기</button>
 				</div>
-				<!-- <div v-else-if="!user">
-					<select
+				<!-- <div>
+					<select class="dropdown"
 						v-for="filter in filters"
 						v-model="$data[filter.name]"
 						:key="filter.name"
@@ -48,6 +48,10 @@ export default {
 	components: {
 		PostList
 	},
+	computed: {
+		...mapState('auth', ['currentUser']),
+		...mapState('product', ['postSearch'])
+	},
 	data() {
 		return {
 			seoulList,
@@ -75,14 +79,12 @@ export default {
 	methods: {
 		apply(e) {
 			let value = e.target.value;
-			this.$store.dispatch('post/searchPostOptions', { value });
+			this.$store.dispatch('post/searchPostOptions', {
+				value,
+				search: this.postSearch 
+			});
 		}
-	},
-	computed: {
-		...mapState('auth', [
-			'user'
-		])
-  },
+	}
 }
 </script>
 
@@ -99,6 +101,9 @@ export default {
 		padding: .4em 0.2em;
 	}
   option {	color: black;	}
+	.dropdown {
+		margin: 0 20px 0 -15px;
+	}
 }
 
 .menu-bar__list {
