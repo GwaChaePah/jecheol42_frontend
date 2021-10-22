@@ -14,17 +14,23 @@
 						v-for="comment in comments"
 						:key="comment.id">
 						<td class="id">{{ comment.user }}</td>
-						<td class="content">{{ comment.content }}</td>
+						<td v-if="editingId === comment.id" class="textarea-wrapper">
+							<textarea class="textarea" rows="4"
+								v-model="editedComment"
+								:id="`edit-comment-${comment.id}`"
+								@blur="editingId = ''"
+								@keydown.enter="saveComment(comment)"/>
+						</td>
+						<td v-else class="content">{{ comment.content }}</td>
 						<td class="time">{{ comment.created_at }}</td>
-						<td><button class="button" @click="delComment(comment.id)">X</button></td>
+						<td><button	class="button" @click="toggleEdit(comment)">O</button></td>
+						<td><button class="button" @click="delComment(comment)">X</button></td>
 					</tr>
 				</table>
 			</template>
 			<form class="comment-form" @submit.prevent="handleSubmit" method="post">
-				<input type="text" id="user"
-					placeholder="사용자" v-model="newComment.user" required/>
 				<input type="text" id="input"
-					placeholder="댓글달기" v-model="newComment.comment" required/>
+					placeholder="댓글달기" v-model="comment" required/>
 				<button type="submit" name="button"
 					class="comment-btn" id="comment">등록</button>
 				<button type="button" name="button"
@@ -42,31 +48,29 @@ export default {
 	props: ['postId'],
 	data() {
 		return {
-			newComment: {
-				user: '',
-				comment: ''
-			}
+			comment: '',
+			editingId: '',
+			editedComment: ''
 		}
 	},
 	computed: {
-    ...mapState('post', [
-      'comments'
-    ])
+    ...mapState('post', ['comments']),
+		...mapState('auth', ['currentUser'])
   },
 	created() {
 		this.$store.dispatch('post/initComments', this.$route.params.id);
 	},
 	methods: {
-		async handleSubmit(e) {
+		handleSubmit(e) {
 			const commentObj = {
 				post_id: this.postId,
-				user: this.newComment.user,
-				content: this.newComment.comment,
+				user: "test",
+				content: this.comment,
 				created_at: this.currentDate()
 			};
-			await axios.post('comments', commentObj);
-			this.newComment.user = '';
-			this.newComment.comment = '';
+			this.$store.dispatch('post/updateComment', { payload:commentObj });
+			this.user = '';
+			this.comment = '';
 		},
 		currentDate() {
 			const current = new Date();
@@ -81,11 +85,34 @@ export default {
 			this.newComment.user = '';
 			this.newComment.comment = '';
 		},
-		async delComment(index) {
-			await axios.delete('comments/' + index);
-			// const splicedComment = this.comments.splice(index, 1);
-			// console.log(splicedComment);
-			// this.$store.dispatch('post/deleteComment', this.comments);
+		toggleEdit(comment) {
+			this.editedComment = comment.content;
+			console.log(this.editedComment)
+			this.editingId = comment.id;
+			setTimeout(() => {
+				document.getElementById(`edit-comment-${comment.id}`).focus()
+			}, 1);
+		},
+		saveComment(comment) {
+			console.log(this.editedComment)
+			const commentObj = {
+				id: comment.id,
+				post_id: this.postId,
+				user: "test",
+				content: this.editedComment,
+				created_at: this.currentDate()
+			};
+			console.log('obj',commentObj)
+			this.$store.dispatch('post/updateComment', {
+				option: 0,
+				payload: commentObj
+			});
+			this.editingId = '';
+		},
+		async delComment(comment) {
+			if (confirm("정말 지우시겠습니까?")) {
+				this.$store.dispatch('post/deleteComment', comment);
+			}
 		}
 	}
 
@@ -115,20 +142,32 @@ export default {
 			padding: .3em .5em;
 			border-bottom: 1px solid black;
 			font-weight: bold;
+			vertical-align: top;
+		}
+		.textarea-wrapper {
+			border-bottom: 1px solid black;
+			.textarea {
+				margin-top: 1em;
+				width: 100%;
+				resize: none;
+			}
 		}
 		.content {
 			border-bottom: 1px solid black;
 			padding: .3em .5em;
+			vertical-align: top;
 		}
 		.time {
 			border-bottom: 1px solid black;
 			padding: .3em;
 			text-align: right;
+			vertical-align: top;
 		}
 		.button {
 			margin: .4em;
 			padding: 0 .2em;
 			border-radius: .4em;
+			vertical-align: top;
 		}
 	}
 	.comment-form {
