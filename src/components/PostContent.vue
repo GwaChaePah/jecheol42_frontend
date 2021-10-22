@@ -1,13 +1,16 @@
 <template>
 	<div class="content-title-info clearfix">
 		<button class="content-category">
-			<select class="select-state">
-				<option value="0" selected="selected">
+			<select class="select-state show-select"
+				@change="apply($event)">
+				<option selected>
 					[<span id="region">{{ thePost.region }}</span>
 					/
 					<span id="option">{{ thePost.option }}</span>]
 				</option>
-				<option value="1">거래 완료</option>
+				<option v-if="`${thePost.option}` !== '소분'">소분</option>
+				<option v-if="`${thePost.option}` !== '나눔'">나눔</option>
+				<option v-if="`${thePost.option}` !== '완료'">거래 완료</option>
 			</select>
 		</button>
 		<div class="content-title">
@@ -17,15 +20,16 @@
 			<p id="time">{{ thePost.created_at }}</p>
 			<p id="writer">{{ thePost.user }}</p>
 		</div>
-	</div>
-	<div class="content-post">
-		<div class="post__img clearfix">
-			<img class="img-slides"
-			:src="thePost.image"
-			:alt="`${thePost.user}_${thePost.title}`" />
-		</div>
-		<div class="post__paragraph">
-			<p>{{ thePost.content }}</p>
+		<div class="content-post">
+			<div class="post__img clearfix">
+				<img class="img-slides"
+					:src="thePost.image"
+					:alt="`${thePost.user}_${thePost.title}`"
+					onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';" />
+			</div>
+			<div class="post__paragraph">
+				<p>{{ thePost.content }}</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -33,7 +37,17 @@
 <script>
 export default {
 	name: 'PostContent',
-	props: ['thePost']
+	props: ['thePost'],
+	methods: {
+		apply(e) {
+			let value = e.target.value;
+			if (value === '거래 완료') {
+				value = value.slice(-2);
+			}
+			this.thePost.option = value;
+			this.$store.dispatch('post/updateOption', this.thePost);
+		}
+	}
 }
 </script>
 
@@ -84,28 +98,29 @@ export default {
 			color: rgb(114, 115, 114);
 		}
 	}
-}
-.content-post {
-	max-width: 100%;
-	padding: 1em;
-	border-bottom: 1px solid #ccc;
-	.post__img {
-		width: 90%;
-		/* border: 1px solid #ddd; */
-		padding: .5em;
-		margin: 0 auto;
-		.img-slides {
-			float: left;
-			margin: .2em;
+	.content-post {
+		max-width: 100%;
+		margin: 4em 0 1em 0;
+		border-bottom: 1px solid #ccc;
+		.post__img {
+			max-width: 90%;
+			min-height: 300px;
+			/* border: 1px solid #ddd; */
+			padding: 1em .5em;
+			margin: 0 auto;
+			.img-slides {
+				float: left;
+				margin: .2em;
+			}
 		}
-	}
-	.post__paragraph {
-		margin: .8em 3em 1em;
-		p {
-			text-align: justify;
-			padding: .3em 0;
-			line-height: 1.5;
-			font-size: 1.2em;
+		.post__paragraph {
+			margin: .8em 3em 1em;
+			p {
+				text-align: justify;
+				padding: .3em 0;
+				line-height: 1.5;
+				font-size: 1.2em;
+			}
 		}
 	}
 }

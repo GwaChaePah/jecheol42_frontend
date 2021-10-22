@@ -7,7 +7,7 @@
 			v-for="post in posts"
 			:key="post.id"
 			:post="post"/>
-		<div v-show="!posts.length" class="empty-content">
+		<div v-show="!posts.length && !loading" class="empty-content">
 			<h1>검색된 정보가 없습니다 따흐흑</h1>
 		</div>
 	</div>
