@@ -90,11 +90,11 @@
       "created_at": "2021.10.18. 09:30"
     },
     {
+      "id": 4,
       "post_id": 0,
-      "user": "ㅓㅓ",
-      "content": "소분합시다에 직접 댓글 달아봐요",
-      "created_at": "2021.10.13 18:22",
-      "id": 4
+      "user": "test",
+      "content": "소분합시다에 직접 댓글 달아봐요dd",
+      "created_at": "2021.10.22 13:59"
     },
     {
       "post_id": 0,
@@ -102,134 +102,127 @@
       "content": "리프래쉬하닙ㄴ기ㅏ",
       "created_at": "2021.10.13 18:34",
       "id": 7
-    },
-    {
-      "post_id": 0,
-      "user": "ㄴㅇ",
-      "content": "ㅌㅅㅌㅌㅌㅅㅌㅅㅌㅆㅌㅅㅌㅅㅌ",
-      "created_at": "2021.10.14 08:53",
-      "id": 8
     }
   ],
-	"product": [
-		{
-			"id": 0,
-			"name": "가지",
-			"image": "https://www.tasteofhome.com/wp-content/uploads/2019/07/eggplants-shutterstock_1169753452.jpg?resize=700,700",
-			"month": [
-				"10",
-				"11",
-				"12"
-			]
-		},
-		{
-			"id": 1,
-			"name": "귤",
-			"image": "https://images2.minutemediacdn.com/image/upload/c_crop,h_2450,w_4368,x_0,y_165/f_auto,q_auto,w_1100/v1562080363/shape/mentalfloss/29942-gettyimages-155302141.jpg",
-			"month": [
-				"9",
-				"10"
-			]
-		},
-		{
-			"id": 4,
-			"name": "무화과",
-			"image": "https://cgeimage.commutil.kr/phpwas/restmb_allidxmake.php?idx=3&simg=201809031104140021685kpm_00.jpg",
-			"month": [
-				"9",
-				"10",
-				"11"
-			]
-		},
-		{
-			"id": 2,
-			"name": "브로꼬리",
-			"image": "https://images2.minutemediacdn.com/image/upload/c_crop,h_2450,w_4368,x_0,y_165/f_auto,q_auto,w_1100/v1562080363/shape/mentalfloss/29942-gettyimages-155302141.jpg",
-			"month": [
-				"8",
-				"9"
-			]
-		},
-		{
-			"id": 3,
-			"name": "레몬",
-			"image": "https://images2.minutemediacdn.com/image/upload/c_crop,h_2450,w_4368,x_0,y_165/f_auto,q_auto,w_1100/v1562080363/shape/mentalfloss/29942-gettyimages-155302141.jpg",
-			"month": [
-				"5",
-				"6"
-			]
-		},
-		{
-			"id": 3,
-			"name": "레몬",
-			"image": "https://cdn.shopify.com/s/files/1/0326/0114/5475/t/4/assets/description_image_top_blogs_resizeartboard_83.jpg?v=1593174163",
-			"month": [
-				"5",
-				"6",
-				"10"
-			]
-		}
-	],
-	"exApi": [
-		{
-			"id": 0,
-			"name": "가지",
-			"price": 1250,
-			"unit": "1kg"
-		},
-		{
-			"id": 1,
-			"name": "바나나",
-			"price": 100,
-			"unit": "1kg"
-		},
-		{
-			"id": 2,
-			"name": "토란",
-			"price": 200,
-			"unit": "1kg"
-		},
-		{
-			"id": 3,
-			"name": "토마토",
-			"price": 1000,
-			"unit": "1kg"
-		},
-		{
-			"id": 4,
-			"name": "귤",
-			"price": 500,
-			"unit": "1kg"
-		},
-		{
-			"id": 5,
-			"name": "무화과",
-			"price": 50000,
-			"unit": "1kg"
-		},
-		{
-			"id": 6,
-			"name": "레몬",
-			"price": 2000,
-			"unit": "100g"
-		},
-		{
-			"id": 7,
-			"name": "브로꼬리",
-			"price": 50,
-			"unit": "1kg"
-		}
-	],
-	"users": [
-		{
-			"id": 0,
-			"name": "ji-kim",
-			"email": "ji-kim@n.com"
-		},
-		{
-			"id": 1,
-			"name": "ylee",
-			"email": "ylee@n.com"
-		}
-	]
+  "product": [
+    {
+      "id": 0,
+      "name": "가지",
+      "image": "https://www.tasteofhome.com/wp-content/uploads/2019/07/eggplants-shutterstock_1169753452.jpg?resize=700,700",
+      "month": [
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "귤",
+      "image": "https://images2.minutemediacdn.com/image/upload/c_crop,h_2450,w_4368,x_0,y_165/f_auto,q_auto,w_1100/v1562080363/shape/mentalfloss/29942-gettyimages-155302141.jpg",
+      "month": [
+        "9",
+        "10"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "무화과",
+      "image": "https://cgeimage.commutil.kr/phpwas/restmb_allidxmake.php?idx=3&simg=201809031104140021685kpm_00.jpg",
+      "month": [
+        "9",
+        "10",
+        "11"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "브로꼬리",
+      "image": "https://images2.minutemediacdn.com/image/upload/c_crop,h_2450,w_4368,x_0,y_165/f_auto,q_auto,w_1100/v1562080363/shape/mentalfloss/29942-gettyimages-155302141.jpg",
+      "month": [
+        "8",
+        "9"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "레몬",
+      "image": "https://images2.minutemediacdn.com/image/upload/c_crop,h_2450,w_4368,x_0,y_165/f_auto,q_auto,w_1100/v1562080363/shape/mentalfloss/29942-gettyimages-155302141.jpg",
+      "month": [
+        "5",
+        "6"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "레몬",
+      "image": "https://cdn.shopify.com/s/files/1/0326/0114/5475/t/4/assets/description_image_top_blogs_resizeartboard_83.jpg?v=1593174163",
+      "month": [
+        "5",
+        "6",
+        "10"
+      ]
+    }
+  ],
+  "exApi": [
+    {
+      "id": 0,
+      "name": "가지",
+      "price": 1250,
+      "unit": "1kg"
+    },
+    {
+      "id": 1,
+      "name": "바나나",
+      "price": 100,
+      "unit": "1kg"
+    },
+    {
+      "id": 2,
+      "name": "토란",
+      "price": 200,
+      "unit": "1kg"
+    },
+    {
+      "id": 3,
+      "name": "토마토",
+      "price": 1000,
+      "unit": "1kg"
+    },
+    {
+      "id": 4,
+      "name": "귤",
+      "price": 500,
+      "unit": "1kg"
+    },
+    {
+      "id": 5,
+      "name": "무화과",
+      "price": 50000,
+      "unit": "1kg"
+    },
+    {
+      "id": 6,
+      "name": "레몬",
+      "price": 2000,
+      "unit": "100g"
+    },
+    {
+      "id": 7,
+      "name": "브로꼬리",
+      "price": 50,
+      "unit": "1kg"
+    }
+  ],
+  "users": [
+    {
+      "id": 0,
+      "name": "ji-kim",
+      "email": "ji-kim@n.com"
+    },
+    {
+      "id": 1,
+      "name": "ylee",
+      "email": "ylee@n.com"
+    }
+  ]
 }
