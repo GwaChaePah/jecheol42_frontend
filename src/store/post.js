@@ -34,7 +34,7 @@ export default {
 					posts: res
 				})
 			} catch(e) {
-				console.log(e.message);
+				console.log('ERROR', e.response.data);
 				commit('UPDATE_STATE', {
 					posts: []
 				})
@@ -53,81 +53,136 @@ export default {
 				comments: res
 			});
 		},
-		async searchPostWithId({ commit }, payload) {
+		async searchPostWithId({ commit, state }, payload) {
+			if (state.loading) return;
 			commit('UPDATE_STATE', {
-				thePost: {}
+				thePost: {},
+				loading: true
 			});
 			try {
-				const getUrl = await axios.get('posts');
-				const res = getUrl.data;
+				let res = await _fetchPost(0, payload.id);
 				commit('UPDATE_STATE', {
-					thePost: res[payload['id']]
+					thePost: res[0]
 				});
 			} catch (e) {
-				console.log(e.message);
+				console.log('ERROR', e.response.data);
 				commit('UPDATE_STATE', {
 					thePost: {}
 				});
+			} finally {
+				commit('UPDATE_STATE', {
+					loading: false
+				})
 			}
 		},
-		async searchPostOptions({ commit, getters }, payload) {
+		async searchPostOptions({ commit }, payload) {
 			if (payload.value == '전체') {
-				commit('UPDATE_STATE', {
-					posts: []
-				});
 				const res = await _fetchPost(payload.search);
 				commit('UPDATE_STATE', {
 					posts: res
 				});
 				return ;
 			}
-			const backup = getters.currentPosts;
-			commit('UPDATE_STATE', {
-				posts: []
-			});
 			try {
-				const res = await _fetchPost(payload.search);
-				const ret = res.filter(item=>item.option == payload.value);
+				let res;
+				if (payload.value === '완료') {
+					res = await axios.get('posts')
+						.then(response => response.data.filter(item => item.option == payload.value));
+				} else {
+					res = await _fetchPost(payload.search)
+						.then(response => response.filter(item => item.option == payload.value));
+				}
 				commit('UPDATE_STATE', {
-					posts: ret
+					posts: res
 				});
 			} catch (e) {
-				console.log(e.message);
+				console.log('ERROR', e.response.data);
+				const res = await _fetchPost(payload.search);
 				commit('UPDATE_STATE', {
-					posts: backup
+					posts: res
 				});
 			}
 		},
-		deleteComment({ commit, state }, payload) {
-			commit('UPDATE_STATE', {
-				comments: []
-			});
-			commit('UPDATE_STATE', {
-				comments: payload
-			});
-			console.log(state.comments);
+		async updateOption({ commit }, payload) {
+			let res = await axios.get('posts/' + payload.id)
+				.then(response => response.data);
+			res.option = payload.option;
+			try {
+				await axios({
+					url: 'posts/' + res.id,
+					method: 'put',
+					data: res,
+					headers: {"Content-Type" : "application/json"}
+				});
+				commit('UPDATE_STATE', {
+					thePost: payload
+				});
+			} catch(e) {
+				console.log('ERROR', e.response.data);
+			}
+		},
+		async updateComment({ commit }, { option = 1, payload}) {
+			try {
+				if (option) {
+					await axios({
+						url: 'comments',
+						method: 'post',
+						data: payload,
+						headers: {"Content-Type" : "application/json"}
+					});
+				} else {
+					await axios({
+						url: 'comments/' + payload.id,
+						method: 'put',
+						data: payload,
+						headers: {"Content-Type" : "application/json"}
+					});
+				}
+			} catch(e) {
+				console.log('ERROR', e.response.data);
+			} finally {
+				const res = await axios.get('comments')
+				.then(response => response.data.filter(item => 	item.post_id == payload.post_id))
+				commit('UPDATE_STATE', {
+					comments: res
+				});
+			}
+		},
+		async deleteComment({ commit }, payload) {
+			try {
+				await axios.delete('comments/' + payload.id);
+			} catch(e) {
+				console.log('ERROR', e.response.data);
+			} finally {
+				const res = await axios.get('comments')
+				.then(response => response.data.filter(item => 	item.post_id == payload.post_id))
+				commit('UPDATE_STATE', {
+					comments: res
+				});
+			}
 		}
-	},
-	getters: {
-		currentPosts: state => state.posts
 	}
 }
 
-async function _fetchPost(payload) {
-	let res = await fetch('http://localhost:3000/posts')
-  .then(response => response.json())
+async function _fetchPost(payload, id = 0) {
+	let	res = await axios.get('posts')
+		.then(response => response.data)
 	if (payload) {
-		res = res.filter(item => ((item.content.indexOf(payload) !== -1) || (item.title.indexOf(payload) !== -1)));
+		res = res.filter(item => ((item.content.indexOf(payload) !== 1) || (item.title.indexOf(payload) !== -1)));
 	}
-	const filtered = res.filter(item => {
-		return (item.option == '소분' || item.option == '나눔')
-	})
+	let filtered;
+	if (!id) {
+		filtered = res.filter(item => {
+			return (item.option == '소분' || item.option == '나눔');
+		})
+	} else {
+		filtered = res.filter(item => item.id == id)
+	}
 	return filtered;
 }
 
 async function _fetchComment(payload) {
-	const res = await fetch('http://localhost:3000/comments')
-  .then((response) => response.json());
-	const filtered = res.filter(item => item.post_id == payload)
-	return filtered;
+	const res = await axios.get('comments')
+		.then(response => response.data.filter(item => item.post_id == payload))
+	return res;
 }
