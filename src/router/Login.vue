@@ -1,108 +1,120 @@
 <template>
-	<div class="l_wrapper content">
-		<div class="login-content">
-			<h3>{{ form }}</h3>
-			<div class="form-container">
-				<form @submit.prevent="loginUser()">
-					<div class="login__input">
-						<h2>USER ID</h2>
-						<input type="text" v-model="form.user"
-						id="user" placeholder="ex) yeslee" required/>
-					</div>
-					<div class="login__input">
-						<h2>PASSWORD</h2>
-						<input type="password" v-model="form.password"
-						id="password" placeholder="Enter your password" required/>
-					</div>
-					<div class="login__buttons">
-						<button class="btn login"	type="submit">로그인</button>
-						<a href="#">
-							<button class="btn register">회원가입</button>
-						</a>
-					</div>
-				</form>
+	<div class="background">
+		<div class="loginBox">
+			<div class="loginMsg">LOGIN</div>
+			<div class="ID">
+				<div class="key">ID</div>
+				<div class="stick">  </div>
+				<input type="idBox" placeholder="ID"/>
 			</div>
+			<div class="PW">
+				<div class="key">PW</div>
+				<div class="stick"></div>
+				<input type="pwBox" placeholder="Password"/>
+			</div>
+			<button class="loginBtn" @click="loginBtn">LOGIN</button>
+		</div>
+		<div class="register">
+			아직 회원이 아니신가요? <a href="#">회원가입</a>
 		</div>
 	</div>
 </template>
 
 <script>
-
 export default {
-	name: 'Login',
-	data() {
-		return {
-			form: {
-				user: '',
-				password: ''
-			}
-		}
-	},
-	methods: {
-		loginUser() {
-			console.log('user', this.form)
-			this.$store.dispatch('auth/loginUser', this.form);
-		}
-	}
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../scss/commons.scss';
-@import '../scss/typography.scss';
 @import '../scss/main.scss';
+@import '../scss/commons.scss';
 
-.login-content {
-	// border: 1px solid black;
-	background-color: white;
-	width: 300px;
-	margin: 8em auto;
-	padding: 1.8em 0;
-	border-radius: .3em;
-	h1 {
-		text-align: center;
-		font-size: 3em;
-		margin-bottom: 1em;
-	}
-	h3 {
-		text-align: center;
-	}
-	.form-container {
-		max-width: 150px;
-		margin: 0 auto;
-		.login__input {
-			margin: 1em 0;
-			h2 {
-				margin: .3em 0;
+@mixin center {
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+	text-align: center;
+}
+@mixin input {
+	width: 15vh;
+	height: 3vh;
+	padding-left: 8px;
+	font-size: 15px;
+}
+@mixin block($size){
+	width: $size;
+	display: inline-block;
+}
+.background{
+	padding: 300px 70px 70px 70px;
+	@include center;
+	.loginBox {
+		@include center;
+		border-radius: .3em;
+		box-shadow: 0 0 10px 0 $color_shadow_03;
+		min-width: 200px;
+		min-height: 250px;
+		width: 40vh;
+		height: 50vh;
+		border: 20px;
+		padding: 70px;
+		.loginMsg{
+			margin: 40px 0px;
+			font-size: 40px;
+			color: rgba(#76862c, 0.76);
+		}
+		.ID {
+			padding: 10px;
+			margin: auto;
+			display: block;
+			.key {			
+				@include block(20%);
+				border: solid black;
+				border-width: 0px 1px 0px 0px;
+			}		
+			.stick {
+				@include block(10%);
 			}
 			input {
-				padding: .3em;
-				border: none;
-				background-color: #eee;
+				@include block(70%);
+				@include input;
+				color: rgba(#76862c, 0.76);
 			}
 		}
-		.login__buttons {
-			display: flex;
-			justify-content: space-between;
-			margin-top: 2em;
-			button {
-				padding: .6em .8em;
-				border: none;
-				border-radius: .3em;
-				margin-left: .4em;
-				&:hover {
-					font-weight: bold;
-					background-color: rgb(51, 140, 222);
-					color: #fff;
-				}
+		.PW {
+			padding: 10px;
+			margin: auto;
+			display: block;
+			.key {			
+				@include block(20%);
+				border: solid black;
+				border-width: 0px 1px 0px 0px;
+			}		
+			.stick {
+				@include block(10%);
 			}
-			.login {
-				background-color: rgb(224, 237, 249);
+			input {
+				@include block(70%);
+				@include input;
 			}
-			.register {
-				background-color: rgb(116, 172, 224);
-				color: #fff;
-			}
+		}
+		.loginBtn {
+			margin: 40px;
+			font-size: 17px;
+			width: 10vh;
+			height: 3vh;
+			border-radius: .3em;
+			border-color: rgba(187, 212, 68, 30%);
+			box-shadow: 0 0 10px 0 $color_shadow_03;
+			background-color: rgba(#76862c, 0.76);
+			color: white;
+		}
+	}
+	.register {
+		padding: 20px;
+		a:hover{
+			text-decoration: underline;
+			color: rgba(#76862c, 0.76);
 		}
 	}
 }
