@@ -1,7 +1,6 @@
 <template>
-	<div class="l_wrapper">
-		<div class="content-login">
-			<h1>LOG IN</h1>
+	<div class="l_wrapper content">
+		<div class="login-content">
 			<h3>{{ form }}</h3>
 			<div class="form-container">
 				<form @submit.prevent="loginUser()">
@@ -53,13 +52,12 @@ export default {
 @import '../scss/typography.scss';
 @import '../scss/main.scss';
 
-.content-login {
+.login-content {
 	// border: 1px solid black;
 	background-color: white;
 	width: 300px;
-	margin: 8em auto ;
+	margin: 8em auto;
 	padding: 1.8em 0;
-	box-shadow: 0 0 20px 0 $color_shadow_03;
 	border-radius: .3em;
 	h1 {
 		text-align: center;

@@ -1,79 +1,342 @@
 <template>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<header>
-		<NavHeader/>
-		<div class="searchInner">
-			<div class="searchBox">
-				<input type="text" placeholder="오늘따라 '가지'가 당기네"/>
-				<button class="material-icons">search</button>
+	<div class="header" :class="{ 'scrolled-header': scrollPosition }">
+		<div class="l_wrapper">
+			<div class="logo">
+				<h1 @click="toMain">제철<span id="four">4</span><span id="two">2</span></h1>
+			</div>
+			<div class="navbar" v-show="(!mobile && !scrollPosition)">
+				<ul class="navlist" v-if="!currentUser.name">
+					<li @click="toBoard">Board</li>
+					<li @click="toLogin">Sign in</li>
+					<li @click="">Sign up</li>
+				</ul>
+				<ul class="navlist" v-else>
+					<li @click="toBoard">Board</li>
+					<!-- to mypage -->
+					<li @click="">{{ currentUser.name }}</li>
+					<li @click="logoutUser">Sign out</li>
+				</ul>
+			</div>
+			<div :class="{'menu-list': true, 'sticky': scrollPosition}" v-show="(mobile || scrollPosition)">
+				<button class="material-icons" @click="toggleMobileNav">reorder</button>
+			</div>
+			<transition v-if="(mobile || scrollPosition)" name="mobile-nav">
+				<div v-show="mobileNav" class="dropdown-nav">
+					<ul v-if="!currentUser.name">
+						<li @click="toMain">Home</li>
+						<li @click="toBoard">Board</li>
+						<li @click="toLogin">Sign In</li>
+						<li href="#">Sign up</li>
+					</ul>
+					<ul v-else>
+						<li><b>{{ currentUser.name }}</b></li>
+						<li @click="toMain">Home</li>
+						<li @click="toBoard">Board</li>
+						<li @click="logoutUser">Sign out</li>
+					</ul>
+				</div>
+			</transition>
+			<div class="searchbar-wrapper" id="searchbar">
+				<input type="text" v-model="search" class="searchbar desktopInput" placeholder="제철 과채를 검색해보세요" @keyup.enter="apply"/>
+				<input type="text" v-model="search" class="searchbar mobileInput" placeholder="제철일까?" @keyup.enter="apply"/>
+				<button class="material-icons" @click="apply">search</button>
 			</div>
 		</div>
-	</header>
+	</div>
 </template>
 
 <script>
-import NavHeader from './NavHeader';
+import { mapState } from 'vuex';
 
 export default {
 	name: 'Header',
-	components: {
-		NavHeader
+	data() {
+		return {
+			scrollPosition: null,
+			windowWidth: null,
+			mobile: null,
+			search: '',
+			mobileNav: null,
+			navigations: [
+				{
+					name: 'Product',
+					href: '/'
+				},
+				{
+					name: 'Board',
+					href: '/board'
+				},
+				{
+					name: 'Login',
+					href: '/login'
+				},
+				{
+					name: 'Post',
+					href: '/post'
+				},
+				{
+					name: 'Search',
+					href: '/search'
+				}
+			]
+		}
+	},
+	computed: {
+		...mapState('auth', [
+			'users',
+			'currentUser'
+		])
+	},
+	mounted() {
+		this.$store.dispatch('auth/loadUsers');
+		window.addEventListener("scroll", this.updateScroll);
+	},
+	created() {
+		window.addEventListener("resize", this.checkScreen);
+		this.checkScreen();
+	},
+	unmounted() {
+		window.removeEventListener("resize", this.checkScreen);
+		window.removeEventListener("scroll", this.updateScroll);
+	},
+	methods: {
+		toMain() {
+			this.$router.push('/');
+			this.$emit('initSearch', this.search);
+			this.mobileNav = null;
+			this.search = '';
+		},
+		toLogin() {
+			this.$router.push('/login');
+			this.mobileNav = null;
+		},
+		toBoard() {
+			if (this.$route.fullPath === '/board' || this.$store.state.product.postSearch == '') {
+				this.$store.dispatch('post/initPosts');
+				this.$store.state.product.postSearch = '';
+			}
+			this.$router.push('/board');
+			this.mobileNav = null;
+		},
+		toggleMobileNav() {
+			this.mobileNav = !this.mobileNav;
+		},
+		logoutUser() {
+			this.$store.dispatch("auth/logoutUser");
+		},
+		apply() {
+			if (this.search) {
+				this.$store.state.product.postSearch = this.search;
+				this.$store.dispatch('product/searchProduct', this.search);
+				this.$store.dispatch('post/initPosts', this.$store.state.product.postSearch);
+				this.$router.push('/search');
+			}
+		},
+		checkScreen() {
+			this.windowWidth = window.innerWidth;
+			if (this.windowWidth <= 750) {
+				this.mobile = true;
+				return ;
+			}
+			this.mobile = false;
+			return ;
+		},
+		updateScroll() {
+			const header = document.getElementById('searchbar');
+			const sticky = header.offsetTop;
+			if (window.pageYOffset > sticky) {
+				this.scrollPosition = true;
+			} else {
+				this.scrollPosition = false;
+			}
+		}
 	}
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../scss/main.scss';
+@import '../scss/commons.scss';
 
-header {
-	background-color: #F4F4E4;
+.header {
+	position: fixed;
+	top: 0;
 	width: 100%;
-	height: 220px;
-	display: flex;
-	justify-content: center;
-	.searchInner {
-		width: 100%;
-		height: 80px;
+	z-index: 98;
+	background-color: white;
+	text-align: center;
+	height: 250px;
+	box-shadow: 0 0 10px 0 $color_shadow_03;
+	transition: all .1s;
+	@media ( max-width: 700px ) {
+		height: 200px;
+	}
+	.logo {
+		h1 {
+			line-height: 2;
+			font-size: 4em;
+			#four {
+				color: $color_prime_orange;
+			}
+			#two {
+				color: $color_prime_yellow;
+			}
+		}
+	}
+	.navbar {
+		position: relative;
+		text-align: center;
+		&:before,
+		&:after {
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 0;
+			width: 10%;
+			border-top: 1px solid $color_prime_green;
+			background: black;
+			transform: translateY(-50%);
+		}
+		&:after {
+			left: auto;
+			right: 0;
+		}
+		.navlist {
+			li {
+				line-height: 1.5;
+				display: inline-block;
+				padding: 0 4em;
+				border-right: 2px solid $color_prime_green;
+				&:last-child {
+					border-right: none;
+				}
+				&:hover {
+					text-decoration: underline wavy;
+					color: darken($color_prime_green, 20%);
+				}
+			}
+		}
+	}
+	.searchbar-wrapper {
+		padding-top: 2em;
+		.searchbar {
+			color: darken($color_prime_green, 30%);
+			font-size: 20px;
+			letter-spacing: 1em;
+			line-height: 1.5;
+			padding: .3em 1em;
+			width: 100%;
+			border-radius: .3em;
+			border: 1px solid darken($color_prime_green, 40%);
+			&::placeholder {
+				color: rgba(#76862c, 0.76);
+				text-align: center;
+			}
+			&:focus {
+				outline: none;
+			}
+		}
+		.desktopInput {
+			display: block;
+		}
+		.mobileInput {
+			display: none;
+		}
+		@media ( max-width: 700px) {
+			.desktopInput {
+				display: none;
+			}
+			.mobileInput {
+				display: block;
+			}
+		}
+		.material-icons {
+			position: absolute;
+			right: 0;
+			bottom: 5px;
+			border: none;
+			color: darken($color_prime_green, 30%);
+			background-color: transparent;
+			font-size: 35px;
+			margin: auto 50px auto auto;
+		}
+	}
+	.menu-list {
+		display: flex;
+		align-items: center;
 		position: absolute;
-		top: 120px;
-		.searchBox {
-			margin: 25px 80px;
-			max-width: 1000px;
-			width: 90%;
-			height: 80px;
-			margin: auto;
-			border-radius: 40px;
-			box-shadow: 5px 5px 10px 4px rgba(187, 212, 68, 30%);
-			display: flex;
-			background-color: #F4F4E4;
-			input {
-				width: 70%;
-				height: 30px;
-				top: 0;
-				bottom: 0;
-				left: 0;
-				right: 100px;
-				font-size: 25px;
-				margin: auto;
-				background-color: #F4F4E4;
-				border: 0px solid transparent;
-				&::placeholder {
-					color:rgba(145, 145, 141, 80%);
-				}
-				&:focus {
-					outline: none;
-				}
-			}
-			.material-icons {
-				border: none;
-				background-color: transparent;
-				font-size: 50px;
-				right: 20px;
-				margin: auto 60px auto auto;
-				color: #BBD444;
-				text-shadow: 2px 1px 0 rgba(187, 212, 68, 30%);
-			}
+		top: 0;
+		right: 0;
+		height: 70%;
+		.material-icons {
+			z-index: 99;
+			border: none;
+			margin-right: 20px;
+			background-color: transparent;
+			font-size: 50px;
+		}
+	}
+	.sticky {
+		z-index: 99;
+		position: fixed;
+		top: 0;
+		right: 20px;
+		height: 100px;
+	}
+	.dropdown-nav {
+		z-index: 99;
+		display: flex;
+		flex-direction: column;
+		position: fixed;
+		background-color: white;
+		width: 140px;
+		max-width: 250px;
+		height: 100%;
+		top: 0;
+		left: 0;
+		padding-top: 20px;
+		box-shadow: 0 0 10px 0 $color_shadow_03;
+		li {
+			padding: 16px;
+			color: #000;
+			padding-bottom: 4px;
+			transition: .5s ease all;
+		}
+	}
+	.mobile-nav-enter-active,
+	.mobile-nav-leave-active {
+		transition: 1s ease all;
+	}
+	.mobile-nav-endter-from,
+	.mobile-nav-leave-to {
+		transform: translateX(-250px);
+	}
+	.mobile-nav-enter-to {
+		transform: translateX(0);
+	}
+}
+.scrolled-header {
+	height: 100px;
+	z-index: 98;
+	transition: all .1s;
+	.logo {
+		position: fixed;
+		top: 10px;
+		left: 20px;
+		h1 {
+			font-size: 2.5em;
+		}
+	}
+	.searchbar-wrapper {
+		padding-top: 1.7em;
+		.searchbar {
+			margin-left: 100px;
+			width: 80%;
+			transition: .4s all;
+		}
+		.material-icons {
+			margin-right: 140px;
 		}
 	}
 }

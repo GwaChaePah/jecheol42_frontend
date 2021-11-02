@@ -1,14 +1,13 @@
 <template>
 		<div class="section-comment">
-			<!-- To-Do: mobile ver. -->
 			<template
 				v-if="comments.length > 0">
 				<table class="comment-container">
 					<colgroup>
-						<col class="fourteen" />
-						<col class="seventy" />
-						<col class="sixteen" />
-						<col class="five" />
+						<col class="narrow" />
+						<col class="widest" />
+						<col class="middle" />
+						<col class="narrowest" />
 					</colgroup>
 					<tr
 						v-for="comment in comments"
@@ -21,21 +20,28 @@
 								@blur="editingId = ''"
 								@keydown.enter="saveComment(comment)"/>
 						</td>
-						<td v-else class="content">{{ comment.content }}</td>
+						<td v-else class="content">&nbsp;{{ comment.content }}</td>
 						<td class="time">{{ comment.created_at }}</td>
-						<td><button	class="button" @click="toggleEdit(comment)">O</button></td>
-						<td><button class="button" @click="delComment(comment)">X</button></td>
+						<td class="button-wrapper">
+							<button	class="button" @click="toggleEdit(comment)">편집</button>
+							<button class="button" @click="delComment(comment)">삭제</button>
+						</td>
 					</tr>
 				</table>
 			</template>
-			<form class="comment-form" @submit.prevent="handleSubmit" method="post">
-				<input type="text" id="input"
-					placeholder="댓글달기" v-model="comment" required/>
-				<button type="submit" name="button"
-					class="comment-btn" id="comment">등록</button>
-				<button type="button" name="button"
-					class="comment-btn" @click="cancel">취소</button>
-			</form>
+			<div>
+				<form class="comment-form"
+					@submit.prevent="handleSubmit" method="post">
+					<input type="text" id="input"
+						placeholder="댓글달기" v-model="comment" required/>
+					<div class="button-wrapper">
+						<button type="submit"	class="comment-btn"
+							id="submit">등록</button>
+						<button type="button"	class="comment-btn"
+							id="button" @click="cancel">취소</button>
+					</div>
+				</form>
+			</div>
 		</div>
 </template>
 
@@ -125,19 +131,46 @@ export default {
 @import '../scss/main.scss';
 
 .section-comment {
-	background-color: #f7e2a9;
-	padding: 1em 3em;
+	// background-color: #f7e2a9;
+	margin: 0 5.5em;
+	// padding: 1em 5em;
+	@media (max-width: 770px) {
+		margin: 0 2em 0 5.5em;
+	}
+	@media (max-width: 580px) {
+		margin: 0;
+	}
 	box-sizing: border-box;
 	.comment-container {
 		width: 100%;
 		table-layout: fixed;
 		background-color: white;
 		box-shadow: 0 0 5px 0 $color_shadow_02;
+		border-radius: .2em;
+		@media (max-width: 380px) {
+			font-size: .5em;
+		}
 		// display: none;
-		.fourteen { width: 14%; }
-		.sixteen  { width: 16%; }
-		.seventy { width: 65%; }
-		.five { width: 5%; }
+		.narrowest {
+			width: 6%;
+			@media (max-width: 930px) {
+				width: 7%;
+			}
+			@media (max-width: 837px) {
+				width: 8%;
+			}
+			@media (max-width: 710px) {
+				width: 9%;
+			}
+		}
+		.narrow { width: 12%; }
+		.middle  { width: 14%; }
+		.widest {
+			width: 68%;
+			@media (max-width: 580px) {
+				width: 60%;
+			}
+		}
 		.id {
 			padding: .3em .5em;
 			border-bottom: 1px solid black;
@@ -156,6 +189,10 @@ export default {
 			border-bottom: 1px solid black;
 			padding: .3em .5em;
 			vertical-align: top;
+			&:before {
+				content: '';
+				border: 3px solid lighten($color_prime_orange, 20%);
+			}
 		}
 		.time {
 			border-bottom: 1px solid black;
@@ -163,22 +200,75 @@ export default {
 			text-align: right;
 			vertical-align: top;
 		}
-		.button {
-			margin: .4em;
-			padding: 0 .2em;
-			border-radius: .4em;
+		.button-wrapper {
 			vertical-align: top;
+			.button {
+				margin: .2em .4em;
+				padding: .2em .3em;
+				border: none;
+				border-radius: .4em;
+				vertical-align: top;
+				&:first-child {
+					background-color: rgb(241, 224, 131);
+					&:hover {
+						background-color: rgb(254, 135, 25);
+						color: white;
+					}
+				}
+				&:last-child {
+					background-color: lighten(rgb(160, 165, 182), 20%);
+					&:hover {
+						background-color: rgb(254, 135, 25);
+						// background-color: rgb(160, 165, 182);
+						color: white;
+					}
+				}
+				@media (max-width: 380px) {
+					font-size: .5em;
+				}
+			}
 		}
 	}
 	.comment-form {
-		margin-top: 1em;
+		box-shadow: 0 0 5px 0 $color_shadow_02;
+		margin: .5em 0 2em;
+		border-radius: .2em;
+		position: relative;
 		#input {
-			width: 83%;
+			margin: 1.2em .3em .5em;
+			width: 85%;
+			height: 50px;
 			padding: .3em .5em;
 		}
-		.comment-btn {
-			letter-spacing: .5em;
-			padding: .3em 0 .3em .5em;
+		.button-wrapper {
+			float: right;
+			.comment-btn {
+				border: none;
+				display: block;
+				border-radius: .2em;
+				margin: 0.4em .3em;
+				letter-spacing: .5em;
+				padding: .5em .3em .5em .8em;
+				@media (max-width: 380px) {
+					font-size: .5em;
+				}
+			}
+			#submit {
+				background-color: lighten($color_prime_green, 10%);
+				&:hover {
+					background-color: rgb(254, 135, 25);
+					// background-color: rgb(57, 120, 35);
+					color: white;
+				}
+			}
+			#button {
+				background-color: lighten(rgb(160, 165, 182), 20%);
+				&:hover {
+					background-color: rgb(254, 135, 25);
+					// background-color: rgb(160, 165, 182);
+					color: white;
+				}
+			}
 		}
 	}
 }
