@@ -75,7 +75,7 @@ export default {
 				})
 			}
 		},
-		async searchPostOptions({ commit }, payload) {
+		async searchPostTags({ commit }, payload) {
 			if (payload.value == '전체') {
 				const res = await _fetchPost(payload.search);
 				commit('UPDATE_STATE', {
@@ -83,30 +83,28 @@ export default {
 				});
 				return ;
 			}
+			let res;
 			try {
-				let res;
 				if (payload.value === '완료') {
 					res = await axios.get('posts')
-						.then(response => response.data.filter(item => item.option == payload.value));
+						.then(response => response.data.filter(item => item.tag == payload.value));
 				} else {
 					res = await _fetchPost(payload.search)
-						.then(response => response.filter(item => item.option == payload.value));
+						.then(response => response.filter(item => item.tag == payload.value));
 				}
-				commit('UPDATE_STATE', {
-					posts: res
-				});
 			} catch (e) {
 				console.log('ERROR', e.response.data);
-				const res = await _fetchPost(payload.search);
+				res = await _fetchPost(payload.search);
+			} finally {
 				commit('UPDATE_STATE', {
 					posts: res
 				});
 			}
 		},
-		async updateOption({ commit }, payload) {
+		async updateTag({ commit }, payload) {
 			let res = await axios.get('posts/' + payload.id)
 				.then(response => response.data);
-			res.option = payload.option;
+			res.tag = payload.tag;
 			try {
 				await axios({
 					url: 'posts/' + res.id,
@@ -119,6 +117,18 @@ export default {
 				});
 			} catch(e) {
 				console.log('ERROR', e.response.data);
+			}
+		},
+		async deletePost({ commit }, payload) {
+			try {
+				await axios.delete('posts/' + payload);
+			} catch(e) {
+				console.log('ERROR', e.response.data);
+			} finally {
+				const res = await _fetchPost();
+				commit('UPDATE_STATE', {
+					comments: res
+				});
 			}
 		},
 		async updateComment({ commit }, { option = 1, payload}) {
@@ -161,19 +171,19 @@ export default {
 				});
 			}
 		}
-	}
+	},
 }
 
 async function _fetchPost(payload, id = 0) {
 	let	res = await axios.get('posts')
 		.then(response => response.data)
 	if (payload) {
-		res = res.filter(item => ((item.content.indexOf(payload) !== 1) || (item.title.indexOf(payload) !== -1)));
+		res = res.filter(item => ((item.content.indexOf(payload) !== -1) || (item.title.indexOf(payload) !== -1)));
 	}
 	let filtered;
 	if (!id) {
 		filtered = res.filter(item => {
-			return (item.option == '소분' || item.option == '나눔');
+			return (item.tag == '소분' || item.tag == '나눔');
 		})
 	} else {
 		filtered = res.filter(item => item.id == id)

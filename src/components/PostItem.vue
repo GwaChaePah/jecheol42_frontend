@@ -6,19 +6,20 @@
 				<p>{{ post.region }}</p>
 			</div> -->
 			<img class="content-img"
-				:src="post.image"
+				:src="post.image1"
 				:alt="`${post.user}_${post.title}`"
 				onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"/>
 			<div class="content-title">
 				<button class="title__status"></button>
 				<h1 class="title__title ellipsis">{{ post.title }}</h1>
-				<h2 class="title__category">{{ post.option }}</h2>
+				<h2 class="title__category">{{ post.tag }}</h2>
 				<span class="title__writer">{{ post.user }}</span>
 				<span class="title__time">{{ post.created_at }}</span>
 			</div>
 			<div class="content-price">
 				<h2>{{ post.price }}</h2>
 			</div>
+			<!-- add view count! -->
 		</RouterLink>
 	</div>
 </template>
@@ -42,7 +43,7 @@ export default {
 @import '~/scss/main.scss';
 
 .content-wrapper {
-	float: left;
+	display: inline-block;
 	.content-anchor {
 		display: block;
 		background-color: white;
@@ -52,7 +53,6 @@ export default {
 		border-radius: .1em;
 		overflow: hidden;
 		position: relative;
-		text-align: center;
 		&:hover {
 			&::after {
 				content: '';
@@ -61,8 +61,16 @@ export default {
 				bottom: 0;
 				left: 0;
 				right: 0;
-				border: 4px solid lighten($color_prime_orange, 10%);
+				border: 4px solid lighten($color_prime_yellow, 10%);
 			}
+		}
+		@media (max-width: 745px) {
+			width: 280px;
+			height: 370px;
+		}
+		@media (max-width: 500px) {
+			width: 300px;
+			height: 150px;
 		}
 		.content-address {
 			color: rgb(31, 31, 31);
@@ -72,11 +80,36 @@ export default {
 		}
 		.content-img {
 			width: 100%;
-			height: 160px;
+			min-height: 160px;
+			@media (max-width: 745px) {
+				height: 190px;
+			}
+			@media (max-width: 500px) {
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				width: 50%;
+				height: 100%;
+			}
 		}
 		.content-title {
 			padding: .8em 1em .7em;
 			border-bottom: 1px solid #E8E8E8;
+			@media (max-width: 500px) {
+				position: absolute;
+				width: 55%;
+				left: 48%;
+				top: 0;
+				bottom: 0;
+				text-align: left;
+				.title__category {
+					font-size: .5em;
+				}
+				span {
+					display: block;
+				}
+			}
 			.title__status {
 				float: left;
 				margin: .4em .5em 0 -.2em;
@@ -90,21 +123,34 @@ export default {
 				background-color: #ccc;
 			}
 			.title__title {
+				text-align: left;
 				line-height: 1.4;
 				font-weight: bold;
 				font-size: 1.4em;
 				padding-bottom: .4em;
 			}
 			.title__category {
-				font-size: 1.1em;
 				display: block;
+				font-size: 1.1em;
 				font-weight: bold;
 				color: $color_prime_orange;
 			}
 			.title__writer {
+				text-align: center;
 				margin-right: .3em;
 			}
+			.title__writer,
 			.title__time {
+				@media (max-width: 500px) {
+					margin-top: .3em;
+					text-align: left;
+					font-size: .8em;
+				}
+			}
+			.title__time {
+				@media (max-width: 500px) {
+					margin-top: 0;
+				}
 			}
 		}
 	}
@@ -120,6 +166,11 @@ export default {
 		font-size: 1.1em;
 		h2::after {
 			content: '원';
+		}
+		@media (max-width: 500px) {
+			left: 50%;
+			bottom: 1px;
+			padding: 0;
 		}
 	}
 }

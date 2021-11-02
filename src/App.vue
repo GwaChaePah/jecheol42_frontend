@@ -1,15 +1,20 @@
 <template>
-  <Header />
-	<RouterView/>
+	<div class="app">
+		<Header />
+		<RouterView />
+		<Footer />
+	</div>
 </template>
 
 <script>
 import Header from '~/components/Header'
+import Footer from '~/components/Footer'
 
 export default {
   components: {
-    Header
-  }
+    Header,
+		Footer
+  },
 }
 </script>
 
@@ -17,5 +22,8 @@ export default {
 .app {
 	min-height: 100vh;
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 </style>

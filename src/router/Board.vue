@@ -1,39 +1,37 @@
 <template>
 	<div class="l_main">
 		<div class="l_wrapper">
-			<div class="menu-bar">
-				<div>
-					<select class="dropdown"
-						@change="apply($event)">
-						<option
-							v-for="item in filters[1].items"
-							:key="item">
+			<!-- <div>
+
+
+
+				<h1>search : {{search}}</h1>
+
+
+
+			</div> -->
+			<div :class="{'content': (hasHeader && !fromSearch)}">
+				<div class="menu-bar">
+					<div>
+						<select class="dropdown"	@change="apply($event)">
+							<option	v-for="item in filters[1].items" :key="item">
+								{{ item }}
+							</option>
+						</select>
+						<button class="menu-bar__list" type="button">글쓰기</button>
+						</div>
+						<!-- <div>
+						<select class="dropdown" v-for="filter in filters" v-model="$data[filter.name]" 	:key="filter.name" @change="apply($event)">
+						<option v-if="filter.name === 'region'" selected="" disabled>지역</option>
+						<option v-for="item in filter.items" :key="item">
 							{{ item }}
 						</option>
 					</select>
-					<button class="menu-bar__list"
-					type="button">글쓰기</button>
-				</div>
-				<!-- <div>
-					<select class="dropdown"
-						v-for="filter in filters"
-						v-model="$data[filter.name]"
-						:key="filter.name"
-						@change="apply($event)">
-						<option
-							v-if="filter.name === 'region'"
-							selected="" disabled>지역</option>
-						<option
-							v-for="item in filter.items"
-							:key="item">
-							{{ item }}
-						</option>
-					</select>
-					<button class="menu-bar__list"
-					type="button">글쓰기</button>
+					<button class="menu-bar__list" type="button">글쓰기</button>
 				</div> -->
+				</div>
 			</div>
-			<PostList />
+			<PostList :search="search"/>
 		</div>
 	</div>
 </template>
@@ -48,15 +46,18 @@ export default {
 	components: {
 		PostList
 	},
+	props: ['theSearch', 'fromSearch'],
 	computed: {
 		...mapState('auth', ['currentUser']),
-		...mapState('product', ['postSearch'])
+		...mapState('product', ['postSearch']),
 	},
 	data() {
 		return {
+			hasHeader: true,
+			search: this.theSearch,
 			seoulList,
 			region: '지역',
-			options: '분류',
+			tags: '분류',
 			filters: [
 				{
 					name: 'region',
@@ -70,7 +71,7 @@ export default {
 					})()
 				},
 				{
-					name: 'options',
+					name: 'tags',
 					items: ['전체', '소분', '나눔', '완료']
 				}
 			]
@@ -78,10 +79,13 @@ export default {
 	},
 	methods: {
 		apply(e) {
+			if (!this.search) {
+				this.search = this.postSearch;
+			}
 			let value = e.target.value;
-			this.$store.dispatch('post/searchPostOptions', {
+			this.$store.dispatch('post/searchPostTags', {
 				value,
-				search: this.postSearch 
+				search: this.search
 			});
 		}
 	}
@@ -93,6 +97,9 @@ export default {
 @import '../scss/typography.scss';
 @import '../scss/main.scss';
 
+.fromSearch {
+	margin-top: 15em;
+}
 .menu-bar {
 	margin: .5em 0;
 	width: 100%;
