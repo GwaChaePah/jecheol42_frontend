@@ -21,13 +21,14 @@
 </template>
 
 <script>
-
 export default {
-
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../scss/main.scss';
+@import '../scss/commons.scss';
+
 @mixin center {
 	justify-content: center;
 	align-items: center;
@@ -44,16 +45,13 @@ export default {
 	width: $size;
 	display: inline-block;
 }
-
 .background{
-	background-color: #F4F4E4;
-	height: 100vh;
-	padding: 70px;
+	padding: 300px 70px 70px 70px;
 	@include center;
 	.loginBox {
 		@include center;
-		border-radius: 30px;
-		box-shadow: 5px 5px 10px 4px rgba(187, 212, 68, 30%);
+		border-radius: .3em;
+		box-shadow: 0 0 10px 0 $color_shadow_03;
 		min-width: 200px;
 		min-height: 250px;
 		width: 40vh;
@@ -63,6 +61,7 @@ export default {
 		.loginMsg{
 			margin: 40px 0px;
 			font-size: 40px;
+			color: rgba(#76862c, 0.76);
 		}
 		.ID {
 			padding: 10px;
@@ -79,6 +78,7 @@ export default {
 			input {
 				@include block(70%);
 				@include input;
+				color: rgba(#76862c, 0.76);
 			}
 		}
 		.PW {
@@ -99,20 +99,22 @@ export default {
 			}
 		}
 		.loginBtn {
-			margin: 20px;
+			margin: 40px;
 			font-size: 17px;
 			width: 10vh;
 			height: 3vh;
-			border-radius: 10px;
+			border-radius: .3em;
 			border-color: rgba(187, 212, 68, 30%);
-			background-color: #F4F4E4;
+			box-shadow: 0 0 10px 0 $color_shadow_03;
+			background-color: rgba(#76862c, 0.76);
+			color: white;
 		}
 	}
 	.register {
 		padding: 20px;
 		a:hover{
 			text-decoration: underline;
-			color: #707b3c;
+			color: rgba(#76862c, 0.76);
 		}
 	}
 }

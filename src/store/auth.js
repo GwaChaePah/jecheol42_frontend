@@ -3,8 +3,9 @@ import axios from 'axios';
 export default {
 	namespaced: true,
 	state: {
+// 		token: null,
 		users: [],
-		currentUser: {}
+		currentUser: 'inyang'
 	},
 	mutations: {
 		SET_USERS(state, users) {
@@ -23,6 +24,7 @@ export default {
 		async loadUsers({ commit }) {
 			let res = await axios.get('users');
 			let users = res.data;
+			console.log(users);
 			commit('SET_USERS', users);
 
 			let user = JSON.parse(window.localStorage.currentUser);
@@ -37,5 +39,8 @@ export default {
 			console.log(res)
 			commit('SET_CURRENT_USER', form);
 		}
+	},
+	getters: {
+		thisUser: state => state.currentUser.name
 	}
 }

@@ -1,13 +1,15 @@
 <template>
 	<div class="l_row clearfix">
-		<div v-if="loading" class="preload-content">
+		<div v-show="loading" class="preload-content">
 			<h1>검색 중...</h1>
 		</div>
 		<PostItem
+			v-if="search || posts"
+			class="postitem"
 			v-for="post in posts"
 			:key="post.id"
-			:post="post"/>
-		<div v-show="!posts.length && !loading" class="empty-content">
+			:post="post" />
+		<div v-if="(!posts.length && !loading)" class="empty-content">
 			<h1>검색된 정보가 없습니다 따흐흑</h1>
 		</div>
 	</div>
@@ -23,15 +25,19 @@ export default {
 	components: {
 		PostItem
 	},
+	props: ['search'],
 	computed: {
     ...mapState('post', [
 			'posts',
 			'loading'
 		]),
-		...mapState('product', ['postSearch'])
   },
 	created() {
-		this.$store.dispatch('post/initPosts', this.postSearch);
+		setTimeout(()=> {
+			if (this.search) {
+				this.$store.dispatch('post/initPosts', this.search)
+			}
+		}, 500);
 	}
 }
 </script>
@@ -40,15 +46,22 @@ export default {
 @import '~/scss/commons.scss';
 @import '~/scss/main.scss';
 
-.empty-content,
-.preload-content {
-	max-width: 1000px;
-	width: 100%;
-	margin: 10px auto;
-	padding: 60px;
-	text-align: center;
-	h1 {
-		font-size: 1.6em;
+.l_row.clearfix {
+	@media (max-width: 745px) {
+		text-align: center;
+	}
+	.postitem {
+	}
+	.empty-content,
+	.preload-content {
+		max-width: 1000px;
+		width: 100%;
+		margin: 10px auto;
+		padding: 60px;
+		text-align: center;
+		h1 {
+			font-size: 1.6em;
+		}
 	}
 }
 
