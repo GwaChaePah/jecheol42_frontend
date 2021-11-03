@@ -1,18 +1,20 @@
 <template>
 	<div class="background">
+		<div class="loginMsg">Sign in to 제철42</div>
 		<div class="loginBox">
-			<div class="loginMsg">LOGIN</div>
+			
 			<div class="ID">
-				<div class="key">ID</div>
-				<div class="stick">  </div>
-				<input type="idBox" placeholder="ID"/>
+				<div class="key">User ID</div>
+				<input type="idBox"/>
+				<!-- <input type="idBox" placeholder="ID"/> -->
 			</div>
 			<div class="PW">
-				<div class="key">PW</div>
-				<div class="stick"></div>
-				<input type="pwBox" placeholder="Password"/>
+				<div class="key">Password</div>
+				<input type="pwBox"/>
+				<!-- <input type="pwBox" placeholder="Password"/> -->
+				<button class="loginBtn" @click="loginBtn">SIGN IN</button>
 			</div>
-			<button class="loginBtn" @click="loginBtn">LOGIN</button>
+			
 		</div>
 		<div class="register">
 			아직 회원이 아니신가요? <a href="#">회원가입</a>
@@ -45,76 +47,72 @@ export default {
 	width: $size;
 	display: inline-block;
 }
+
+.loginMsg{
+		margin: 40px 0px;
+		font-size: 20px;
+		color: rgba(#76862c, 0.76);
+	}
+
 .background{
-	padding: 300px 70px 70px 70px;
+	// padding: 70px;
 	@include center;
 	.loginBox {
 		@include center;
 		border-radius: .3em;
 		box-shadow: 0 0 10px 0 $color_shadow_03;
-		min-width: 200px;
-		min-height: 250px;
-		width: 40vh;
-		height: 50vh;
+		width: 250px;
+		height: 250px;
 		border: 20px;
-		padding: 70px;
-		.loginMsg{
-			margin: 40px 0px;
-			font-size: 40px;
-			color: rgba(#76862c, 0.76);
-		}
+		padding: 20px;
 		.ID {
-			padding: 10px;
+			padding: 8px 10px 10px 10px;
 			margin: auto;
-			display: block;
-			.key {			
-				@include block(20%);
-				border: solid black;
-				border-width: 0px 1px 0px 0px;
-			}		
-			.stick {
-				@include block(10%);
+			text-align: left;
+			.key {
+				width: 100%;
 			}
 			input {
-				@include block(70%);
-				@include input;
+				padding: 8px;
+				width: 100%;
 				color: rgba(#76862c, 0.76);
 			}
 		}
 		.PW {
 			padding: 10px;
 			margin: auto;
-			display: block;
-			.key {			
-				@include block(20%);
-				border: solid black;
-				border-width: 0px 1px 0px 0px;
-			}		
-			.stick {
-				@include block(10%);
+			text-align: left;
+			// display: block;
+			.key {
+				width: 100%;
 			}
 			input {
-				@include block(70%);
-				@include input;
+				padding: 8px;
+				width: 100%;
+				color: rgba(#76862c, 0.76);
+			}
+			.loginBtn {
+				margin-top: 22px;
+				vertical-align: middle;
+				font-size: 17px;
+				width: 100%;
+				height: 15%;
+				padding: 8px;
+				border-radius: .3em;
+				border-color: rgba(187, 212, 68, 30%);
+				box-shadow: 0 0 10px 0 $color_shadow_03;
+				background-color: rgba(#76862c, 0.76);
+				color: white;
 			}
 		}
-		.loginBtn {
-			margin: 40px;
-			font-size: 17px;
-			width: 10vh;
-			height: 3vh;
-			border-radius: .3em;
-			border-color: rgba(187, 212, 68, 30%);
-			box-shadow: 0 0 10px 0 $color_shadow_03;
-			background-color: rgba(#76862c, 0.76);
-			color: white;
-		}
+		
 	}
 	.register {
+		font-size: 13px;
 		padding: 20px;
-		a:hover{
-			text-decoration: underline;
+		a {
 			color: rgba(#76862c, 0.76);
+			text-decoration: underline;
 		}
 	}
 }
