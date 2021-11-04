@@ -1,32 +1,80 @@
 <template>
-	<div class="background">
-		<div class="loginMsg">Sign in to 제철42</div>
-		<div class="loginBox">
-			
-			<div class="ID">
-				<div class="key">User ID</div>
-				<input type="idBox"/>
-				<!-- <input type="idBox" placeholder="ID"/> -->
-			</div>
-			<div class="PW">
-				<div class="key">Password</div>
-				<input type="pwBox"/>
-				<!-- <input type="pwBox" placeholder="Password"/> -->
-				<button class="loginBtn" @click="loginBtn">SIGN IN</button>
-			</div>
-			
+  <form class="background" v-on:submit.prevent="submitForm">
+	<div class="loginMsg">Sign in to 제철42</div>
+	<div class="loginBox">		
+		<div class="ID">
+			<label class="key" for="username">User ID</label>
+			<input
+				id="username"
+				type="text" 
+				v-model="username"
+				required/>
 		</div>
+		<div class="PW">
+			<label class="key" for="password">Password</label>
+			<input
+				id="password"
+				type="password" 
+				v-model="password" 
+				required/>
+			<button 
+				type="submit"
+				class="loginBtn" 
+				@click="login" 
+				v-bind:disabled="password == ''"
+				>SIGN IN</button>
+		</div>	
 		<div class="register">
 			아직 회원이 아니신가요? <a href="#">회원가입</a>
 		</div>
+		<p>Password 입력값: {{ password }}</p>
 	</div>
+    <!-- <div>
+      <label for="username">id:</label>
+      <input id="username" type="text" v-model="username" />
+    </div>
+    <div>
+      <label for="password">PW:</label>
+      <input id="password" type="psassword" v-model="password"  />
+    </div>
+    <button type="submit">login</button> -->
+  </form>
 </template>
-
+ 
 <script>
+import axios from 'axios';
+ 
 export default {
-}
+  data:function(){
+    return{
+       username : '',
+       password : '',
+    }
+  },
+  methods:{
+	login() {
+		console.log('로그인')
+	},
+    submitForm:function(){
+      console.log(this.username, this.password);
+      var url = 'https://jsonplaceholder.typicode.com/users';
+      var data = {
+        username: this.username,
+        password: this.password
+      }
+      axios.post(url, data)
+        .then(function(response){
+          console.log(response);
+          
+        })
+        .catch(function(error){
+        	console.log(response);
+       		});
+    	}
+  }
+};
 </script>
-
+ 
 <style lang="scss" scoped>
 @import '../scss/main.scss';
 @import '../scss/commons.scss';
@@ -55,7 +103,7 @@ export default {
 	}
 
 .background{
-	// padding: 70px;
+	font-family: sans-serif;
 	@include center;
 	.loginBox {
 		@include center;
@@ -83,6 +131,7 @@ export default {
 			margin: auto;
 			text-align: left;
 			// display: block;
+			position: relative;
 			.key {
 				width: 100%;
 			}
