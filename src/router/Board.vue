@@ -1,94 +1,63 @@
 <template>
 	<div class="l_main">
 		<div class="l_wrapper">
-			<!-- <div>
-
-
-
-				<h1>search : {{search}}</h1>
-
-
-
-			</div> -->
 			<div :class="{'content': (hasHeader && !fromSearch)}">
-				<div class="menu-bar">
-					<div>
-						<select class="dropdown"	@change="apply($event)">
-							<option	v-for="item in filters[1].items" :key="item">
-								{{ item }}
-							</option>
-						</select>
-						<button class="menu-bar__list" type="button">글쓰기</button>
-						</div>
-						<!-- <div>
-						<select class="dropdown" v-for="filter in filters" v-model="$data[filter.name]" 	:key="filter.name" @change="apply($event)">
-						<option v-if="filter.name === 'region'" selected="" disabled>지역</option>
-						<option v-for="item in filter.items" :key="item">
-							{{ item }}
-						</option>
-					</select>
-					<button class="menu-bar__list" type="button">글쓰기</button>
-				</div> -->
+				<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
+				<BoardMenu />
+			</div>
+			<div class="l_row clearfix">
+				<div v-show="loading" class="preload-content">
+					<h1>검색 중...</h1>
+				</div>
+				<BoardItem v-if="search || posts" v-for="post in posts"
+					:key="post.id" :post="post" />
+				<div v-if="(!posts.length && !loading)" class="empty-content">
+					<h1>검색된 정보가 없습니다 따흐흑</h1>
 				</div>
 			</div>
-			<PostList :search="search"/>
 		</div>
 	</div>
 </template>
 
 <script>
-import PostList from '~/components/PostList';
-import seoulList from '~/json/seoul.json';
+import BoardMenu from '~/components/BoardMenu';
+import BoardItem from '~/components/BoardItem';
+import axios from 'axios';
 import { mapState } from 'vuex';
 
 export default {
 	name: 'Board',
 	components: {
-		PostList
+		BoardMenu,
+		BoardItem,
 	},
-	props: ['theSearch', 'fromSearch'],
+	props: ['fromSearch'],
 	computed: {
 		...mapState('auth', ['currentUser']),
 		...mapState('product', ['postSearch']),
+		...mapState('post', [
+			'posts',
+			'loading'
+		]),
 	},
 	data() {
 		return {
 			hasHeader: true,
-			search: this.theSearch,
-			seoulList,
-			region: '지역',
-			tags: '분류',
-			filters: [
-				{
-					name: 'region',
-					items: (() => {
-						const seouls = seoulList.seoul;
-						const seoul = [];
-						for (let i=0;i<seouls.length;i++) {
-							seoul.push(seouls[i].시군구);
-						}
-						return seoul;
-					})()
-				},
-				{
-					name: 'tags',
-					items: ['전체', '소분', '나눔', '완료']
-				}
-			]
+			search: this.postSearch,
 		}
 	},
-	methods: {
-		apply(e) {
-			if (!this.search) {
-				this.search = this.postSearch;
-			}
-			let value = e.target.value;
-			this.$store.dispatch('post/searchPostTags', {
-				value,
-				search: this.search
-			});
+	created() {
+		if (!this.fromSearch) {
+			this.$store.dispatch('post/initPosts');
 		}
-	}
+		else {
+			setTimeout(()=> {
+				if (this.search) {
+					this.$store.dispatch('post/initPosts', this.search)
+				}
+			}, 1);
+		}
+	},
 }
 </script>
 
@@ -97,28 +66,32 @@ export default {
 @import '../scss/typography.scss';
 @import '../scss/main.scss';
 
+
+h3 {
+	text-align: center;
+	font-size: 1em;
+	line-height: 2;
+}
+
 .fromSearch {
 	margin-top: 15em;
 }
-.menu-bar {
-	margin: .5em 0;
-	width: 100%;
-	select {
-		margin: 0 .1em;
-		padding: .4em 0.2em;
+.l_row.clearfix {
+	@media (max-width: 745px) {
+		text-align: center;
 	}
-  option {	color: black;	}
-	.dropdown {
-		margin: 0 20px 0 -15px;
+	.postitem {
 	}
-}
-
-.menu-bar__list {
-	float: right;
-	border: 1px solid black;
-	padding: 0.3em 1em;
-	&:hover {
-		font-weight: bold;
+	.empty-content,
+	.preload-content {
+		max-width: 1000px;
+		width: 100%;
+		margin: 10px auto;
+		padding: 60px;
+		text-align: center;
+		h1 {
+			font-size: 1.6em;
+		}
 	}
 }
 </style>

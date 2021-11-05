@@ -1,24 +1,30 @@
 <template>
+	<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet" />
 	<div class="l_main">
 		<div class="l_wrapper">
 			<div class="content">
 				<div class="searchResult" :class="{ 'scrolled-padding': scroll }">
 					<div v-if="theSearch.price != ''">
-						<p class="search-content"><span>요즘 마트에서는</span>&nbsp;&nbsp;
-							<span><strong class="search-name"> {{ theSearch.name }}</strong>(을)를</span><br />
-							<span><strong class="search-price">{{ theSearch.price }}</strong><strong class="search-unit">{{ theSearch.unit }}</strong> 에 </span>
-							<span>살 수 있어요</span><br /></p>
-						<div class="divider"></div>
-						<div class="search-seasons">
-							<br /><br />
-							<p class="search-season"
+						<p class="search-content">
+							<span>요즘 <strong class="search-name">{{ theSearch.name }}</strong>(은)는&nbsp;</span>
+							<span><strong class="search-price">&nbsp;{{ theSearch.price }}</strong><strong class="search-unit">{{ theSearch.unit }}</strong>&nbsp;에오</span>
+						</p>
+						<!-- <div class="divider"></div> -->
+						<div class="search-seasons" v-if="theSearch.seasons">
+							<p class="search-seasonNow" v-if="inSeason()">&gt;&gt; 지금 &lt;&lt;</p>
+							<p class="search-inSeason">제철 : &nbsp;</p>
+							<!-- <p class="search-season"
 								v-for="season in theSearch.seasons"
 								:key="season">
-								&nbsp;{{ season }}
-							</p> 이 제철이에요! <br />
-							<p class="search-inSeason" v-if="theSearch.inSeason">
-								<br />앗! 지금이 제철이네요. 맛있게 냠냠냠(제철이미지)
-								<img src="https://st2.depositphotos.com/4082775/7168/v/950/depositphotos_71686019-stock-illustration-a-set-of-cute-fruits.jpg" />
+								&nbsp;{{ season }}</p> -->
+							<p class="search-season" v-if="theSearch.seasons.length === 1">
+								{{ theSearch.seasons[0] }}
+							</p>
+							<p class="search-season" v-else-if="theSearch.seasons.length === 2">
+								{{ theSearch.seasons[0] }}, {{ theSearch.seasons[1] }}
+							</p>
+							<p class="search-season" v-else>
+								{{ theSearch.seasons[0] }} ~ {{ theSearch.seasons[theSearch.seasons.length - 1] }}
 							</p>
 						</div>
 						<!-- 가격 가져온 날짜 찍어주기 : 몇월며칠 기준 -->
@@ -35,7 +41,6 @@
 		<div class="title-wrapper">
 			<h1>게시판</h1>
 		</div>
-		<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
 		<Board :theSearch="postSearch" :fromSearch="true"/>
 	</div>
 </template>
@@ -60,6 +65,20 @@ export default {
 		setTimeout(() => {
 			this.$store.dispatch('post/initPosts', this.postSearch);
 		}, 500);
+	},
+	methods: {
+		inSeason() {
+			const seasons = this.theSearch.seasons;
+			if (seasons) {
+				const mon = new Date().getMonth() + 1;
+				for (let i = 0; i < seasons.length; i++) {
+					if (mon == seasons[i]) {
+						return true;
+					}
+				}
+				return false;
+			}
+		}
 	}
 }
 </script>
@@ -74,15 +93,26 @@ export default {
 }
 .content {
 	.searchResult {
-		background-color: $color_prime_white;
+		// background-color: $color_prime_white;
 		text-align: center;
 		display: flex;
 		justify-content: center;
-		padding: 5em 0;
+		align-items: center;
 		width: 100%;
-		border-radius: 1.5em;
+		border-radius: .5em;
+		&:before,
+		&:after {
+			font-size: 7em;
+			color: lighten($color_prime_yellow, 10%);
+		}
+		&:before {
+			content: '{';
+		}
+		&:after {
+			content: '}';
+		}
 		h1 {
-			font-size: 2em;
+			font-size: 1.5em;
 			line-height: 1.8;
 		}
 		@media (max-width: 750px) {
@@ -92,12 +122,12 @@ export default {
 		}
 		.search-content {
 			padding-right: .5em;
-			font-size: 2em;
+			font-size: 1.4em;
 			line-height: 1.8;
 			display: inline-block;
 			.search-name {
 				font-size: 1.5em;
-				letter-spacing: .4em;
+				padding: 0 .2em;
 			}
 			.search-price {
 				font-size: 1.5em;
@@ -118,25 +148,39 @@ export default {
 		.search-seasons {
 			text-align: center;
 			line-height: 1.5;
+			.search-inSeason {
+				display: inline-block;
+				font-size: 1.5em;
+			}
+			.search-seasonNow {
+				$color: darken($color_prime_orange, 20%);
+				display: inline-block;
+				font-family: 'Do Hyeon', sans-serif;
+				font-size: 1em;
+				color: $color_prime_orange;
+				// text-shadow:
+				// 	-1px -1px 0 $color,
+     		// 	 0   -1px 0 $color,
+     		// 	 1px -1px 0 $color,
+     		// 	 1px  0   0 $color,
+     		// 	 1px  1px 0 $color,
+     		// 	 0    1px 0 $color,
+    		// 	-1px  1px 0 $color,
+    		// 	-1px  0   0 $color;
+  			transform: translate(-8px, -3px);
+			}
 			.search-season {
-				font-size: 1.8em;
+				font-size: 1.5em;
 				display: inline-block;
 				&:after {
 					content: '월 '
-				}
-			}
-			.search-inSeason {
-				font-size: 1.2em;
-				img {
-					margin-top: .5em;
-					width: 80%;
 				}
 			}
 		}
 	}
 }
 .board {
-	margin: 4em 0 2em;
+	margin: 2em 0 2em;
 	.title-wrapper {
 		margin: 0 5em;
 		text-align: center;
@@ -160,16 +204,6 @@ export default {
 			font-size: 1.5em;
 			line-height: 1.6;
 		}
-	}
-	.border {
-		margin: 0 auto;
-		width: 70%;
-		border: 1px solid #ddd;
-	}
-	h3 {
-		text-align: center;
-		font-size: 1em;
-		line-height: 2;
 	}
 }
 </style>

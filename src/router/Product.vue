@@ -50,6 +50,7 @@ export default {
 	display: flex;
 	justify-content: center;
 	.content-list {
+		margin: 0 auto 2em;
 		li {
 			display: table-cell;
 			@media (max-width: 550px) {
