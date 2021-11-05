@@ -1,9 +1,17 @@
 <template>
 	<div class="navbar" :class="{ 'sticky': scrollPosition }" id="navbar">
-		<button @click="$router.back()">뒤로가기</button>
-		<button>글쓰기</button>
-		<button v-if="1">글수정</button>
-		<button v-if="1" @click="deletePost">글삭제</button>
+		<button id="back" @click="$router.back()">
+			<span class="material-icons">arrow_back</span>
+			뒤로가기
+		</button>
+		<button id="write">
+			<span class="material-icons">create</span>
+			글쓰기
+		</button>
+		<button id="up" @click="toTop" v-show="scrollPosition">
+			<span class="material-icons">north</span>
+			위로
+		</button>
 	</div>
 </template>
 
@@ -15,33 +23,16 @@ export default {
 	name: 'NavPost',
 	data() {
 		return {
-			name: '',
-			thisUser: '',
-			scrollPosition: null
+			scrollPosition: null,
 		}
 	},
 	computed: {
-		...mapState('auth', ['currentUser']),
 		...mapState('post', ['thePost'])
 	},
 	mounted() {
 		window.addEventListener("scroll", this.updateScroll);
 	},
 	methods: {
-		// compare() {
-		// 	if (this.thePost.user) {
-		// 		this.thisUser = this.thePost.user
-		// 	}
-		// 	console.log('compare', 'name',this.name,'user', this.thisUser, this.name === this.thisUser);
-		// 	return ((this.name && this.thisUser) && (this.name === this.thisUser));
-		// },
-		deletePost() {
-			const index = this.$route.params.id;
-			if (confirm("지우시겠습니까?")) {
-				this.$store.dispatch('post/deletePost', index);
-				this.$router.push('/board');
-			}
-		},
 		updateScroll() {
 			const header = 160;
 			const navbar = document.getElementById('navbar');
@@ -55,6 +46,10 @@ export default {
 					this.scrollPosition = false;
 				}
 			}
+		},
+		toTop() {
+			document.body.scrollTop = 0;
+			document.documentElement.scrollTop = 0;
 		}
 	}
 }
@@ -66,7 +61,7 @@ export default {
 @import '../scss/main.scss';
 
 .navbar {
-	margin-top: 130px;
+	margin-top: 140px;
 	position: absolute;
 	z-index: 30;
 	@media (max-width: 580px) {
@@ -75,56 +70,26 @@ export default {
 	}
 	button {
 		box-shadow: 0 0 5px 0 $color_shadow_03;
-		clip-path: inset(-5px 0px -5px -5px);
 		display: block;
-		width: 88px;
+		width: 70px;
 		border: none;
-		border-radius: .2em 0 0 .2em;
-		font-size: 1.1em;
+		border-radius: .2em;
+		font-size: .8em;
 		line-height: 1.6;
 		margin: .5em 0;
-		padding: .4em .5em;
-		$color: $color_prime_white;
-		background-color: $color;
-		&:nth-child(2) {
-			background-color: darken($color, 2%);
-		}
-		&:nth-child(3) {
-			background-color: darken($color, 4%);
-		}
-		&:nth-child(4) {
-			background-color: darken($color, 5%);
+		padding: .4em 0;
+		background-color: white;
+		.material-icons {
+			display: block;
+			font-size: 2.5em;
 		}
 		&:hover {
-			font-weight: bold;
+			background-color: lighten($color_prime_green, 10%);
 		}
 		@media (max-width: 770px) {
 			width: 80px;
 			font-size: 1em;
 			margin-top: .8em;
-		}
-		@media (max-width: 580px) {
-			$color: lighten($color_prime_yellow, 10%);
-		  display: inline-block;
-			border-radius: .2em;
-			box-shadow: none;
-			border-right: 3px solid $color_prime_yellow;
-			border-bottom: 3px solid $color_prime_yellow;
-			width: 25%;
-			min-width: 75px;
-			clip-path: none;
-			margin-top: 0;
-			background-color: $color;
-			&:nth-child(2) {
-				background-color: $color;
-			}
-			&:nth-child(3) {
-				background-color: $color;
-			}
-			&:nth-child(4) {
-				background-color: $color;
-				// border-right: none;
-			}
 		}
 	}
 }

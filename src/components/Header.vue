@@ -7,15 +7,15 @@
 			</div>
 			<div class="navbar" v-show="(!mobile && !scrollPosition)">
 				<ul class="navlist" v-if="!currentUser.name">
-					<li @click="toBoard">Board</li>
-					<li @click="toLogin">Sign in</li>
-					<li @click="">Sign up</li>
+					<li @click="toBoard">게시판</li>
+					<li @click="toLogin">로그인</li>
+					<li @click="">회원가입</li>
 				</ul>
 				<ul class="navlist" v-else>
-					<li @click="toBoard">Board</li>
+					<li @click="toBoard">게시판</li>
 					<!-- to mypage -->
 					<li @click="">{{ currentUser.name }}</li>
-					<li @click="logoutUser">Sign out</li>
+					<li @click="logoutUser">로그아웃</li>
 				</ul>
 			</div>
 			<div :class="{'menu-list': true, 'sticky': scrollPosition}" v-show="(mobile || scrollPosition)">
@@ -24,16 +24,16 @@
 			<transition v-if="(mobile || scrollPosition)" name="mobile-nav">
 				<div v-show="mobileNav" class="dropdown-nav">
 					<ul v-if="!currentUser.name">
-						<li @click="toMain">Home</li>
-						<li @click="toBoard">Board</li>
-						<li @click="toLogin">Sign In</li>
-						<li href="#">Sign up</li>
+						<li @click="toMain">메인</li>
+						<li @click="toBoard">게시판</li>
+						<li @click="toLogin">로그인</li>
+						<li href="#">회원가입</li>
 					</ul>
 					<ul v-else>
 						<li><b>{{ currentUser.name }}</b></li>
-						<li @click="toMain">Home</li>
-						<li @click="toBoard">Board</li>
-						<li @click="logoutUser">Sign out</li>
+						<li @click="toMain">메인</li>
+						<li @click="toBoard">게시판</li>
+						<li @click="logoutUser">로그아웃</li>
 					</ul>
 				</div>
 			</transition>
@@ -86,7 +86,8 @@ export default {
 		...mapState('auth', [
 			'users',
 			'currentUser'
-		])
+		]),
+		...mapState('product', ['postSearch'])
 	},
 	mounted() {
 		this.$store.dispatch('auth/loadUsers');
@@ -112,10 +113,8 @@ export default {
 			this.mobileNav = null;
 		},
 		toBoard() {
-			if (this.$route.fullPath === '/board' || this.$store.state.product.postSearch == '') {
-				this.$store.dispatch('post/initPosts');
-				this.$store.state.product.postSearch = '';
-			}
+			this.$store.dispatch('post/initPosts');
+			this.$store.dispatch('product/updateSearch');
 			this.$router.push('/board');
 			this.mobileNav = null;
 		},
@@ -127,9 +126,10 @@ export default {
 		},
 		apply() {
 			if (this.search) {
-				this.$store.state.product.postSearch = this.search;
+				this.$store.dispatch('product/updateSearch', this.search);
 				this.$store.dispatch('product/searchProduct', this.search);
-				this.$store.dispatch('post/initPosts', this.$store.state.product.postSearch);
+				this.$store.dispatch('post/initPosts', this.search);
+				this.search = '';
 				this.$router.push('/search');
 			}
 		},
@@ -221,7 +221,7 @@ export default {
 	.searchbar-wrapper {
 		padding-top: 2em;
 		.searchbar {
-			color: darken($color_prime_green, 30%);
+			color: darken($color_prime_green, 35%);
 			font-size: 20px;
 			letter-spacing: 1em;
 			line-height: 1.5;

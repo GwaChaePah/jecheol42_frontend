@@ -29,6 +29,9 @@ export default {
 				inSeason: false
 			};
 			state.postSearch = '';
+		},
+		UPDATE_POSTSEARCH(state, value) {
+			state.postSearch = value;
 		}
 	},
 	actions: {
@@ -39,6 +42,9 @@ export default {
 			commit('UPDATE_STATE', {
 				product: res
 			});
+		},
+		updateSearch({ commit }, value) {
+			commit('UPDATE_POSTSEARCH', value);
 		},
 		async searchProduct({ commit }, payload) {
 			if (!payload) return;
@@ -85,6 +91,7 @@ export default {
 }
 
 async function _fetchProduct() {
+	// https://jecheol-42.herokuapp.com/product-api.json
 	const mon = new Date().getMonth() + 1;
 	const res = await axios.get('product');
 	let filtered = [];

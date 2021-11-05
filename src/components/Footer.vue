@@ -1,9 +1,15 @@
 <template>
-<div>
-	<ul >
-		<li><a href="https://github.com/GwaChaePah">&copy;과채파</a></li>
-	</ul>
-</div>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<div>
+		<ul>
+			<li><span class="material-icons">copyright</span> 2021 과채파.</li>
+		</ul>
+		<ul>
+			<li><a href="https://github.com/GwaChaePah"><img src="../assets/Github-Mark-32px.png" />GitHub</a></li>
+			<li><span class="material-icons">room</span> 서울시 강남구 개포로 416</li>
+			<li><span class="material-icons">mail</span> GwaChaePah@gmail.com</li>
+		</ul>
+	</div>
 </template>
 
 <script>
@@ -21,14 +27,27 @@ export default {
 @import '../scss/main.scss';
 
 div {
-	padding: 1em 0;
-	height: 50px;
+	padding: .5em 0;
+	height: 80px;
 	background-color: #f8f8f8;
 	text-align: center;
-	.sticky {
-		position: fixed;
-		bottom: 0;
-		width: 100%;
+	ul {
+		margin-bottom: .5em;
+		li {
+			display: inline-block;
+			margin: 0 15px;
+			img {
+				width: 15px;
+				height: auto;
+				transform: translateY(1px);
+				margin: 0 8px;
+			}
+			.material-icons {
+				border: none;
+				font-size: 1em;
+				transform: translateY(1px);
+			}
+		}
 	}
 }
 </style>
