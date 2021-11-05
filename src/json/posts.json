@@ -2,7 +2,7 @@
   "posts": [
     {
       "id": 0,
-      "tag": "나눔",
+      "tag": "소분",
       "region": "종로구",
       "title": "소분합시다",
       "user": "jkeum",
@@ -11,7 +11,8 @@
       "image3": "https://assets.rebelmouse.io/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFnZSI6Imh0dHBzOi8vYXNzZXRzLnJibC5tcy8yNjk1NjM1Ni9vcmlnaW4uanBnIiwiZXhwaXJlc19hdCI6MTY3Mjk3ODk5NX0.aY_b53jMZgcjVOabBE8Shboibk2oLFSyzelEnrOws_4/img.jpg?width=1245&quality=85&coordinates=0%2C0%2C0%2C0&height=700",
       "content": "국채를 모집하거나 예산외에 국가의 부담이 될 가지 계약을 체결하려 할 때에는 정부는 미리 국회의 의결을 얻어야 한다. 국회의원이 회기전에 체포 또는 구금된 때에는 현행범인이 고구마 아닌 한 바나나국회의 요구가 있으면 회기중 석방된다.",
       "price": 5000,
-      "created_at": "2021.10.21. 10:10"
+      "created_at": "2021.10.21. 10:10",
+      "view_count": 4
     },
     {
       "id": 1,
@@ -24,7 +25,8 @@
       "image3": "",
       "content": "대통령은 조약을 체결·비준하고, 외교사절을 신임·접수 복숭아또는 파견하며, 선전포고와 강화를 한다. 국토와 자원은 국가의 보호를 받으며, 국가는 그 균형있는 개발과 이용을 위하여 필요한 계획을 수립한다. 귤 탄핵소추의 의결을 받은 자는 탄핵심판이 있을 때까지 그 권한행사가 정지된다. 법관이 중대한 심신상의 장해로 직무를 수행할레몬 수 없을 때에는 법률이 정하는 바에 의하여 퇴직하게 할 수 있다.",
       "price": 3000,
-      "created_at": "2021.10.21. 18:10"
+      "created_at": "2021.10.21. 18:10",
+      "view_count": 95
     },
     {
       "id": 2,
@@ -37,7 +39,8 @@
       "image3": "",
       "content": "정부는 회계연도마다 예산안을 편성하여 회계연도 개시 90일전까지 국회에 제출하고, 국회는 회계연도 개시 30일전까지 이를 의결하여야 한다. 국회는 의장 1인과 부의장 2인을 선출한다. 바나나 근로자는 근로조건의 향상을 위하여 자주적인 단결권·단체교섭권 및 단체행동권을 가진다.\n\r 모든 국민은 소급입법에 감자의하여 참정권의 제한을 받거나 재산권을 박탈당하지 아니한다. 교육의 자주성·전문성·정치적 중립성 및 대학의 자율성은 법률이 정하는 바에 의하여 보장된다. 고구마언론·출판은 타인의 명예나 권리 또는 공중도덕이나 사회윤리를 침해하여서는 아니된다. 언론·출판이 타인의 명예나 권리를 침해한 때에는 피해자는 이에 대한 피해의 배상을 청구할 수 있다.",
       "price": 0,
-      "created_at": "2021.10.18. 09:30"
+      "created_at": "2021.10.18. 09:30",
+      "view_count": 105
     },
     {
       "id": 3,
@@ -50,7 +53,8 @@
       "image3": "http://upl.stack.com/wp-content/uploads/2015/09/Orange-Eyesight-STACK.jpg",
       "content": "모든 국민은 근로의 의무를 진다. 국가는 근로의 의무의 내용과 조건을 민주주의원칙에 따라 법률로 정한다. 국가는 재해를 예방하고 그 위험으로부터 국민을 보호하기 위하여 감자 노력하여야 한다. 국무총리·국무위원 또는 정부위원은 국회나 그 위원회에 출석하여 국정처리상황을 보고하거나 의견을 진술하고 질문에 응답할 수 있다. 누구든지 체포 또는 구속의 이유와 변호인의 조력을 받을 권리가 있음을 고지받지 아니하고는 체포 또는 구속을 당하지 아니한다. 체포 또는 가 구속을 당한 자의 가족등 법률이 정하는 자에게는 그 이유와 일시·장소가 지체없이 통지되어야 한다. 헌법재판소의 조직과 운영 기타 필요한 사항은 법률로 정한다.",
       "price": 0,
-      "created_at": "2021.10.18. 09:30"
+      "created_at": "2021.10.18. 09:30",
+      "view_count": 4
     },
     {
       "id": 4,
@@ -61,9 +65,10 @@
       "image1": "./src/assets/peach.jpeg",
       "image2": "https://www.eatthis.com/wp-content/uploads/sites/4/2020/02/lemons.jpg?quality=82&strip=1&resize=640%2C360",
       "image3": "https://www.eatthis.com/wp-content/uploads/sites/4/2020/02/lemons.jpg?quality=82&strip=1&resize=640%2C360",
-      "content": "모든 국민은 근로의 의무를 진다. 국가는 근로의 의무의 내용과 조건을 민주주의원칙에 따라 법률로 정한다. 국가는 재해를 예방하고 그 위험으로부터 국민을 보호하기 위하여 노력하여야 한다. 국무총리·국무위원 또는 정부위원은 국회나 그 위원회에 출석하여 국정처리상황을 보고하거나 의견을 진술하고 질문에 응답할 수 있다. 누구든지 체포 또는 구속의 이유와 변호인의 조력을 받을 권리가 있음을 고지받지 아니하고는 체포 또는 구속을 당하지 아니한다. 체포 또는 구속을 당한 자의 가족등 법률이 정하는 자에게는 그 이유와 일시·장소가 지체없이 통지되어야 한다. 헌법재판소의 조직과 운영 기타 필요한 사항은 법률로 정한다.",
+      "content": "모든 국민은 근로의 의무를 진다. 국가는 근로의 의무의 내용과 조건을 민주주의원칙에 따라 법률로 정한다. 국가는 재해를 예방하고 그 위험으로부터 국민을 보호하기 위하여 브로꼬리 노력하여야 한다. 국무총리·국무위원 또는 정부위원은 국회나 그 위원회에 출석하여 국정처리상황을 보고하거나 의견을 진술하고 질문에 응답할 수 있다. 누구든지 체포 또는 구속의 이유와 변호인의 조력을 받을 권리가 있음을 고지받지 아니하고는 가지 체포 또는 구속을 당하지 아니한다. 체포 또는 구속을 당한 자의 가족등 법률이 정하는 자에게는 그 이유와 일시·장소가 지체없이 통지되어야 한다. 헌법재판소의 조직과 운영 기타 필요한 사항은 법률로 정한다.",
       "price": 100,
-      "created_at": "2021.10.18. 09:30"
+      "created_at": "2021.10.18. 09:30",
+      "view_count": 4
     },
     {
       "id": 5,
@@ -76,40 +81,41 @@
       "image3": "",
       "content": "모든 국민은 근로의 의무를 진다. 국가는 근로의 의무의 내용과 조건을 민주주의원칙에 따라 법률로 정한다. 국가는 재해를 예방하고 그 위험으로부터 국민을 보호하기 위하여 노력하여야 한다. 국무총리·국무위원 또는 정부위원은 국회나 그 위원회에 출석하여 국정처리상황을 보고하거나 의견을 진술하고 질문에 응답할 수 있다. 누구든지 체포 또는 구속의 이유와 변호인의 조력을 받을 권리가 있음을 고지받지 아니하고는 체포 또는 구속을 당하지 아니한다. 체포 또는 구속을 당한 자의 가족등 법률이 정하는 자에게는 그 이유와 일시·장소가 지체없이 통지되어야 한다. 헌법재판소의 조직과 운영 기타 필요한 사항은 법률로 정한다.",
       "price": 100,
-      "created_at": "2021.10.18. 09:30"
+      "created_at": "2021.10.18. 09:30",
+      "view_count": 4
     }
   ],
   "comments": [
     {
       "id": 0,
-      "post_id": 0,
+      "post_key": 0,
       "user": "test",
       "content": "hi yessdfsd",
       "created_at": "2021.10.22 13:24"
     },
     {
       "id": 1,
-      "post_id": 1,
+      "post_key": 1,
       "user": "test",
       "content": "냐냐냐 - 모든 국민은 법률이 정하는 바에 의하여 국가기관에 문서로 청원할 권리를 가진다. dlsk",
       "created_at": "2021.10.22 18:28"
     },
     {
       "id": 3,
-      "post_id": 2,
+      "post_key": 2,
       "user": "test",
       "content": "줄 때 가져가 2 _모든 국민은 학문과 예술의 자유를 가진다. 새로운 회계연도가 개시될 때까지 예산안이 의결되지 못한 때에는 정부는 국회에서 예산안이 의결될 때까지 다음의 목적을 위한 경비는 전년도 예산에 준하여 집행할 수 있다.",
       "created_at": "2021.10.22 13:25"
     },
     {
       "id": 4,
-      "post_id": 0,
+      "post_key": 0,
       "user": "jkeum",
       "content": "소분합시다에 직접 댓글 달아봐요",
       "created_at": "2021.10.22 13:23"
     },
     {
-      "post_id": 5,
+      "post_key": 5,
       "user": "asdf",
       "content": "erase1",
       "created_at": "2021.10.22 10:35",
@@ -117,13 +123,13 @@
     },
     {
       "id": 6,
-      "post_id": 6,
+      "post_key": 6,
       "user": "test",
       "content": "earse22sd sdfeditedefef",
       "created_at": "2021.10.22 17:09"
     },
     {
-      "post_id": 5,
+      "post_key": 5,
       "user": "df",
       "content": "dfg",
       "created_at": "2021.10.22 10:36",
@@ -131,73 +137,87 @@
     },
     {
       "id": 8,
-      "post_id": 0,
+      "post_key": 0,
       "user": "test",
       "content": "tests sfsd sd sdf s",
       "created_at": "2021.10.22 13:24"
     },
     {
       "id": 17,
-      "post_id": 2,
+      "post_key": 2,
       "user": "test",
       "content": "test2345",
       "created_at": "2021.10.22 13:25"
     },
     {
-      "id": 18,
-      "post_id": 2,
-      "user": "jkeum",
-      "content": "[]];[]sfdf",
-      "created_at": "2021.10.22 13:19"
-    },
-    {
-      "post_id": 3,
+      "post_key": 3,
       "user": "test",
       "content": "새로고침은 어떻게 고치나",
       "created_at": "2021.10.22 13:25",
       "id": 20
     },
     {
-      "post_id": 0,
+      "post_key": 0,
       "user": "test",
       "content": "tteset",
       "created_at": "2021.10.22 17:38",
       "id": 21
     },
     {
-      "post_id": 0,
+      "post_key": 0,
       "user": "test",
       "content": "reload",
       "created_at": "2021.10.22 17:39",
       "id": 22
     },
     {
-      "post_id": 0,
+      "post_key": 0,
       "user": "test",
       "content": "sdf",
       "created_at": "2021.10.22 17:40",
       "id": 23
     },
     {
-      "post_id": 1,
+      "post_key": 1,
       "user": "test",
       "content": "sdfdf",
       "created_at": "2021.10.22 19:00",
       "id": 24
     },
     {
-      "post_id": 0,
+      "post_key": 0,
       "user": "test",
       "content": "하이",
       "created_at": "2021.10.25 19:24",
       "id": 25
     },
     {
-      "post_id": 0,
+      "post_key": 0,
       "user": "test",
       "content": "아니ㅏ러ㅣㅣ아아아아아아ㅏㅏ아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아하",
       "created_at": "2021.10.26 14:24",
       "id": 26
+    },
+    {
+      "post_key": 2,
+      "user": "test",
+      "content": "tests  sfsfsfsd sd ",
+      "created_at": "2021.11.04 15:13",
+      "id": 27
+    },
+    {
+      "post_key": 2,
+      "user": "test",
+      "content": "rawra   gksrn아라아ㅏ ㅏㄴㄴㅇㅇ리리ㅏㅏ넝넝리리먼먼이이ㅏㅏ러러ㅣㅣ나나리ㅏㅏ너너디디ㅏㅏㅓㅓㄹ  ",
+      "created_at": "2021.11.04 17:50",
+      "id": 28
+    },
+    {
+      "post_key": 2,
+      "user": "test",
+      "content": "길고도 긴 댓글을 단다면 어떻게 될까요",
+      "created_at": "2021.11.05 09:42",
+      "id": 29
     }
   ],
   "product": [
@@ -218,7 +238,7 @@
       "month": [
         "9",
         "10",
-				"11"
+        "11"
       ]
     },
     {
@@ -226,8 +246,6 @@
       "name": "무화과",
       "image": "https://cgeimage.commutil.kr/phpwas/restmb_allidxmake.php?idx=3&simg=201809031104140021685kpm_00.jpg",
       "month": [
-        "9",
-        "10",
         "11"
       ]
     },
@@ -245,14 +263,14 @@
       "name": "레몬",
       "image": "https://www.jessicagavin.com/wp-content/uploads/2019/04/types-of-lemons-2-600x900.jpg",
       "month": [
-        "5",
-        "6",
-				"11"
+        "9",
+        "10",
+        "11"
       ]
     },
     {
       "id": 3,
-      "name": "레몬",
+      "name": "추가",
       "image": "https://cdn.shopify.com/s/files/1/0326/0114/5475/t/4/assets/description_image_top_blogs_resizeartboard_83.jpg?v=1593174163",
       "month": [
         "5",

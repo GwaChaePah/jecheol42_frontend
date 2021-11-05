@@ -87,7 +87,7 @@ export default {
 			try {
 				if (payload.value === '완료') {
 					res = await axios.get('posts')
-						.then(response => response.data.filter(item => item.tag == payload.value));
+						.then(response => response.data.filter(item => (item.tag == payload.value) && ((item.content.indexOf(payload.search) !== -1) || (item.title.indexOf(payload.search) !== -1))));
 				} else {
 					res = await _fetchPost(payload.search)
 						.then(response => response.filter(item => item.tag == payload.value));
@@ -152,7 +152,7 @@ export default {
 				console.log('ERROR', e.response.data);
 			} finally {
 				const res = await axios.get('comments')
-				.then(response => response.data.filter(item => 	item.post_id == payload.post_id))
+				.then(response => response.data.filter(item => 	item.post_key == payload.post_key))
 				commit('UPDATE_STATE', {
 					comments: res
 				});
@@ -165,7 +165,7 @@ export default {
 				console.log('ERROR', e.response.data);
 			} finally {
 				const res = await axios.get('comments')
-				.then(response => response.data.filter(item => 	item.post_id == payload.post_id))
+				.then(response => response.data.filter(item => 	item.post_key == payload.post_key))
 				commit('UPDATE_STATE', {
 					comments: res
 				});
@@ -193,6 +193,6 @@ async function _fetchPost(payload, id = 0) {
 
 async function _fetchComment(payload) {
 	const res = await axios.get('comments')
-		.then(response => response.data.filter(item => item.post_id == payload))
+		.then(response => response.data.filter(item => item.post_key == payload))
 	return res;
 }

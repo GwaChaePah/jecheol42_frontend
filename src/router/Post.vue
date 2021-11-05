@@ -3,7 +3,7 @@
 		<div class="l_wrapper content">
 			<NavPost />
 			<div v-if="!loading">
-				<div class="post-content l_col">
+				<div class="post-content ">
 					<PostContent :thePost="thePost"/>
 				</div>
 				<Comments :postId="thePost.id"/>
@@ -43,19 +43,6 @@ export default {
 @import '../scss/commons.scss';
 @import '../scss/main.scss';
 
-.post-content {
-	box-shadow: 0 0 5px 0 $color_shadow_03;
-	margin: .2em 5.5em;
-	background-color: $color_prime_white;
-	border-radius: .5em;
-	overflow: hidden;
-	position: relative;
-	@media (max-width: 770px) {
-		margin: .2em 2em .2em 5em;
-	}
-	@media (max-width: 580px) {
-		margin: .2em 0 .2em;
-	}
-}
+
 
 </style>
