@@ -6,13 +6,24 @@
 				<BoardMenu />
 			</div>
 			<div class="l_row clearfix">
-				<div v-show="loading" class="preload-content">
-					<h1>검색 중...</h1>
+				<div v-if="loading">
+					<div class="preload_content" v-for="n in 4" >
+						<div class="content-anchor">
+							<div class="img-info"></div>
+							<div class="title-info"></div>
+							<div class="content-info">
+								<div class="info__category"></div>
+								<button class="info__price">-&nbsp;</button>
+							</div>
+						</div>
+					</div>
 				</div>
-				<BoardItem v-if="search || posts" v-for="post in posts"
+				<div v-else>
+					<BoardItem v-if="search || posts" v-for="post in posts"
 					:key="post.id" :post="post" />
-				<div v-if="(!posts.length && !loading)" class="empty-content">
-					<h1>검색된 정보가 없습니다 따흐흑</h1>
+					<div v-if="(!posts.length && !loading)" class="empty-content">
+						<h1>검색된 정보가 없습니다 따흐흑</h1>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -77,13 +88,87 @@ h3 {
 	margin-top: 15em;
 }
 .l_row.clearfix {
+	margin-bottom: 2em;
 	@media (max-width: 745px) {
 		text-align: center;
 	}
-	.postitem {
+	.preload_content {
+		display: inline-block;
+		.content-anchor {
+			display: block;
+			background-color: white;
+			width: 240px;
+			height: 320px;
+			border: 1px solid #ddd;
+			border-radius: .1em;
+			overflow: hidden;
+			position: relative;
+			@media (max-width: 745px) {
+				width: 280px;
+				height: 370px;
+			}
+			@media (max-width: 400px) {
+				width: 320px;
+				height: 140px;
+			}
+			.img-info {
+				height: 160px;
+				border-bottom: 1px dotted #ddd;
+				background: linear-gradient(221deg, rgba(239, 239, 239, 0.8) 0%, #fff 100%);
+				@media (max-width: 745px) {
+					height: 190px;
+				}
+				@media (max-width: 400px) {
+					position: absolute;
+					left: 0;
+					top: 0;
+					bottom: 0;
+					width: 50%;
+					height: 100%;
+					border-bottom: none;
+					border-right: 1px dotted #ddd;
+				}
+			}
+			.title-info {
+				height: 110px;
+				border-bottom: 1px solid #e8e8e8;
+				@media (max-width: 400px) {
+					position: absolute;
+					width: 52%;
+					left: 50%;
+					top: 0;
+					bottom: 0;
+					text-align: left;
+					border-bottom: none;
+				}
+			}
+			.content-info {
+				display: flex;
+				justify-content: space-between;
+				padding: .4em;
+				font-size: 1.1em;
+				.info__price {
+					display: inline-block;
+					border: none;
+					border-radius: .2em;
+					padding: .5em .8em;
+					width: 50px;
+					font-size: .9em;
+					font-weight: bold;
+					&::after {
+						content: '원';
+					}
+					@media (max-width: 400px) {
+						position: absolute;
+						right: 8px;
+						bottom: 7px;
+						padding: .3em .8em;
+					}
+				}
+			}
+		}
 	}
-	.empty-content,
-	.preload-content {
+	.empty-content{
 		max-width: 1000px;
 		width: 100%;
 		margin: 10px auto;

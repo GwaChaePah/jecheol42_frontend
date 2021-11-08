@@ -1,25 +1,27 @@
 <template>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<div class="header" :class="{ 'scrolled-header': scrollPosition }">
 		<div class="l_wrapper">
 			<div class="logo">
-				<h1 @click="toMain">제철<span id="four">4</span><span id="two">2</span></h1>
+				<h1 @click="toMain">
+					<span class="logo_word">제철</span>
+					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span>
+				</h1>
 			</div>
 			<div class="navbar" v-show="(!mobile && !scrollPosition)">
 				<ul class="navlist" v-if="!currentUser.name">
-					<li @click="toBoard">게시판</li>
-					<li @click="toLogin">로그인</li>
-					<li @click="">회원가입</li>
+					<li><span @click="toBoard">게시판</span></li>
+					<li><span @click="toLogin">로그인</span></li>
+					<li><span @click="">회원가입</span></li>
 				</ul>
 				<ul class="navlist" v-else>
-					<li @click="toBoard">게시판</li>
+					<li ><span @click="toBoard">게시판</span></li>
 					<!-- to mypage -->
-					<li @click="">{{ currentUser.name }}</li>
-					<li @click="logoutUser">로그아웃</li>
+					<li><span @click="">{{ currentUser.name }}</span></li>
+					<li><span @click="logoutUser">로그아웃</span></li>
 				</ul>
 			</div>
 			<div :class="{'menu-list': true, 'sticky': scrollPosition}" v-show="(mobile || scrollPosition)">
-				<button class="material-icons" @click="toggleMobileNav">reorder</button>
+				<button class="material-icons" @click="toggleMobileNav">menu</button>
 			</div>
 			<transition v-if="(mobile || scrollPosition)" name="mobile-nav">
 				<div v-show="mobileNav" class="dropdown-nav">
@@ -47,7 +49,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'Header',
@@ -57,7 +59,6 @@ export default {
 			windowWidth: null,
 			mobile: null,
 			search: '',
-			mobileNav: null,
 			navigations: [
 				{
 					name: 'Product',
@@ -87,7 +88,14 @@ export default {
 			'users',
 			'currentUser'
 		]),
-		...mapState('product', ['postSearch'])
+		...mapState('product', [
+			'postSearch',
+			'loading'
+		]),
+		...mapState('post', [
+			'mobileNav',
+			'loading'
+		])
 	},
 	mounted() {
 		this.$store.dispatch('auth/loadUsers');
@@ -102,40 +110,48 @@ export default {
 		window.removeEventListener("scroll", this.updateScroll);
 	},
 	methods: {
+		...mapActions('post', [
+			'initMobileNav',
+			'initPosts'
+		]),
+		...mapActions('product', [
+			'updateSearch',
+			'searchProduct'
+		]),
 		toMain() {
-			this.$router.push('/');
 			this.$emit('initSearch', this.search);
-			this.mobileNav = null;
+			this.initMobileNav(null);
 			this.search = '';
+			this.$router.push('/');
 		},
 		toLogin() {
+			this.initMobileNav(null);
 			this.$router.push('/login');
-			this.mobileNav = null;
 		},
 		toBoard() {
-			this.$store.dispatch('post/initPosts');
-			this.$store.dispatch('product/updateSearch');
+			this.initPosts();
+			this.updateSearch();
+			this.initMobileNav(null);
 			this.$router.push('/board');
-			this.mobileNav = null;
 		},
 		toggleMobileNav() {
-			this.mobileNav = !this.mobileNav;
+			this.initMobileNav(!this.mobileNav);
 		},
 		logoutUser() {
 			this.$store.dispatch("auth/logoutUser");
 		},
 		apply() {
 			if (this.search) {
-				this.$store.dispatch('product/updateSearch', this.search);
-				this.$store.dispatch('product/searchProduct', this.search);
-				this.$store.dispatch('post/initPosts', this.search);
+				this.initPosts(this.search);
+				this.updateSearch(this.search);
+				this.searchProduct(this.search);
 				this.search = '';
 				this.$router.push('/search');
 			}
 		},
 		checkScreen() {
 			this.windowWidth = window.innerWidth;
-			if (this.windowWidth <= 750) {
+			if (this.windowWidth <= 500) {
 				this.mobile = true;
 				return ;
 			}
@@ -169,18 +185,25 @@ export default {
 	height: 250px;
 	box-shadow: 0 0 10px 0 $color_shadow_03;
 	transition: all .1s;
-	@media ( max-width: 700px ) {
-		height: 200px;
+	@media ( max-width: 500px ) {
+		height: 120px;
 	}
 	.logo {
 		h1 {
 			line-height: 2;
 			font-size: 4em;
+			.logo_word {
+				cursor: pointer;
+			}
 			#four {
 				color: $color_prime_orange;
 			}
 			#two {
 				color: $color_prime_yellow;
+			}
+			@media ( max-width: 500px ) {
+				font-size: 2em;
+				line-height: 2;
 			}
 		}
 	}
@@ -208,18 +231,24 @@ export default {
 				display: inline-block;
 				padding: 0 4em;
 				border-right: 2px solid $color_prime_green;
+				span {
+					cursor: pointer;
+					&:hover {
+						text-decoration: underline wavy;
+						color: darken($color_prime_green, 20%);
+					}
+				}
 				&:last-child {
 					border-right: none;
-				}
-				&:hover {
-					text-decoration: underline wavy;
-					color: darken($color_prime_green, 20%);
 				}
 			}
 		}
 	}
 	.searchbar-wrapper {
 		padding-top: 2em;
+		@media ( max-width: 500px ) {
+			padding-top: 0;
+		}
 		.searchbar {
 			color: darken($color_prime_green, 35%);
 			font-size: 20px;
@@ -275,6 +304,12 @@ export default {
 			margin-right: 20px;
 			background-color: transparent;
 			font-size: 50px;
+			@media ( max-width: 500px ) {
+				font-size: 35px;
+			}
+		}
+		@media ( max-width: 500px ) {
+			height: 50%;
 		}
 	}
 	.sticky {
@@ -283,6 +318,10 @@ export default {
 		top: 0;
 		right: 20px;
 		height: 100px;
+		@media ( max-width: 500px ) {
+			right: -10px;
+			height: 90px;
+		}
 	}
 	.dropdown-nav {
 		z-index: 99;
@@ -290,18 +329,29 @@ export default {
 		flex-direction: column;
 		position: fixed;
 		background-color: white;
-		width: 140px;
-		max-width: 250px;
+		width: 155px;
 		height: 100%;
 		top: 0;
 		left: 0;
-		padding-top: 20px;
+		padding-top: 125px;
 		box-shadow: 0 0 10px 0 $color_shadow_03;
+		font-size: 1.3em;
 		li {
-			padding: 16px;
+			cursor: pointer;
+			padding: 25px;
 			color: #000;
-			padding-bottom: 4px;
 			transition: .5s ease all;
+			&:hover {
+				background-color: $color_prime_yellow;
+			}
+		}
+		@media ( max-width: 500px ) {
+			font-size: 1em;
+			padding-top: 110px;
+			width: 123px;
+			li {
+				padding: 10px;
+			}
 		}
 	}
 	.mobile-nav-enter-active,
@@ -326,6 +376,15 @@ export default {
 		left: 20px;
 		h1 {
 			font-size: 2.5em;
+			@media ( max-width: 500px ) {
+			  font-size: 1.5em;
+				margin-top: 50%;
+				margin-left: -5px;
+			}
+			.logo_word {
+				display: block;
+				line-height: 1;
+			}
 		}
 	}
 	.searchbar-wrapper {
@@ -334,9 +393,17 @@ export default {
 			margin-left: 100px;
 			width: 80%;
 			transition: .4s all;
+			@media ( max-width: 500px ) {
+				width: 78%;
+				margin-left: 42px;
+			}
 		}
+
 		.material-icons {
 			margin-right: 140px;
+			@media ( max-width: 500px ) {
+				margin-right: 60px;
+			}
 		}
 	}
 }
