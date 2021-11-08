@@ -67,7 +67,6 @@ export default {
 @import '../scss/commons.scss';
 @import '../scss/main.scss';
 
-
 .preload_nav {
 	margin-top: 140px;
 	position: absolute;

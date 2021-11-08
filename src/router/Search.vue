@@ -1,4 +1,5 @@
 <template>
+	<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet" />
 	<div class="l_main">
 		<div class="l_wrapper">
 			<div class="content">
@@ -220,6 +221,5 @@ export default {
 			font-size: .8em;
 		}
 	}
-
 }
 </style>

@@ -135,6 +135,7 @@ export default {
 			}
 		},
 		async delComment(comment) {
+			console.log('clicked')
 			if (confirm("정말 지우시겠습니까?")) {
 				this.deleteComment(comment);
 			}
@@ -261,7 +262,6 @@ export default {
 						}
 					}
 				}
-
 			}
 			.comment-content {
 				// border-bottom: 1px solid #ccc;
