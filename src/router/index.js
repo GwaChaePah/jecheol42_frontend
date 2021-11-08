@@ -14,6 +14,7 @@ export default createRouter({
   routes: [
     {
       path: '/',
+	  name: 'Home',
       component: Product
     },
 		{

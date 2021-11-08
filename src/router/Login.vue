@@ -1,7 +1,7 @@
 <template>
-  <form class="background" v-on:submit.prevent="submitForm">
-	<button class="testBtn" @click="testBtn">test</button>
-	<button class="testBtn" @click="postTest">post</button>
+  <form class="background">
+	<!-- <button class="testBtn" @click="testBtn">test</button>
+	<button class="testBtn" @click="postTest">post</button> -->
 	<div class="loginMsg">
 		Sign in to 제철42</div>
 	<p class="msgBox" v-if="isLogin">로그인 완료</p>
@@ -67,51 +67,51 @@ export default {
 				return ;
 			}
 		},
-		submitForm:function(){
-			console.log(this.username, this.password);
-			var url = 'https://jsonplaceholder.typicode.com/users';
-			var data = {
-				username: this.username,
-				password: this.password
-			}
-			axios
-			.post(url, data)
-			.then(function(response){
-			console.log(response);          
-			})
-			.catch(function(error){
-				console.log(response);
-			});
-		},
-		testBtn() {
-			axios
-			.get("https://reqres.in/api/users?page=2")
-			.then(response => {
-				//handle success
-				console.log(response)
-			})
-			.catch(error => {
-				//handle error
-				console.log(error)
-			})
-			.then(() => {
-				console.log("test")
-				//always executed
-			})
-		},
-		postTest() {
-			axios
-			.post("https://reqres.in/api/register", {
-				email: "eve.holt@reqres.in",
-				password: "pistol"
-			})
-			.then(response => {
-				console.log(response); 
-			})
-			.catch(error => {
-				console.log(error);
-			})
-		}
+		// submitForm:function(){
+		// 	console.log(this.username, this.password);
+		// 	var url = 'https://jsonplaceholder.typicode.com/users';
+		// 	var data = {
+		// 		username: this.username,
+		// 		password: this.password
+		// 	}
+		// 	axios
+		// 	.post(url, data)
+		// 	.then(function(response){
+		// 	console.log(response);          
+		// 	})
+		// 	.catch(function(error){
+		// 		console.log(response);
+		// 	});
+		// },
+		// testBtn() {
+		// 	axios
+		// 	.get("https://reqres.in/api/users?page=2")
+		// 	.then(response => {
+		// 		//handle success
+		// 		console.log(response)
+		// 	})
+		// 	.catch(error => {
+		// 		//handle error
+		// 		console.log(error)
+		// 	})
+		// 	.then(() => {
+		// 		console.log("test")
+		// 		//always executed
+		// 	})
+		// },
+		// postTest() {
+		// 	axios
+		// 	.post("https://reqres.in/api/register", {
+		// 		email: "eve.holt@reqres.in",
+		// 		password: "pistol"
+		// 	})
+		// 	.then(response => {
+		// 		console.log(response); 
+		// 	})
+		// 	.catch(error => {
+		// 		console.log(error);
+		// 	})
+		// }
   	},
 };
 </script>

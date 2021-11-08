@@ -14,7 +14,7 @@
 				<ul class="navlist" v-else>
 					<li @click="toBoard">게시판</li>
 					 <!-- to mypage  -->
-					<li @click="">username</li>
+					<li @click="">{{ userInfo.first_name }}</li>
 					<li @click="logoutUser">로그아웃</li>
 				</ul>
 			</div>
@@ -92,7 +92,8 @@ export default {
 		]),
 		...mapState('login', [
 			'isLogin',
-			'isLoginError'
+			'isLoginError',
+			'userInfo'
 		]),
 	},
 	mounted() {
