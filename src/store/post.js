@@ -220,6 +220,11 @@ export default {
 					comments: []
 				});
 			}
+		},
+		async updatePost({ commit }, payload) {
+			try {
+				await axios
+			}
 		}
 	}
 }
