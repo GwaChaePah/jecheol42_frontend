@@ -4,7 +4,7 @@
 			<span class="material-icons">arrow_back</span>
 			뒤로가기
 		</button>
-		<button id="write">
+		<button id="write" @click="createPost()">
 			<span class="material-icons">create</span>
 			글쓰기
 		</button>
@@ -50,7 +50,12 @@ export default {
 		toTop() {
 			document.body.scrollTop = 0;
 			document.documentElement.scrollTop = 0;
-		}
+		},
+		createPost() {
+			this.$router.push({
+			path: '/create'
+		})
+	}
 	}
 }
 </script>

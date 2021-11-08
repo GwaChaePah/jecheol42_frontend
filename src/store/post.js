@@ -138,8 +138,12 @@ export default {
 					headers: {"Content-Type" : "application/json"}
 				});
 				commit('UPDATE_STATE', {
+<<<<<<< Updated upstream
 					thePost: payload,
 					loading: false
+=======
+					a: payload
+>>>>>>> Stashed changes
 				});
 			} catch(e) {
 				console.log('ERROR', e.response.data);
@@ -206,6 +210,7 @@ export default {
 					comments: res
 				});
 			}
+<<<<<<< Updated upstream
 		},
 		async deletePostComments({ commit }, payload) {
 			try {
@@ -218,10 +223,28 @@ export default {
 			}finally {
 				commit('UPDATE_STATE', {
 					comments: []
+=======
+		// }
+		},
+		async updatePost({ commit }, payload) {
+			try {
+				await axios({
+					url: 'posts/' + payload.id,
+					method: 'put',
+					data: payload,
+				});
+			} catch(e) {
+				console.log('Error', e.response.data);
+			} finally {
+				const res = await axios.get('posts')
+				// .then(response => response.data.filter
+				commit('UPDATE_STATE', {
+					posts: res
+>>>>>>> Stashed changes
 				});
 			}
 		}
-	},
+	}
 }
 
 async function _fetchPost(payload, id = 0) {
