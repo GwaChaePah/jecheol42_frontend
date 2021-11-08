@@ -22,6 +22,7 @@ export default createRouter({
     },
 		{
 			path: '/login',
+			name: 'Login',
 			component: Login
 		},
 		{

@@ -64,10 +64,6 @@ export default {
 	margin-top: 140px;
 	position: absolute;
 	z-index: 30;
-	@media (max-width: 580px) {
-		position: static;
-		text-align: center;
-	}
 	button {
 		box-shadow: 0 0 5px 0 $color_shadow_03;
 		display: block;
@@ -86,10 +82,13 @@ export default {
 		&:hover {
 			background-color: lighten($color_prime_green, 10%);
 		}
-		@media (max-width: 770px) {
-			width: 80px;
-			font-size: 1em;
-			margin-top: .8em;
+	}
+	@media (max-width: 500px) {
+		margin-top: 115px;
+		left: 10px;
+		button {
+			width: 39px;
+			font-size: .5em;
 		}
 	}
 }

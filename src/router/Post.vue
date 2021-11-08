@@ -1,11 +1,34 @@
 <template>
 	<div class="l_main">
 		<div class="l_wrapper content">
-			<NavPost />
-			<div v-if="!loading">
-				<div class="post-content ">
-					<PostContent :thePost="thePost"/>
+			<div v-if="loading">
+				<div class="preload_nav">
+					<button></button>
+					<button></button>
 				</div>
+				<div class="preload_content">
+					<div class="content-title">
+						<span class="material-icons">label</span>
+						<button class="title__category">
+							<select class="select-state">
+								<option selected>
+									[<span id="region">&nbsp;-&nbsp;</span>/<span id="tag">&nbsp;-&nbsp;</span>]
+								</option>
+							</select>
+						</button>
+						<div class="title__title">
+							<h1>-</h1>
+						</div>
+						<div class="title__info">
+							<p id="writer"><span class="material-icons">account_circle</span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div v-else>
+				<NavPost />
+				<PostContent :thePost="thePost"/>
 				<Comments :postId="thePost.id"/>
 			</div>
 		</div>
@@ -28,13 +51,14 @@ export default {
 	computed: {
 		...mapState('post', [
 			'thePost',
-			'loading'
+			'loading',
 		])
 	},
 	created() {
 		this.$store.dispatch('post/searchPostWithId', {
 			id: this.$route.params.id
-		})
+		});
+		this.$store.dispatch('post/initMobileNav', null);
 	}
 }
 </script>
@@ -43,6 +67,120 @@ export default {
 @import '../scss/commons.scss';
 @import '../scss/main.scss';
 
+.preload_nav {
+	margin-top: 140px;
+	position: absolute;
+	z-index: 30;
+	button {
+		box-shadow: 0 0 5px 0 $color_shadow_03;
+		display: block;
+		width: 70px;
+		border: none;
+		border-radius: .2em;
+		width: 70px;
+		height: 60px;
+		margin: .5em 0;
+		padding: .4em 0;
+		background-color: white;
+	}
+	@media (max-width: 500px) {
+		margin-top: 115px;
+		left: 10px;
+		button {
+			width: 39px;
+			font-size: .5em;
+		}
+	}
+}
+.preload_content {
+	color: #ddd;
+	position: relative;
+	padding: .8em;
+	box-shadow: 0 0 5px 0 $color_shadow_03;
+	margin: 0 0.3em 0 3.5em;
+	background-color: white;
+	border-radius: .2em;
+	overflow: hidden;
+	height: 500px;
+	@media (max-width: 500px) {
+		margin: 0 .3em;
+		padding: .3em .8em .8em;
+	}
+	.content-title {
+		border-bottom: 1px solid #ccc;
+		padding-bottom: .5em;
+		background-color: white;
+		.material-icons {
+			transform: translate(6px, 5px);
+			background: none;
+			border: none;
+			@media (max-width: 500px) {
+				font-size: 1em;
+				margin-right: 2px;
+			}
+		}
+		.title__category {
+			margin: .3em;
+			border-style: none;
+			.select-state {
+				pointer-events: none;
+				appearance: none;
+				border: none;
+				padding: .2em;
+				font-size: 1.3em;
+			}
+			span {
+				padding: 0 .3em;
+			}
+			@media (max-width: 770px) {
+				font-size: .8em;
+			}
+			@media (max-width: 500px) {
+				margin: .3em 0;
+				font-size: .5em;
+			}
+		}
+		.title__title {
+			margin-top: .4em;
+			h1 {
+				font-size: 2em;
+				padding-left: .3em;
+			}
+			@media (max-width: 770px) {
+				h1 {
+					font-size: 1.8em;
+				}
+			}
+			@media (max-width: 500px) {
+				margin: .2em 0;
+				h1 {
+					font-size: 1em;
+				}
+			}
+		}
+		.title__info {
+			display: block;
+			padding: .5em 0.3em 0;
+			p {
+				display: inline-block;
+				margin-left: .5em;
+				.material-icons,
+				.material-icons-outlined {
+					font-size: 1em;
+					margin: 0 2px;
+					transform: translateY(2px);
+				}
+			}
+			@media (max-width: 500px) {
+				padding: 0;
+				font-size: .7em;
+				p {
+					margin-left: 0;
+				}
+			}
+		}
+	}
+}
 
 
 </style>

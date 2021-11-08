@@ -6,15 +6,15 @@
 				<h1 @click="toMain">제철<span id="four">4</span><span id="two">2</span></h1>
 			</div>
 			<div class="navbar" v-show="(!mobile && !scrollPosition)">
-				<ul class="navlist" v-if="!currentUser.name">
+				<ul class="navlist" v-if="!isLogin">
 					<li @click="toBoard">게시판</li>
 					<li @click="toLogin">로그인</li>
 					<li @click="">회원가입</li>
 				</ul>
 				<ul class="navlist" v-else>
 					<li @click="toBoard">게시판</li>
-					<!-- to mypage -->
-					<li @click="">{{ currentUser.name }}</li>
+					 <!-- to mypage  -->
+					<li @click="">username</li>
 					<li @click="logoutUser">로그아웃</li>
 				</ul>
 			</div>
@@ -23,14 +23,14 @@
 			</div>
 			<transition v-if="(mobile || scrollPosition)" name="mobile-nav">
 				<div v-show="mobileNav" class="dropdown-nav">
-					<ul v-if="!currentUser.name">
+					<ul v-if="!isLogin">
 						<li @click="toMain">메인</li>
 						<li @click="toBoard">게시판</li>
 						<li @click="toLogin">로그인</li>
 						<li href="#">회원가입</li>
 					</ul>
 					<ul v-else>
-						<li><b>{{ currentUser.name }}</b></li>
+						<li><b>username</b></li>
 						<li @click="toMain">메인</li>
 						<li @click="toBoard">게시판</li>
 						<li @click="logoutUser">로그아웃</li>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
 	name: 'Header',
@@ -87,7 +87,13 @@ export default {
 			'users',
 			'currentUser'
 		]),
-		...mapState('product', ['postSearch'])
+		...mapState('product', [
+			'postSearch'
+		]),
+		...mapState('login', [
+			'isLogin',
+			'isLoginError'
+		]),
 	},
 	mounted() {
 		this.$store.dispatch('auth/loadUsers');
@@ -102,6 +108,7 @@ export default {
 		window.removeEventListener("scroll", this.updateScroll);
 	},
 	methods: {
+		...mapActions('login', ['logout']),
 		toMain() {
 			this.$router.push('/');
 			this.$emit('initSearch', this.search);
@@ -122,7 +129,8 @@ export default {
 			this.mobileNav = !this.mobileNav;
 		},
 		logoutUser() {
-			this.$store.dispatch("auth/logoutUser");
+			this.$store.dispatch("login/logout");
+			this.$router.push('/');
 		},
 		apply() {
 			if (this.search) {

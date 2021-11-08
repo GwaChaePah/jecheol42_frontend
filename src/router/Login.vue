@@ -25,7 +25,10 @@
 			<button 
 				type="submit"
 				class="loginBtn" 
-				@click="login()"
+				@click="login({
+					username,
+					password
+				})"
 				>SIGN IN</button>
 		</div>	
 		<div class="register">
@@ -38,106 +41,77 @@
  
 <script>
 import { mapState, mapActions } from 'vuex';
-import axios from 'axios';
+// import axios from 'axios';
  
 export default {
 	computed: {
-		// ...mapState(['isLogin', 'isLoginError', 'test']),
+		...mapState('login', ['isLogin', 'isLoginError']),
 	},
 	data:function(){
     	return{
 			username : '',
 			password : '',
-			allUsers: [
-				{ id: 1, username: "test1", password: "test1"},
-				{ id: 2, username: "test2", password: "test2"},
-			],
-			isLoginError : false,
-			isLogin : false
 		}
 	},
 	methods:{
-		...mapActions(["login"]),
-		login() {
-			let selectedUser = null
-			this.allUsers.forEach(user => {
-				if (user.username === this.username) 
-					selectedUser = user
-			})
-			if (selectedUser === null) {
-				this.$store.dispatch('error')
-				this.isLogin = false
-				this.isLoginError = true
+		...mapActions('login', ['login']),
+
+
+		loginCheak: function(){
+			if (this.username == '') {
+				alert('아이디를 입력해 주세요.');
+				return ;
 			}
-			else 
-				if (selectedUser.password !== this.password) {
-					this.$store.dispatch('error')
-					this.isLogin = false
-					this.isLoginError = true
-				}					
-				else {
-					this.$store.dispatch('success')
-					this.isLogin = true
-					this.isLoginError = false
-					this.$router.push('/')
-				}
+			if (this.password == '') {
+				alert('비밀번호를 입력해 주세요.');
+				return ;
+			}
+		},
+		submitForm:function(){
 			console.log(this.username, this.password);
+			var url = 'https://jsonplaceholder.typicode.com/users';
+			var data = {
+				username: this.username,
+				password: this.password
+			}
+			axios
+			.post(url, data)
+			.then(function(response){
+			console.log(response);          
+			})
+			.catch(function(error){
+				console.log(response);
+			});
+		},
+		testBtn() {
+			axios
+			.get("https://reqres.in/api/users?page=2")
+			.then(response => {
+				//handle success
+				console.log(response)
+			})
+			.catch(error => {
+				//handle error
+				console.log(error)
+			})
+			.then(() => {
+				console.log("test")
+				//always executed
+			})
+		},
+		postTest() {
+			axios
+			.post("https://reqres.in/api/register", {
+				email: "eve.holt@reqres.in",
+				password: "pistol"
+			})
+			.then(response => {
+				console.log(response); 
+			})
+			.catch(error => {
+				console.log(error);
+			})
 		}
-		// loginCheak: function(){
-		// 	if (this.username == '') {
-		// 		alert('아이디를 입력해 주세요.');
-		// 		return ;
-		// 	}
-		// 	if (this.password == '') {
-		// 		alert('비밀번호를 입력해 주세요.');
-		// 		return ;
-		// 	}
-		// },
-		// submitForm:function(){
-		// 	console.log(this.username, this.password);
-		// 	var url = 'https://jsonplaceholder.typicode.com/users';
-		// 	var data = {
-		// 		username: this.username,
-		// 		password: this.password
-		// 	}
-		// 	axios
-		// 	.post(url, data)
-		// 	.then(function(response){
-		// 	console.log(response);          
-		// 	})
-		// 	.catch(function(error){
-		// 		console.log(response);
-		// 	});
-		// },
-		// testBtn() {
-		// 	axios
-		// 	.get("https://reqres.in/api/users?page=2")
-		// 	.then(response => {
-		// 		//handle success
-		// 		console.log(response)
-		// 	})
-		// 	.catch(error => {
-		// 		//handle error
-		// 		console.log(error)
-		// 	})
-		// 	.then(() => {
-		// 		console.log("test")
-		// 		//always executed
-		// 	})
-		// },
-		// postTest() {
-		// 	axios
-		// 	.post("https://reqres.in/api/register", {
-		// 		"email": "eve.holt@reqres.in",
-		// 		"password": "pistol"
-		// 	})
-		// 	.then(response => {
-		// 		console.log(response); 
-		// 	})
-		// 	.catch(error => {
-		// 		console.log(error);
-		// 	})
-		// }
   	},
 };
 </script>

@@ -1,5 +1,4 @@
 <template>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
 	<div class="content-title-post">
 		<div class="user-menu" v-if="1">
 			<button class="material-icons" @click="showMenu">more_vert</button>
@@ -17,14 +16,12 @@
 		<div class="content-title">
 			<span class="material-icons">label</span>
 			<button class="title__category">
-				<select class="select-state show-select" @change="apply($event)">
+				<select class="select-state show-select" @change="apply">
 					<option selected>
 						[<span id="region">{{ thePost.region }}</span>
 						/
 						<span id="tag">{{ thePost.tag }}</span>]
 					</option>
-					<option v-if="`${thePost.tag}` !== '소분'">소분</option>
-					<option v-if="`${thePost.tag}` !== '나눔'">나눔</option>
 					<option v-if="`${thePost.tag}` !== '완료'">거래 완료</option>
 				</select>
 			</button>
@@ -64,7 +61,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'PostContent',
@@ -86,6 +83,11 @@ export default {
 		...mapState('post', ['comments']),
 	},
 	methods: {
+		...mapActions('post', [
+			'updateTag',
+			'deletePost',
+			'deletePostComments'
+		]),
 		// compare() {
 		// 	if (this.thePost.user) {
 		// 		this.thisUser = this.thePost.user
@@ -98,18 +100,15 @@ export default {
 			const height = container[0].clientHeight + 100;
 			window.scroll(0, height);
 		},
-		apply(e) {
-			let value = e.target.value;
-			if (value === '거래 완료') {
-				value = value.slice(-2);
-			}
-			this.thePost.tag = value;
-			this.$store.dispatch('post/updateTag', this.thePost);
+		apply() {
+			this.thePost.tag = '완료';
+			this.updateTag(this.thePost);
 		},
 		deletePost() {
 			const index = this.$route.params.id;
 			if (confirm("지우시겠습니까?")) {
-				this.$store.dispatch('post/deletePost', index);
+				this.deletePost(index);
+				this.deletePostComments(index);
 				this.$router.push('/board');
 			}
 		},
@@ -134,6 +133,10 @@ export default {
 	background-color: white;
 	border-radius: .2em;
 	overflow: hidden;
+	@media (max-width: 500px) {
+		margin: 0 .3em;
+		padding: .3em .8em .8em;
+	}
 	.user-menu {
 		position: absolute;
 		top: 20px;
@@ -142,6 +145,13 @@ export default {
 			font-size: 2em;
 			background: none;
 			border: none;
+		}
+		@media (max-width: 500px) {
+			top: 13px;
+			right: 9px;
+			.material-icons {
+				font-size: 1.5em;
+			}
 		}
 		.dropdown {
 			position: absolute;
@@ -154,6 +164,11 @@ export default {
 			line-height: 2;
 			font-size: .8em;
 			z-index: 1;
+			@media (max-width: 500px) {
+				font-size: .5em;
+				top: 35px;
+				line-height: 2;
+			}
 			div {
 				display: inline-block;
 				margin: .5em 0 0 .3em;
@@ -173,6 +188,12 @@ export default {
 				&:hover {
 					color: $color_prime_orange;
 				}
+				@media (max-width: 500px) {
+					width: 56px;
+					.material-icons-outlined {
+						display: none;
+					}
+				}
 			}
 		}
 	}
@@ -184,6 +205,10 @@ export default {
 			transform: translate(6px, 5px);
 			background: none;
 			border: none;
+			@media (max-width: 500px) {
+				font-size: 1em;
+				margin-right: 2px;
+			}
 		}
 		.title__category {
 			margin: .3em;
@@ -205,7 +230,7 @@ export default {
 			@media (max-width: 770px) {
 				font-size: .8em;
 			}
-			@media (max-width: 580px) {
+			@media (max-width: 500px) {
 				margin: .3em 0;
 				font-size: .5em;
 			}
@@ -221,7 +246,8 @@ export default {
 					font-size: 1.8em;
 				}
 			}
-			@media (max-width: 580px) {
+			@media (max-width: 500px) {
+				margin: .2em 0;
 				h1 {
 					font-size: 1em;
 				}
@@ -250,10 +276,11 @@ export default {
 				color: gray;
 				cursor: pointer;
 			}
-			@media (max-width: 380px) {
+			@media (max-width: 500px) {
 				padding: 0;
-				p {
-					font-size: .5em;
+				font-size: .7em;
+				p:first-child {
+					margin-left: 0;
 				}
 			}
 		}
@@ -261,15 +288,15 @@ export default {
 	.content-post {
 		max-width: 100%;
 		margin: 1em 0;
-		@media (max-width: 580px) {
-			margin: .5em 0 1em;
+		@media (max-width: 500px) {
+			margin: .2em 0;
 		}
 		.post__img {
 			max-width: 90%;
 			min-height: 300px;
 			padding: 1em .5em;
 			margin: 0 auto;
-			@media (max-width: 580px) {
+			@media (max-width: 500px) {
 				min-height: 100%;
 				padding: 1em 0;
 			}
@@ -286,11 +313,9 @@ export default {
 				line-height: 1.5;
 				font-size: 1.2em;
 			}
-			@media (max-width: 580px) {
-				margin: 0 .5em;
-				p {
-					font-size: .5em;
-				}
+			@media (max-width: 500px) {
+				margin: 0 1.5em;
+				font-size: .6em;
 			}
 		}
 	}

@@ -11,7 +11,8 @@ export default {
 			seasons: [],
 			inSeason: false
 		},
-		postSearch: ''
+		postSearch: '',
+		loading: false
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
@@ -35,19 +36,28 @@ export default {
 		}
 	},
 	actions: {
-		async initProduct({ commit }) {
+		async initProduct({ state, commit }) {
+			if (state.loading) return;
 			commit('RESET_STATE');
+			commit('UPDATE_STATE', {
+				loading: true
+			})
 			const res = await _fetchProduct();
 			// 랜덤으로 4개 뽑기
 			commit('UPDATE_STATE', {
-				product: res
+				product: res,
+				loading: false
 			});
 		},
 		updateSearch({ commit }, value) {
 			commit('UPDATE_POSTSEARCH', value);
 		},
-		async searchProduct({ commit }, payload) {
+		async searchProduct({ state, commit }, payload) {
 			if (!payload) return;
+			if (state.loading) return;
+			commit('UPDATE_STATE', {
+				loading: true
+			})
 			try {
 				const res = await axios.get('exApi')
 				const price = res.data.find(m => m.name.includes(payload));
@@ -63,20 +73,23 @@ export default {
 								seasons: season,
 								inSeason: check
 							},
-							postSearch: price.name
+							postSearch: price.name,
+							loading: false
 						});
 					}
 					else {
 						commit('RESET_STATE');
 						commit('UPDATE_STATE', {
-							postSearch: payload
+							postSearch: payload,
+							loading: false
 						});
 					}
 				} catch(e) {
 					console.log(e.message);
 					commit('RESET_STATE');
 					commit('UPDATE_STATE', {
-						postSearch: payload
+						postSearch: payload,
+						loading: false
 					});
 				}
 			} catch (e) {

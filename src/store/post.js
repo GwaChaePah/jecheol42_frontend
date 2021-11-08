@@ -6,7 +6,8 @@ export default {
 		posts: [],
 		thePost: {},
 		comments: [],
-		loading: false
+		loading: false,
+		mobileNav: false,
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
@@ -19,9 +20,14 @@ export default {
 			state.thePost = {},
 			state.comments = [],
 			state.loading = false
-		}
+		},
 	},
 	actions: {
+		initMobileNav({ commit }, payload) {
+			commit('UPDATE_STATE', {
+				mobileNav: payload
+			})
+		},
 		async initPosts({ state, commit }, payload) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
@@ -75,19 +81,30 @@ export default {
 				})
 			}
 		},
-		async searchPostTags({ commit }, payload) {
-			if (payload.value == '전체') {
+		async searchPostTags({ state, commit }, payload) {
+			if (state.loading) return;
+			commit('UPDATE_STATE', {
+				loading: true
+			});
+			if (payload.value === '전체') {
 				const res = await _fetchPost(payload.search);
 				commit('UPDATE_STATE', {
-					posts: res
+					posts: res,
+					loading: false
 				});
 				return ;
 			}
 			let res;
 			try {
 				if (payload.value === '완료') {
-					res = await axios.get('posts')
+					if (payload.search) {
+						res = await axios.get('posts')
 						.then(response => response.data.filter(item => (item.tag == payload.value) && ((item.content.indexOf(payload.search) !== -1) || (item.title.indexOf(payload.search) !== -1))));
+					}
+					else {
+						res = await axios.get('posts')
+						.then(response => response.data.filter(item => (item.tag == payload.value)));
+					}
 				} else {
 					res = await _fetchPost(payload.search)
 						.then(response => response.filter(item => item.tag == payload.value));
@@ -95,13 +112,21 @@ export default {
 			} catch (e) {
 				console.log('ERROR', e.response.data);
 				res = await _fetchPost(payload.search);
+				commit('UPDATE_STATE', {
+					loading: false
+				})
 			} finally {
 				commit('UPDATE_STATE', {
-					posts: res
+					posts: res,
+					loading: false
 				});
 			}
 		},
-		async updateTag({ commit }, payload) {
+		async updateTag({ state, commit }, payload) {
+			if (state.loading) return;
+			commit('UPDATE_STATE', {
+				loading: true
+			});
 			let res = await axios.get('posts/' + payload.id)
 				.then(response => response.data);
 			res.tag = payload.tag;
@@ -113,10 +138,14 @@ export default {
 					headers: {"Content-Type" : "application/json"}
 				});
 				commit('UPDATE_STATE', {
-					thePost: payload
+					thePost: payload,
+					loading: false
 				});
 			} catch(e) {
 				console.log('ERROR', e.response.data);
+				commit('UPDATE_STATE', {
+					loading: false
+				})
 			}
 		},
 		async deletePost({ commit }, payload) {
@@ -125,13 +154,16 @@ export default {
 			} catch(e) {
 				console.log('ERROR', e.response.data);
 			} finally {
-				const res = await _fetchPost();
 				commit('UPDATE_STATE', {
-					comments: res
+					thePost: {}
 				});
 			}
 		},
-		async updateComment({ commit }, { option = 1, payload}) {
+		async updateComment({ state, commit }, { option = 1, payload}) {
+			if (state.loading) return;
+			commit('UPDATE_STATE', {
+				loading: true
+			});
 			try {
 				if (option) {
 					await axios({
@@ -150,11 +182,15 @@ export default {
 				}
 			} catch(e) {
 				console.log('ERROR', e.response.data);
+				commit('UPDATE_STATE', {
+					loading: false
+				});
 			} finally {
 				const res = await axios.get('comments')
 				.then(response => response.data.filter(item => 	item.post_key == payload.post_key))
 				commit('UPDATE_STATE', {
-					comments: res
+					comments: res,
+					loading: false
 				});
 			}
 		},
@@ -168,6 +204,20 @@ export default {
 				.then(response => response.data.filter(item => 	item.post_key == payload.post_key))
 				commit('UPDATE_STATE', {
 					comments: res
+				});
+			}
+		},
+		async deletePostComments({ commit }, payload) {
+			try {
+				const comments = await _fetchComment(payload);
+				for (let i = 0; i < comments.length; i++) {
+					await axios.delete('comments/' + comments[i].id);
+				}
+			} catch(e) {
+				console.log('ERROR', e.response.data);
+			}finally {
+				commit('UPDATE_STATE', {
+					comments: []
 				});
 			}
 		}

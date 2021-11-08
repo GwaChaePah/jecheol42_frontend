@@ -57,4 +57,7 @@ img {
 
 .content {
 	margin-top: 17em;
+	@media ( max-width: 500px ) {
+		margin-top: 135px;
+	}
 }

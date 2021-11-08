@@ -1,5 +1,4 @@
 <template>
-	<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"> -->
 	<div class="section-comment">
 		<template v-if="comments.length > 0">
 			<table class="comment-container">
@@ -8,16 +7,19 @@
 						<button class="button_toggle" @click="showMenu(comment.id)">
 							<span class="material-icons">more_horiz</span>
 						</button>
-						<div class="button-wrapper" v-show="click === comment.id">
+						<div class="button-wrapper" v-show="(click === comment.id) && (editingId !== comment.id)">
 							<button	class="material-icons-outlined" @click="toggleEdit(comment)" title="수정">edit</button>
 							<button class="material-icons-outlined" @click="delComment(comment)" title="삭제">clear</button>
 						</div>
 						<div class="id"><span class="material-icons">cruelty_free</span>{{ comment.user }}</div>
 						<div class="time">{{ comment.created_at }}</div>
-						<div v-if="editingId === comment.id" class="textarea-wrapper">
+						<div v-if="(editingId === comment.id)" class="textarea-wrapper">
 							<textarea class="textarea" rows="4"
-								v-model="editedComment" :id="`edit-comment-${comment.id}`"
-								@blur="editingId = ''" @keydown.enter="saveComment(comment)"/>
+								v-model="editedComment" :id="`edit-comment-${comment.id}`" @keydown.enter="saveComment(comment)"/>
+							<div class="button-wrapper">
+								<button	class="material-icons-outlined" @click="saveComment(comment)" title="저장">save</button>
+								<button class="material-icons-outlined" @click="editingId = ''" title="취소">clear</button>
+							</div>
 						</div>
 						<div v-else class="comment-content">&nbsp;{{ comment.content }}</div>
 					</td>
@@ -44,7 +46,7 @@
 
 <script>
 import axios from 'axios';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'Comments',
@@ -54,7 +56,7 @@ export default {
 			comment: '',
 			editingId: '',
 			editedComment: '',
-			click: false,
+			click: -1,
 		}
 	},
 	computed: {
@@ -62,17 +64,21 @@ export default {
 		...mapState('auth', ['currentUser'])
   },
 	created() {
-		this.$store.dispatch('post/initComments', this.$route.params.id);
+		this.initComments(this.$route.params.id);
 	},
 	methods: {
+		...mapActions('post', [
+			'initComments',
+			'updateComment',
+			'deleteComment'
+		]),
 		showMenu(e) {
 			const value = e;
-			console.log(value);
-			if (value > 0 && this.click !== value) {
+			if (this.click !== value) {
 				this.click = value;
 			}
 			else {
-				this.click = false;
+				this.click = -1;
 			}
 		},
 		handleSubmit(e) {
@@ -82,7 +88,9 @@ export default {
 				content: this.comment,
 				created_at: this.currentDate()
 			};
-			this.$store.dispatch('post/updateComment', { payload:commentObj });
+			this.updateComment({
+				payload:commentObj
+			});
 			this.user = '';
 			this.comment = '';
 		},
@@ -102,35 +110,37 @@ export default {
 		toggleEdit(comment) {
 			this.editedComment = comment.content;
 			this.editingId = comment.id;
-			this.click = false;
+			this.click = -1;
 			setTimeout(() => {
 				document.getElementById(`edit-comment-${comment.id}`).focus()
 			}, 1);
 		},
 		saveComment(comment) {
-			console.log(this.editedComment)
-			const commentObj = {
-				id: comment.id,
-				post_key: this.postId,
-				user: "test",
-				content: this.editedComment,
-				created_at: this.currentDate()
-			};
-			console.log('obj',commentObj)
-			this.$store.dispatch('post/updateComment', {
-				option: 0,
-				payload: commentObj
-			});
-			this.editingId = '';
+			if (comment.content === this.editedComment) {
+				this.editingId = '';
+			}
+			else {
+				const commentObj = {
+					id: comment.id,
+					post_key: this.postId,
+					user: "test",
+					content: this.editedComment,
+					created_at: this.currentDate()
+				};
+				this.updateComment({
+					option: 0,
+					payload: commentObj
+				});
+				this.editingId = '';
+			}
 		},
 		async delComment(comment) {
 			console.log('clicked')
 			if (confirm("정말 지우시겠습니까?")) {
-				this.$store.dispatch('post/deleteComment', comment);
+				this.deleteComment(comment);
 			}
 		}
 	}
-
 }
 </script>
 
@@ -142,6 +152,10 @@ export default {
 .section-comment {
 	margin: 0 0.3em 0 3.5em;
 	box-sizing: border-box;
+	@media (max-width: 500px) {
+		margin: 0 .5em;
+		font-size: .7em;
+	}
 	.comment-container {
 		width: 100%;
 		table-layout: fixed;
@@ -154,15 +168,24 @@ export default {
 			position: relative;
 			padding: 0 .8em;
 			// height: 80px;
+			@media (max-width: 500px) {
+				padding: 0 1em;
+			}
 			.button_toggle {
 				background: none;
 				border: none;
 				position: absolute;
 				top: 0;
 				right: 0;
+				@media (max-width: 500px) {
+					right: 3px;
+				}
 				.material-icons {
 					font-size: 2em;
 					color: gray;
+					@media (max-width: 500px) {
+						font-size: 1.5em;
+					}
 				}
 			}
 			.button-wrapper {
@@ -180,6 +203,10 @@ export default {
 					font-size: 1.2em;
 					&:hover {
 						color: $color_prime_orange;
+					}
+					@media (max-width: 500px) {
+						font-size: 1.5em;
+						display: inline-block;
 					}
 				}
 			}
@@ -204,11 +231,35 @@ export default {
 			}
 			.textarea-wrapper {
 				.textarea {
-					margin-top: 1em;
-					width: 100%;
+					margin-top: .5em;
+					width: 95%;
+					font-size: 1em;
 					resize: none;
 					&:focus {
 						border: none;
+					}
+				}
+				.button-wrapper {
+					display: inline-block;
+					position: absolute;
+					top: 40px;
+					right: 3px;
+					z-index: 2;
+					.material-icons-outlined {
+						cursor: pointer;
+						color: gray;
+						display: block;
+						padding: .2em;
+						border: none;
+						background: none;
+						font-size: 1.5em;
+						&:hover {
+							color: $color_prime_orange;
+						}
+						@media (max-width: 500px) {
+							font-size: 1.5em;
+							display: block;
+						}
 					}
 				}
 			}
@@ -229,6 +280,10 @@ export default {
 		border-radius: .2em;
 		display: flex;
 		justify-content: space-around;
+		@media (max-width: 500px) {
+			display: block;
+			padding: .1em 0;
+		}
 		.comment-form_icon {
 			display: inline-block;
 			margin: 1.3em .5em 1em .8em;
@@ -238,6 +293,9 @@ export default {
 			p {
 				font-size: .8em;
 				letter-spacing: .3em;
+			}
+			@media (max-width: 500px) {
+				display: none;
 			}
 		}
 		#input {
@@ -255,6 +313,15 @@ export default {
 			&:focus {
 				outline: none;
 			}
+			@media (max-width: 500px) {
+				display: block;
+				height: 30px;
+				width: 95%;
+				margin: 1em auto 0;
+				&::placeholder {
+					letter-spacing: 0;
+				}
+			}
 		}
 		.button-wrapper {
 			display: inline-block;
@@ -267,13 +334,9 @@ export default {
 				margin: 0.4em .3em;
 				letter-spacing: .5em;
 				padding: .5em .3em .5em .8em;
-				@media (max-width: 380px) {
-					font-size: .5em;
-				}
 				cursor: pointer;
 				&:hover {
 					background-color: rgb(254, 135, 25);
-					// background-color: rgb(57, 120, 35);
 					color: white;
 				}
 			}
@@ -282,6 +345,14 @@ export default {
 			}
 			#button {
 				background-color: lighten(rgb(160, 165, 182), 20%);
+			}
+			@media (max-width: 500px) {
+				display: flex;
+				justify-content: center;
+				.comment-btn {
+					display: inline-block;
+					font-size: 1em;
+				}
 			}
 		}
 	}

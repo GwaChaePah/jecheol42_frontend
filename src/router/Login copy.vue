@@ -1,6 +1,11 @@
 <template>
   <form class="background" v-on:submit.prevent="submitForm">
-	<div class="loginMsg">Sign in to 제철42</div>
+	<button class="testBtn" @click="testBtn">test</button>
+	<button class="testBtn" @click="postTest">post</button>
+	<div class="loginMsg">
+		Sign in to 제철42</div>
+	<p class="msgBox" v-if="isLogin">로그인 완료</p>
+	<p class="msgBox" v-else-if="isLoginError">아이디와 비밀번호를 확인해주세요</p>
 	<div class="loginBox">		
 		<div class="ID">
 			<label class="key" for="username">User ID</label>
@@ -20,7 +25,7 @@
 			<button 
 				type="submit"
 				class="loginBtn" 
-				@click="login" 				
+				@click="login()"
 				>SIGN IN</button>
 		</div>	
 		<div class="register">
@@ -32,43 +37,114 @@
 </template>
  
 <script>
+import { mapActions } from 'vuex';
+import allUsers from '~/json/user.json';
 import axios from 'axios';
  
 export default {
-  data:function(){
-    return{
-       username : '',
-       password : '',
-    }
-  },
-  methods:{
-	login: function() {
-		if (this.username == '') {
-			alert('아이디를 입력해 주세요.');
-			return ;
-		}
-		if (this.password == '') {
-			alert('비밀번호를 입력해 주세요.');
-			return ;
+	computed: {
+		// ...mapState(['isLogin', 'isLoginError']),
+	},
+	data:function(){
+    	return{
+			username : '',
+			password : '',
+			// allUsers: [
+			// 	{ id: 1, username: "test1", password: "test1"},
+			// 	{ id: 2, username: "test2", password: "test2"},
+			// ],
+			// isLoginError : false,
+			// isLogin : false
 		}
 	},
-    submitForm:function(){
-      console.log(this.username, this.password);
-      var url = 'https://jsonplaceholder.typicode.com/users';
-      var data = {
-        username: this.username,
-        password: this.password
-      }
-      axios.post(url, data)
-        .then(function(response){
-          console.log(response);
-          
-        })
-        .catch(function(error){
-        	console.log(response);
-       		});
-    	}
-  }
+	methods:{
+		...mapActions(["login"]),
+ 
+
+		// login() {
+		// 	let selectedUser = null
+		// 	this.allUsers.forEach(user => {
+		// 		if (user.username === this.username) 
+		// 			selectedUser = user
+		// 	})
+		// 	if (selectedUser === null) {
+		// 		this.$store.dispatch('login/error')
+		// 		this.isLogin = false
+		// 		this.isLoginError = true
+		// 	}
+		// 	else 
+		// 		if (selectedUser.password !== this.password) {
+		// 			this.$store.dispatch('login/error')
+		// 			this.isLogin = false
+		// 			this.isLoginError = true
+		// 		}					
+		// 		else {
+		// 			this.$store.dispatch('login/success')
+		// 			this.isLogin = true
+		// 			this.isLoginError = false
+		// 			this.$router.push('/')
+		// 		}
+		// 	console.log(this.username, this.password);
+		// }
+
+
+
+		// loginCheak: function(){
+		// 	if (this.username == '') {
+		// 		alert('아이디를 입력해 주세요.');
+		// 		return ;
+		// 	}
+		// 	if (this.password == '') {
+		// 		alert('비밀번호를 입력해 주세요.');
+		// 		return ;
+		// 	}
+		// },
+		// submitForm:function(){
+		// 	console.log(this.username, this.password);
+		// 	var url = 'https://jsonplaceholder.typicode.com/users';
+		// 	var data = {
+		// 		username: this.username,
+		// 		password: this.password
+		// 	}
+		// 	axios
+		// 	.post(url, data)
+		// 	.then(function(response){
+		// 	console.log(response);          
+		// 	})
+		// 	.catch(function(error){
+		// 		console.log(response);
+		// 	});
+		// },
+		// testBtn() {
+		// 	axios
+		// 	.get("https://reqres.in/api/users?page=2")
+		// 	.then(response => {
+		// 		//handle success
+		// 		console.log(response)
+		// 	})
+		// 	.catch(error => {
+		// 		//handle error
+		// 		console.log(error)
+		// 	})
+		// 	.then(() => {
+		// 		console.log("test")
+		// 		//always executed
+		// 	})
+		// },
+		// postTest() {
+		// 	axios
+		// 	.post("https://reqres.in/api/register", {
+		// 		"email": "eve.holt@reqres.in",
+		// 		"password": "pistol"
+		// 	})
+		// 	.then(response => {
+		// 		console.log(response); 
+		// 	})
+		// 	.catch(error => {
+		// 		console.log(error);
+		// 	})
+		// }
+  	},
 };
 </script>
  
@@ -94,7 +170,7 @@ export default {
 }
 
 .loginMsg{
-		margin: 40px 0px;
+		margin: 30px 0px;
 		font-size: 20px;
 		color: rgba(#76862c, 0.76);
 	}
@@ -102,6 +178,15 @@ export default {
 .background{
 	font-family: sans-serif;
 	@include center;
+	.msgBox {
+		width: 250px;
+		height: 30px;
+		margin: auto;
+		text-align: center;
+		padding-top: 5px;
+		color: beige;
+		background: #76862c;
+	}
 	.loginBox {
 		@include center;
 		border-radius: .3em;
@@ -161,5 +246,10 @@ export default {
 			text-decoration: underline;
 		}
 	}
+}
+.testBtn {
+	width: 100px;
+	font-size: 30px;
+	background: orange;
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
 	<div class="l_main">
-		<div class="l_wrapper">
-			<div class="content">
+		<div class="l_wrapper content">
+			<div class="not_found">
+				<div class="material-icons-outlined">contact_support</div>
 				<h1>404</h1>
 				<p>페이지 업서오...</p>
 			</div>
@@ -21,17 +22,16 @@ export default {
 @import '../scss/main.scss';
 
 .l_main {
-	background-image: url('https://en.pimg.jp/063/203/388/1/63203388.jpg');
-	background-repeat: no-repeat;
-	background-position: center;
-	height: 80vh;
-
-	.content {
+	.not_found {
 		width: 100%;
 		text-align: center;
-		margin: 1.5em auto;
+		margin-top: 13em;
 		// color: darken($color_prime_orange, 20%);
+		.material-icons-outlined {
+			font-size: 4em;
+		}
 		h1 {
+			display: block;
 			font-size: 4em;
 		}
 	}
