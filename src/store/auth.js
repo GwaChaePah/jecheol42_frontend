@@ -24,7 +24,7 @@ export default {
 		async loadUsers({ commit }) {
 			let res = await axios.get('users');
 			let users = res.data;
-			console.log(users);
+			// console.log(users);
 			commit('SET_USERS', users);
 
 			let user = JSON.parse(window.localStorage.currentUser);
