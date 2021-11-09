@@ -221,7 +221,7 @@ export default {
 				});
 			}
 		}
-	},
+	}
 }
 
 async function _fetchPost(payload, id = 0) {
