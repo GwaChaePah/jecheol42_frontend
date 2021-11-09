@@ -493,13 +493,17 @@
   "users": [
     {
       "id": 0,
-      "name": "ji-kim",
-      "email": "ji-kim@n.com"
+      "username": "test1",
+      "password": "test1",
+      "name": "test1name",
+      "email": "test1@mail.com"
     },
     {
       "id": 1,
-      "name": "ylee",
-      "email": "ylee@n.com"
+      "username": "test2",
+      "password": "test2",
+      "name": "test2name",
+      "email": "test2@mail.com"
     }
   ]
 }

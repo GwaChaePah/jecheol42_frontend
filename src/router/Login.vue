@@ -1,30 +1,61 @@
 <template>
-	<div class="background">
-		<div class="loginBox">
-			<div class="loginMsg">LOGIN</div>
-			<div class="ID">
-				<div class="key">ID</div>
-				<div class="stick">  </div>
-				<input type="idBox" placeholder="ID"/>
-			</div>
-			<div class="PW">
-				<div class="key">PW</div>
-				<div class="stick"></div>
-				<input type="pwBox" placeholder="Password"/>
-			</div>
-			<button class="loginBtn" @click="loginBtn">LOGIN</button>
+  <form class="background">
+	<div class="loginMsg">
+		Sign in to 제철42</div>
+	<p class="msgBox" v-if="isLogin">로그인 완료</p>
+	<p class="msgBox" v-else-if="isLoginError">아이디와 비밀번호를 확인해주세요</p>
+	<div class="loginBox">		
+		<div class="ID">
+			<label class="key" for="username">User ID</label>
+			<input
+				id="username"
+				type="text" 
+				v-model="username"
+				required/>
 		</div>
+		<div class="PW">
+			<label class="key" for="password">Password</label>
+			<input
+				id="password"
+				type="password" 
+				v-model="password" 
+				required/>
+			<button 
+				type="submit"
+				class="loginBtn" 
+				@click="login({
+					username,
+					password
+				})"
+				>SIGN IN</button>
+		</div>	
 		<div class="register">
 			아직 회원이 아니신가요? <a href="#">회원가입</a>
 		</div>
+		<p>Password 입력값: {{ password }}</p>
 	</div>
+  </form>
 </template>
-
+ 
 <script>
+import { mapState, mapActions } from 'vuex';
+ 
 export default {
-}
+	computed: {
+		...mapState('login', ['isLogin', 'isLoginError']),
+	},
+	data:function(){
+    	return{
+			username : '',
+			password : '',
+		}
+	},
+	methods:{
+		...mapActions('login', ['login'])
+  	},
+};
 </script>
-
+ 
 <style lang="scss" scoped>
 @import '../scss/main.scss';
 @import '../scss/commons.scss';
@@ -45,76 +76,81 @@ export default {
 	width: $size;
 	display: inline-block;
 }
+
+.loginMsg{
+		margin: 30px 0px;
+		font-size: 20px;
+		color: rgba(#76862c, 0.76);
+	}
+
 .background{
-	padding: 300px 70px 70px 70px;
+	font-family: sans-serif;
 	@include center;
+	.msgBox {
+		width: 250px;
+		height: 30px;
+		margin: auto;
+		text-align: center;
+		padding-top: 5px;
+		color: beige;
+		background: #76862c;
+	}
 	.loginBox {
 		@include center;
 		border-radius: .3em;
 		box-shadow: 0 0 10px 0 $color_shadow_03;
-		min-width: 200px;
-		min-height: 250px;
-		width: 40vh;
-		height: 50vh;
+		width: 250px;
+		height: 250px;
 		border: 20px;
-		padding: 70px;
-		.loginMsg{
-			margin: 40px 0px;
-			font-size: 40px;
-			color: rgba(#76862c, 0.76);
-		}
+		padding: 20px;
 		.ID {
-			padding: 10px;
+			padding: 8px 10px 10px 10px;
 			margin: auto;
-			display: block;
-			.key {			
-				@include block(20%);
-				border: solid black;
-				border-width: 0px 1px 0px 0px;
-			}		
-			.stick {
-				@include block(10%);
+			text-align: left;
+			.key {
+				width: 100%;
 			}
 			input {
-				@include block(70%);
-				@include input;
+				padding: 8px;
+				width: 100%;
 				color: rgba(#76862c, 0.76);
 			}
 		}
 		.PW {
 			padding: 10px;
 			margin: auto;
-			display: block;
-			.key {			
-				@include block(20%);
-				border: solid black;
-				border-width: 0px 1px 0px 0px;
-			}		
-			.stick {
-				@include block(10%);
+			text-align: left;
+			position: relative;
+			.key {
+				width: 100%;
 			}
 			input {
-				@include block(70%);
-				@include input;
+				padding: 8px;
+				width: 100%;
+				color: rgba(#76862c, 0.76);
+			}
+			.loginBtn {
+				margin-top: 22px;
+				vertical-align: middle;
+				font-size: 17px;
+				width: 100%;
+				height: 15%;
+				padding: 8px;
+				border-radius: .3em;
+				border-color: rgba(187, 212, 68, 30%);
+				box-shadow: 0 0 10px 0 $color_shadow_03;
+				background-color: rgba(#76862c, 0.76);
+				color: white;
 			}
 		}
-		.loginBtn {
-			margin: 40px;
-			font-size: 17px;
-			width: 10vh;
-			height: 3vh;
-			border-radius: .3em;
-			border-color: rgba(187, 212, 68, 30%);
-			box-shadow: 0 0 10px 0 $color_shadow_03;
-			background-color: rgba(#76862c, 0.76);
-			color: white;
-		}
+		
 	}
 	.register {
-		padding: 20px;
-		a:hover{
-			text-decoration: underline;
+		font-size: 13px;
+		padding-top: 25px;
+		a {
 			color: rgba(#76862c, 0.76);
+			text-decoration: underline;
 		}
 	}
 }

@@ -16,6 +16,7 @@ export default createRouter({
   routes: [
     {
       path: '/',
+	  name: 'Home',
       component: Product
     },
 		{
@@ -24,6 +25,7 @@ export default createRouter({
     },
 		{
 			path: '/login',
+			name: 'Login',
 			component: Login
 		},
 		{
