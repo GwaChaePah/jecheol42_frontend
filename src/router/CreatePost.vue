@@ -27,9 +27,9 @@
 					<textarea v-model="form.content" type="string" placeholder="내용이에용"/>
 				</div>
 				<div>
-					<input multiple @change='onInputImage()' ref="postImage" type="file">
+					<input multiple @change="onInputImage()" ref="postImage" type="file">
 				</div>
-			<button class="registerBtn" @click="register()">작성</button>
+			<button class="registerBtn" @click="checkForm()">작성</button>
 			<button class="cancelBtn" @click="cancel()">취소</button>	
 		</form>
 	</div>
@@ -41,7 +41,6 @@ import axios from 'axios';
 export default {
 	name: 'CreatePost',
 	data() {
-		// const index = this.$route.params.id;
 		return{
 			form: {
 				id:'',
@@ -58,22 +57,50 @@ export default {
 	},
 	methods: {
 		onInputImage() {
-			this.form.image = this.$refs.postImage.files
+			this.form.image[0] = this.$refs.postImage.files[0];
+			console.log(this.form.image[0]);
+		},
+		checkForm(e){
+			if (!this.form.title) {
+				confirm("제목은 필수입니다.")
+			}
+			if (!this.form.tag) {
+				confirm("카테고리를 설정해주세요.")
+			}
+			if (!this.form.content) {
+				confirm("내용은 필수입니다.")
+			}
+			if (this.form.tag === "소분" && !this.form.price) {
+				confirm("가격을 입력해주세요.")
+			}
+			if (this.form.title && this.form.tag && this.form.content) {
+				if ((this.form.tag === "소분" && this.form.price) ||
+					((this.form.tag === "나눔" || this.form.tag === "완료") && !this.form.price))
+					this.register();
+			}
 		},
 		async register() {
-			const postObj = {
-				title: this.form.title,
+			let variable = this.form.image[0];
+			const postObj =
+			{
+				id: this.id,
 				tag: this.form.tag,
-				created_at: this.currentDate(),
-				user: "test",
 				region: "중구",
+				title: this.form.title,
+				user: "test",
 				content: this.form.content,
 				price: this.form.price,
-				image: "",
+				created_at: this.currentDate(),
+				image: variable,
 				view_count: 0
 			};
-			await axios.post('/posts', postObj);
-			this.$router.push('/board')
+			console.log("image is this " + postObj);
+			await axios({
+				url: 'posts',
+				method: 'post',
+				data: postObj
+			})
+			this.$router.push('/board');
 		},
 		currentDate() {
 			const current = new Date();
