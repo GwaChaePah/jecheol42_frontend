@@ -41,48 +41,35 @@ export default {
 		}
 	},
 	actions: {
-		login({ commit }, loginObj) {
-			// console.log(loginObj)
-			// let selectedUser = null
-			// state.allUsers.forEach(user => {
-			// 	if (user.username === loginObj.username) 
-			// 		selectedUser = user
-			// })
-			// if (selectedUser === null) {
-			// 	commit("idError")
-			// }
-			// else 
-			// 	if (selectedUser.password !== loginObj.password) {
-			// 		commit("pwError")
-			// 	}					
-			// 	else {
-			// 		commit("loginSuccess")
-			// 	}
-			// console.log(this.username, this.password);
+		login({ dispatch }, loginObj) {
+			// ㄹㅗ그인 -> 토큰 반ㅏ
 			axios
 			.post("https://reqres.in/api/login", loginObj)
 			.then(response => {
-				//성공시 토큰 반환
-				//토큰을 헤더에 포함해 유저 정보 요청
 				let token = response.data.token
-				let config = {
-					headers: {
-						"access-token" : token
-					}
-				}
-				axios
-					.get("https://reqres.in/api/users/2", config)
-					.then(res => {
-						// console.log(res); 
-						let userInfo = {
-							avatar: res.data.data.avatar,
-							id: res.data.data.id,
-							first_name: res.data.data.first_name,
-							last_name: res.data.data.last_name,
-						}
-						commit("loginSuccess", userInfo)
-						router.push('/')
-					})
+				//토큰을 로컬 스토리지에 저장
+				localStorage.setItem("access_token", token)
+				dispatch("getMemberInfo")
+				// let config = {
+				// 	headers: {
+				// 		"access-token" : token
+				// 	}
+				// }
+				// // 토큰 -> 멤버 정보를 반환
+				// // 새로고침->토큰만 가지고 멤버 정보 요청
+				// axios
+				// 	.get("https://reqres.in/api/users/2", config)
+				// 	.then(res => {
+				// 		// console.log(res); 
+				// 		let userInfo = {
+				// 			avatar: res.data.data.avatar,
+				// 			id: res.data.data.id,
+				// 			first_name: res.data.data.first_name,
+				// 			last_name: res.data.data.last_name,
+				// 		}
+				// 		commit("loginSuccess", userInfo)
+				// 		router.push('/')
+				// 	})
 					.catch(err => {
 						alert("아이디와 비밀번호를 확인하세요")
 					})
@@ -93,6 +80,30 @@ export default {
 		},
 		logout({ commit }) {
 			commit("logout")
+		},
+		getMemberInfo({commit}) {
+			// 로컬 스토리지에 저장된 토큰을 불러온다
+			let token = localStorage.getItem("access_token")
+			let config = {
+				headers: {
+					"access-token" : token
+				}
+			}		
+			// 토큰 -> 멤버 정보를 반환
+			// 새로고침->토큰만 가지고 멤버 정보 요청
+			axios
+			.get("https://reqres.in/api/users/2", config)
+			.then(res => {
+				// console.log(res); 
+				let userInfo = {
+					avatar: res.data.data.avatar,
+					id: res.data.data.id,
+					first_name: res.data.data.first_name,
+					last_name: res.data.data.last_name,
+				}
+				commit("loginSuccess", userInfo)
+				router.push('/')
+			})
 		}
 	}
 }

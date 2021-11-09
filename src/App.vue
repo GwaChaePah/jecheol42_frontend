@@ -12,12 +12,19 @@
 <script>
 import Header from '~/components/Header'
 import Footer from '~/components/Footer'
+import { mapActions } from 'vuex';
 
 export default {
   components: {
     Header,
 		Footer
   },
+  methods: {
+	  ...mapActions('login', ['getMemberInfo']),
+  },
+  beforeCreate() {
+  this.$store.dispatch('login/getMemberInfo');
+   }
 }
 </script>
 
