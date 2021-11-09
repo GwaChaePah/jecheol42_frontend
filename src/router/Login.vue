@@ -1,7 +1,5 @@
 <template>
   <form class="background">
-	<!-- <button class="testBtn" @click="testBtn">test</button>
-	<button class="testBtn" @click="postTest">post</button> -->
 	<div class="loginMsg">
 		Sign in to 제철42</div>
 	<p class="msgBox" v-if="isLogin">로그인 완료</p>
@@ -41,7 +39,6 @@
  
 <script>
 import { mapState, mapActions } from 'vuex';
-// import axios from 'axios';
  
 export default {
 	computed: {
@@ -54,7 +51,7 @@ export default {
 		}
 	},
 	methods:{
-		...mapActions('login', ['login']),
+		...mapActions('login', ['login'])
   	},
 };
 </script>
@@ -123,7 +120,6 @@ export default {
 			padding: 10px;
 			margin: auto;
 			text-align: left;
-			// display: block;
 			position: relative;
 			.key {
 				width: 100%;
@@ -157,10 +153,5 @@ export default {
 			text-decoration: underline;
 		}
 	}
-}
-.testBtn {
-	width: 100px;
-	font-size: 30px;
-	background: orange;
 }
 </style>
