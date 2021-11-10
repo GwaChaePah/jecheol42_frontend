@@ -1,7 +1,7 @@
 <template>
 	<div class="l_main">
 		<div class="l_wrapper">
-			<div :class="{'content': (hasHeader && !fromSearch)}">
+			<div :class="{'content': (hasHeader && !fromSearch)}" >
 				<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
 				<BoardMenu />
 			</div>

@@ -23,8 +23,8 @@ export default {
 	  ...mapActions('login', ['getMemberInfo']),
   },
   beforeCreate() {
-  	this.$store.dispatch('login/getMemberInfo');
-  }
+  this.$store.dispatch('login/getMemberInfo');
+   }
 }
 </script>
 

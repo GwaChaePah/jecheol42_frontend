@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Board from './Board'
 import Login from './Login'
+import Register from './Register'
 import Post from './Post'
 import Product from './Product'
 import Search from './Search'
@@ -22,7 +23,13 @@ export default createRouter({
     },
 		{
 			path: '/login',
+			name: 'Pologinst',
 			component: Login
+		},
+		{
+			path: '/Register',
+			name: 'Register',
+			component: Register
 		},
 		{
 			path: '/post/:id',
