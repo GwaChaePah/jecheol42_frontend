@@ -11,7 +11,7 @@
 				<ul class="navlist" v-if="!isLogin">
 					<li><span @click="toBoard">게시판</span></li>
 					<li><span @click="toLogin">로그인</span></li>
-					<li><span @click="">회원가입</span></li>
+					<li><span @click="toRegister">회원가입</span></li>
 				</ul>
 				<ul class="navlist" v-else>
 					<li ><span @click="toBoard">게시판</span></li>
@@ -29,7 +29,7 @@
 						<li @click="toMain">메인</li>
 						<li @click="toBoard">게시판</li>
 						<li @click="toLogin">로그인</li>
-						<li href="#">회원가입</li>
+						<li @click="toRegister">회원가입</li>
 					</ul>
 					<ul v-else>
 						<li><b>username</b></li>
@@ -71,6 +71,10 @@ export default {
 				{
 					name: 'Login',
 					href: '/login'
+				},
+				{
+					name: 'Register',
+					href: '/Register'
 				},
 				{
 					name: 'Post',
@@ -129,6 +133,10 @@ export default {
 		toLogin() {
 			this.initMobileNav(null);
 			this.$router.push('/login');
+		},
+		toRegister() {
+			this.initMobileNav(null);
+			this.$router.push('/Register');
 		},
 		toBoard() {
 			this.initBoard();
