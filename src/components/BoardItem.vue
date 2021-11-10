@@ -15,7 +15,7 @@
 					<div class="title-info">
 						<div class="title__writer">
 							<span class="material-icons">account_circle</span>
-							{{ post.user }}
+							{{ post.user_key }}
 						</div>
 						<div class="title__time">
 							<span class="material-icons">schedule</span>
@@ -30,10 +30,10 @@
 					</div>
 				</div>
 				<div class="content-info">
-					<div class="info__category" :class="{'cat_sobun':  post.tag === '소분', 'cat_nanum':  post.tag === '나눔'}">
-						{{ post.tag }}
+					<div class="info__category" :class="{'cat_sobun':  post.tag === 0, 'cat_nanum':  post.tag === 1}">
+						{{ post.tag === 0 ? '소분' : post.tag === 1 ? '나눔' : '완료' }}
 					</div>
-					<button class="info__price" :class="{'price_sobun':  post.tag === '소분', 'price_nanum':  post.tag === '나눔'}">
+					<button class="info__price" :class="{'price_sobun':  post.tag === 0, 'price_nanum':  post.tag === 1}">
 						{{ post.price }}
 					</button>
 				</div>

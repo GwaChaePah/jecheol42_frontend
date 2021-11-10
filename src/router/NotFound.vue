@@ -22,6 +22,10 @@ export default {
 @import '../scss/main.scss';
 
 .l_main {
+	background: url('https://cdn.pixabay.com/photo/2013/11/25/17/28/pumpkin-218237_960_720.jpg');
+	background-position: bottom;
+	background-size: contain;
+	height: 100vh;
 	.not_found {
 		width: 100%;
 		text-align: center;

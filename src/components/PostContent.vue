@@ -3,7 +3,7 @@
 		<div class="user-menu" v-if="1">
 			<button class="material-icons" @click="showMenu">more_vert</button>
 			<div class="dropdown" v-show="click">
-				<div @click="updatePost()">
+				<div>
 					<span class="text">글수정</span>
 					<span class="material-icons-outlined" title="수정">edit</span>
 				</div>
@@ -15,28 +15,23 @@
 		</div>
 		<div class="content-title">
 			<span class="material-icons">label</span>
-			<button class="title__category">
-				<select class="select-state show-select" @change="apply">
-					<option selected>
-						[<span id="region">{{ thePost.region }}</span>
-						/
-						<span id="tag">{{ thePost.tag }}</span>]
-					</option>
-					<option v-if="`${thePost.tag}` !== '완료'">거래 완료</option>
-				</select>
-			</button>
+			<div class="title__category">
+				<!-- <span id="region">{{ post.region }}</span>
+				/ -->
+				<span>[ {{ post.tag === 0 ? '소분' : post.tag === 1 ? '나눔' : '완료' }} ]</span>
+			</div>
 			<div class="title__title">
-				<h1>{{ thePost.title }}</h1>
+				<h1>{{ post.title }}</h1>
 			</div>
 			<div class="title__info">
 				<p id="writer"><span class="material-icons">account_circle</span>
-					{{ thePost.user }}
+					{{ post.user }}
 				</p>
 				<p id="time"><span class="material-icons">schedule</span>
-					{{ thePost.created_at }}
+					{{ post.created_at }}
 				</p>
 				<p id="count"><span class="material-icons">visibility</span>
-					{{ thePost.view_count }}
+					{{ post.view_count }}
 				</p>
 				<p id="comments" @click="scrollBottom"><span class="material-icons-outlined">chat_bubble_outline</span>
 					{{ comments.length }}
@@ -50,11 +45,11 @@
 					v-show="image.src"
 					:key="image.name"
 					:src="image.src"
-					:alt="`${thePost.user}_${thePost.title}_${image.name}`"
+					:alt="`${post.user}_${post.title}_${image.name}`"
 					onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';" />
 			</div>
 			<div class="post__paragraph">
-				<p>{{ thePost.content }}</p>
+				<p>{{ post.content }}</p>
 			</div>
 		</div>
 	</div>
@@ -65,63 +60,41 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'PostContent',
-	props: ['thePost'],
+	props: ['post'],
 	data() {
 		return {
 			name: '',
 			thisUser: '',
 			click: false,
 			images: [
-				{name: 'image1', src: this.thePost.image1 ? this.thePost.image1 : ''},
-				{name: 'image2', src: this.thePost.image2 ? this.thePost.image2 : ''},
-				{name: 'image3', src: this.thePost.image3 ? this.thePost.image3 : ''}
+				{name: 'image1', src: this.post.image1 ? this.post.image1 : ''},
+				{name: 'image2', src: this.post.image2 ? this.post.image2 : ''},
+				{name: 'image3', src: this.post.image3 ? this.post.image3 : ''}
 			]
 		}
 	},
 	computed: {
-		...mapState('auth', ['currentUser']),
 		...mapState('post', ['comments']),
 	},
 	methods: {
 		...mapActions('post', [
-			'updateTag',
 			'deletePost',
 			'deletePostComments'
 		]),
-		// compare() {
-		// 	if (this.thePost.user) {
-		// 		this.thisUser = this.thePost.user
-		// 	}
-		// 	console.log('compare', 'name',this.name,'user', this.thisUser, this.name === this.thisUser);
-		// 	return ((this.name && this.thisUser) && (this.name === this.thisUser));
-		// },
 		scrollBottom() {
 			const container = document.getElementsByClassName('content-title-post');
 			const height = container[0].clientHeight + 100;
 			window.scroll(0, height);
 		},
-		apply() {
-			this.thePost.tag = '완료';
-			this.updateTag(this.thePost);
-		},
 		deletePost() {
-			const index = this.$route.params.id;
+			const id = this.$route.params.id;
 			if (confirm("지우시겠습니까?")) {
-				this.deletePost(index);
-				this.deletePostComments(index);
+				this.deletePost(id);
 				this.$router.push('/board');
 			}
 		},
 		showMenu() {
 			this.click = !this.click;
-		},
-		updatePost() {
-			this.$router.push({
-				name: 'UpdatePost',
-				params: {
-					id: this.$route.params.id
-				}
-			});
 		}
 	}
 }
@@ -219,19 +192,10 @@ export default {
 			}
 		}
 		.title__category {
+			display: inline-block;
 			margin: .3em;
-			border-style: none;
-			.select-state {
-				pointer-events: none;
-				appearance: none;
-				border: none;
-				padding: .2em;
-				font-size: 1.3em;
-			}
-			.show-select {
-				pointer-events: all;
-				appearance: listbox;
-			}
+			padding: .2em;
+			font-size: 1.3em;
 			span {
 				padding: 0 .3em;
 			}
