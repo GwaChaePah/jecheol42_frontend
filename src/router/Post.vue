@@ -9,13 +9,9 @@
 				<div class="preload_content">
 					<div class="content-title">
 						<span class="material-icons">label</span>
-						<button class="title__category">
-							<select class="select-state">
-								<option selected>
-									[<span id="region">&nbsp;-&nbsp;</span>/<span id="tag">&nbsp;-&nbsp;</span>]
-								</option>
-							</select>
-						</button>
+						<div class="title__category">
+							<span>[&nbsp;-&nbsp;]</span>
+						</div>
 						<div class="title__title">
 							<h1>-</h1>
 						</div>
@@ -27,9 +23,9 @@
 				</div>
 			</div>
 			<div v-else>
-				<NavPost />
-				<PostContent :thePost="thePost"/>
-				<Comments :postId="thePost.id"/>
+				<PostNav />
+				<PostContent :post="post" />
+				<Comments :postId="post.id"/>
 			</div>
 		</div>
 	</div>
@@ -38,7 +34,7 @@
 <script>
 import Comments from '~/components/Comments';
 import PostContent from '~/components/PostContent';
-import NavPost from '~/components/NavPost';
+import PostNav from '~/components/PostNav';
 import { mapState } from 'vuex';
 
 export default {
@@ -46,11 +42,11 @@ export default {
 	components: {
 		Comments,
 		PostContent,
-		NavPost
+		PostNav
 	},
 	computed: {
 		...mapState('post', [
-			'thePost',
+			'post',
 			'loading',
 		])
 	},
@@ -66,6 +62,7 @@ export default {
 <style lang="scss" scoped>
 @import '../scss/commons.scss';
 @import '../scss/main.scss';
+
 
 .preload_nav {
 	margin-top: 140px;
@@ -121,14 +118,9 @@ export default {
 		}
 		.title__category {
 			margin: .3em;
-			border-style: none;
-			.select-state {
-				pointer-events: none;
-				appearance: none;
-				border: none;
-				padding: .2em;
-				font-size: 1.3em;
-			}
+			padding: .2em;
+			font-size: 1.3em;
+			display: inline-block;
 			span {
 				padding: 0 .3em;
 			}

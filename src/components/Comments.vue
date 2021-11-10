@@ -11,7 +11,7 @@
 							<button	class="material-icons-outlined" @click="toggleEdit(comment)" title="수정">edit</button>
 							<button class="material-icons-outlined" @click="delComment(comment)" title="삭제">clear</button>
 						</div>
-						<div class="id"><span class="material-icons">cruelty_free</span>{{ comment.user }}</div>
+						<div class="id"><span class="material-icons">cruelty_free</span>{{ comment.user_key }}</div>
 						<div class="time">{{ comment.created_at }}</div>
 						<div v-if="(editingId === comment.id)" class="textarea-wrapper">
 							<textarea class="textarea" rows="4"
@@ -61,14 +61,9 @@ export default {
 	},
 	computed: {
     ...mapState('post', ['comments']),
-		...mapState('auth', ['currentUser'])
   },
-	created() {
-		this.initComments(this.$route.params.id);
-	},
 	methods: {
 		...mapActions('post', [
-			'initComments',
 			'updateComment',
 			'deleteComment'
 		]),
@@ -84,12 +79,12 @@ export default {
 		handleSubmit(e) {
 			const commentObj = {
 				post_key: this.postId,
-				user: "test",
+				user_key: "test",
 				content: this.comment,
 				created_at: this.currentDate()
 			};
 			this.updateComment({
-				payload:commentObj
+				payload: commentObj
 			});
 			this.user = '';
 			this.comment = '';
@@ -123,7 +118,7 @@ export default {
 				const commentObj = {
 					id: comment.id,
 					post_key: this.postId,
-					user: "test",
+					user_key: "test",
 					content: this.editedComment,
 					created_at: this.currentDate()
 				};
@@ -135,7 +130,6 @@ export default {
 			}
 		},
 		async delComment(comment) {
-			console.log('clicked')
 			if (confirm("정말 지우시겠습니까?")) {
 				this.deleteComment(comment);
 			}
@@ -262,6 +256,7 @@ export default {
 						}
 					}
 				}
+
 			}
 			.comment-content {
 				// border-bottom: 1px solid #ccc;

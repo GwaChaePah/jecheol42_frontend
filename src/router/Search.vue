@@ -1,5 +1,4 @@
 <template>
-	<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet" />
 	<div class="l_main">
 		<div class="l_wrapper">
 			<div class="content">
@@ -10,27 +9,12 @@
 					<div v-else-if="theSearch.price != ''">
 						<p class="search-content">
 							<span>요즘 <strong class="search-name">{{ theSearch.name }}</strong>(은)는&nbsp;</span>
-							<span><strong class="search-price">&nbsp;{{ theSearch.price }}</strong><strong class="search-unit">{{ theSearch.unit }}</strong>&nbsp;에오</span>
+							<span><strong class="search-price">&nbsp;{{ theSearch.price }}</strong><strong class="search-unit">{{ theSearch.unit }}</strong>&nbsp;입니다</span>
+							<span><strong class="search-date">&nbsp;({{ theSearch.date }})</strong></span>
 						</p>
-						<!-- <div class="divider"></div> -->
-						<div class="search-seasons" v-if="theSearch.seasons">
-							<p class="search-seasonNow" v-if="inSeason()">&gt;&gt; 지금 &lt;&lt;</p>
-							<p class="search-inSeason">제철 : &nbsp;</p>
-							<!-- <p class="search-season"
-								v-for="season in theSearch.seasons"
-								:key="season">
-								&nbsp;{{ season }}</p> -->
-							<p class="search-season" v-if="theSearch.seasons.length === 1">
-								{{ theSearch.seasons[0] }}
-							</p>
-							<p class="search-season" v-else-if="theSearch.seasons.length === 2">
-								{{ theSearch.seasons[0] }}, {{ theSearch.seasons[1] }}
-							</p>
-							<p class="search-season" v-else>
-								{{ theSearch.seasons[0] }} ~ {{ theSearch.seasons[theSearch.seasons.length - 1] }}
-							</p>
-						</div>
-						<!-- 가격 가져온 날짜 찍어주기 : 몇월며칠 기준 -->
+						<p class="search-average">
+							<span>5년 평균 : <strong class="search-price">{{ theSearch.average_price }}</strong><strong class="search-unit">{{ theSearch.unit }}</strong></span>
+						</p>
 					</div>
 					<div v-else>
 						<h1>가격 정보가 제공되지 않았습니다.</h1>
@@ -67,24 +51,10 @@ export default {
 	},
 	created() {
 		setTimeout(() => {
-			this.$store.dispatch('post/initPosts', this.postSearch);
+			this.$store.dispatch('post/initBoard', this.postSearch);
 		}, 500);
 		this.$store.dispatch('post/initMobileNav', null);
 	},
-	methods: {
-		inSeason() {
-			const seasons = this.theSearch.seasons;
-			if (seasons) {
-				const mon = new Date().getMonth() + 1;
-				for (let i = 0; i < seasons.length; i++) {
-					if (mon == seasons[i]) {
-						return true;
-					}
-				}
-				return false;
-			}
-		}
-	}
 }
 </script>
 
@@ -150,6 +120,24 @@ export default {
 				}
 				@media ( max-width: 500px ) {
 					font-size: 1.2em;
+				}
+			}
+			.search-unit {
+				font-size: .8em;
+			}
+			.search-date {
+				font-size: .7em;
+			}
+		}
+		.search-average {
+			font-size: 1.2em;
+			@media ( max-width: 500px ) {
+				font-size: 1em;
+			}
+			.search-price {
+				&:after {
+					content: '원/';
+					font-size: .8em;
 				}
 			}
 			.search-unit {
@@ -221,5 +209,6 @@ export default {
 			font-size: .8em;
 		}
 	}
+
 }
 </style>

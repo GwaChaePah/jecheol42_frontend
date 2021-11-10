@@ -19,9 +19,9 @@
 					</div>
 				</div>
 				<div v-else>
-					<BoardItem v-if="search || posts" v-for="post in posts"
-					:key="post.id" :post="post" />
-					<div v-if="(!posts.length && !loading)" class="empty-content">
+					<BoardItem v-if="search || boardView" v-for="item in boardView"
+					:key="item.id" :post="item" />
+					<div v-if="(!boardView.length && !loading)" class="empty-content">
 						<h1>검색된 정보가 없습니다 따흐흑</h1>
 					</div>
 				</div>
@@ -34,7 +34,7 @@
 import BoardMenu from '~/components/BoardMenu';
 import BoardItem from '~/components/BoardItem';
 import axios from 'axios';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'Board',
@@ -44,10 +44,9 @@ export default {
 	},
 	props: ['fromSearch'],
 	computed: {
-		...mapState('auth', ['currentUser']),
 		...mapState('product', ['postSearch']),
 		...mapState('post', [
-			'posts',
+			'boardView',
 			'loading'
 		]),
 	},
@@ -57,14 +56,17 @@ export default {
 			search: this.postSearch,
 		}
 	},
+	methods: {
+		...mapActions('post',['initBoard']),
+	},
 	created() {
 		if (!this.fromSearch) {
-			this.$store.dispatch('post/initPosts');
+			this.initBoard();
 		}
 		else {
 			setTimeout(()=> {
 				if (this.search) {
-					this.$store.dispatch('post/initPosts', this.search)
+					this.initBoard(this.search);
 				}
 			}, 1);
 		}

@@ -1,12 +1,12 @@
 <template>
 	<div class="menu-bar">
 		<!-- <div> -->
-			<select class="dropdown"	@change="apply($event)">
-				<option	v-for="item in filters[1].items" :key="item">
+			<select class="dropdown" v-model="tag" @change="apply($event)">
+				<option	v-for="item, index in filters[1].items" :key="item" :value="item">
 					{{ item }}
 				</option>
 			</select>
-			<button class="menu-bar__list" type="button" @click="createPost()">글쓰기</button>
+			<button class="menu-bar__list" type="button">글쓰기</button>
 			<!-- </div> -->
 			<!-- <div>
 			<select class="dropdown" v-for="filter in filters" v-model="$data[filter.name]" 	:key="filter.name" @change="apply($event)">
@@ -30,8 +30,23 @@ export default {
 	computed: {
 		...mapState('product', [
 			'postSearch',
-			'theSearch'
+			'theSearch',
+			'loading'
 		]),
+		...mapState('post', ['boardTag']),
+		tag: {
+			get() {
+				const tag = this.boardTag === 3 ? '전체' :
+										this.boardTag === 0 ? '소분' :
+										this.boardTag === 1 ? '나눔' :
+										this.boardTag === 2 ? '완료' :
+										this.boardTag;
+				return tag;
+			},
+			set (value) {
+				this.$store.dispatch('post/updateTag', value);
+			}
+		}
 	},
 	data() {
 		return {
@@ -63,18 +78,13 @@ export default {
 			if (!this.search) {
 				this.search = this.postSearch;
 			}
-			let value = e.target.value;
-			this.$store.dispatch('post/searchPostTags', {
-				value,
-				search: this.search
-			});
+			const value = e.target.value === '소분' ? 0 :
+										e.target.value === '나눔' ? 1 :
+										e.target.value === '완료' ? 2 : 3;
+			this.tag = value;
+			this.$store.dispatch('post/searchPostTags', this.search);
 		},
-		createPost() {
-			this.$router.push({
-				path: '/create'
-			})
-		}
-	}
+	},
 }
 </script>
 

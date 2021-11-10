@@ -3,23 +3,20 @@ import axios from 'axios';
 export default {
 	namespaced: true,
 	state: () => ({
-		posts: [],
-		thePost: {},
+		fetched: [],
+		board: [],
+		boardView: [],
+		post: {},
 		comments: [],
 		loading: false,
 		mobileNav: false,
+		boardTag: ''
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
 			Object.keys(payload).forEach(key => {
 				state[key] = payload[key]
 			})
-		},
-		RESET_STATE(state) {
-			state.posts = [],
-			state.thePost = {},
-			state.comments = [],
-			state.loading = false
 		},
 	},
 	actions: {
@@ -28,134 +25,114 @@ export default {
 				mobileNav: payload
 			})
 		},
-		async initPosts({ state, commit }, payload) {
-			if (state.loading) return;
+		updateTag({ commit }, payload) {
 			commit('UPDATE_STATE', {
-				posts: [],
-				loading: true
+				boardTag: payload
 			});
-			try {
-				const res = await _fetchPost(payload);
+		},
+		async initBoard({ state, commit }, payload) {
+			if (state.loading) return;
+			if (!payload) {
+				const ret = await _fetchBoard();
 				commit('UPDATE_STATE', {
-					posts: res
-				})
+					fetched: ret,
+					boardTag: 3,
+					board: [],
+				});
+			}
+			commit('UPDATE_STATE', {
+				boardView: [],
+				loading: true,
+			});
+			let res;
+			try {
+				if (payload) {
+					res = await axios.get(`board-api?search=${payload}`)
+							.then(response => response.data);
+				} else {
+					res = state.fetched;
+				}
 			} catch(e) {
 				console.log('ERROR', e.response.data);
-				commit('UPDATE_STATE', {
-					posts: []
-				})
+				res = [];
 			} finally {
 				commit('UPDATE_STATE', {
-					loading: false
+					board: res,
+					boardView: res.filter(item => {
+						if (state.boardTag === 3) return (item.tag === 1 || item.tag === 0);
+						else return (item.tag === state.boardTag);
+					}),
+					loading: false,
 				})
 			}
-		},
-		async initComments({ commit }, payload) {
-			commit('UPDATE_STATE', {
-				comments: []
-			});
-			const res = await _fetchComment(payload);
-			commit('UPDATE_STATE', {
-				comments: res
-			});
 		},
 		async searchPostWithId({ commit, state }, payload) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
-				thePost: {},
+				post: {},
+				comments: [],
 				loading: true
 			});
+			let post;
+			let comments;
 			try {
-				let res = await _fetchPost(0, payload.id);
-				commit('UPDATE_STATE', {
-					thePost: res[0]
-				});
+				const res = await _fetchPost(payload.id);
+				post = res.post;
+				comments = res.comments;
 			} catch (e) {
 				console.log('ERROR', e.response.data);
-				commit('UPDATE_STATE', {
-					thePost: {}
-				});
+				post = {};
+				comments = [];
 			} finally {
 				commit('UPDATE_STATE', {
-					loading: false
-				})
+					post: post,
+					comments: comments,
+					loading: false,
+				});
 			}
 		},
 		async searchPostTags({ state, commit }, payload) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
+				boardView: [],
 				loading: true
 			});
-			if (payload.value === '전체') {
-				const res = await _fetchPost(payload.search);
-				commit('UPDATE_STATE', {
-					posts: res,
-					loading: false
-				});
-				return ;
-			}
 			let res;
+			if (!state.board) {
+				res = await axios.get(`board-api?search=${payload}`)
+					.then(response => response.data);
+				commit('UPDATE_STATE', {
+					board: res,
+				})
+			}
 			try {
-				if (payload.value === '완료') {
-					if (payload.search) {
-						res = await axios.get('posts')
-						.then(response => response.data.filter(item => (item.tag == payload.value) && ((item.content.indexOf(payload.search) !== -1) || (item.title.indexOf(payload.search) !== -1))));
-					}
-					else {
-						res = await axios.get('posts')
-						.then(response => response.data.filter(item => (item.tag == payload.value)));
-					}
+				if (state.boardTag === 3) {
+					res = state.board.filter(item => item.tag === 0 || item.tag === 1);
 				} else {
-					res = await _fetchPost(payload.search)
-						.then(response => response.filter(item => item.tag == payload.value));
+					res = state.board.filter(item => item.tag === state.boardTag);
 				}
 			} catch (e) {
 				console.log('ERROR', e.response.data);
-				res = await _fetchPost(payload.search);
-				commit('UPDATE_STATE', {
-					loading: false
-				})
+				res = state.board;
 			} finally {
 				commit('UPDATE_STATE', {
-					posts: res,
+					boardView: res,
 					loading: false
 				});
-			}
-		},
-		async updateTag({ state, commit }, payload) {
-			if (state.loading) return;
-			commit('UPDATE_STATE', {
-				loading: true
-			});
-			let res = await axios.get('posts/' + payload.id)
-				.then(response => response.data);
-			res.tag = payload.tag;
-			try {
-				await axios({
-					url: 'posts/' + res.id,
-					method: 'put',
-					data: res,
-					headers: {"Content-Type" : "application/json"}
-				});
-				commit('UPDATE_STATE', {
-					thePost: payload,
-					loading: false
-				});
-			} catch(e) {
-				console.log('ERROR', e.response.data);
-				commit('UPDATE_STATE', {
-					loading: false
-				})
 			}
 		},
 		async deletePost({ commit }, payload) {
 			try {
-				await axios.delete('posts/' + payload);
+				//
+				// NEEDS REVISION
+				//
+				// DELETE api needed
+				await axios.delete(`post-api/${payload}`);
 			} catch(e) {
 				console.log('ERROR', e.response.data);
 			} finally {
 				commit('UPDATE_STATE', {
-					thePost: {}
+					post: {}
 				});
 			}
 		},
@@ -164,85 +141,74 @@ export default {
 			commit('UPDATE_STATE', {
 				loading: true
 			});
+			//
+			// NEEDS REVISION
+			//
+			// POST/PUT api needed
 			try {
+				let data = await _fetchPost(payload.post_key);
 				if (option) {
+					data.comments = data.comments.concat(payload);
 					await axios({
-						url: 'comments',
+						url: `post-api/${payload.post_key}`,
 						method: 'post',
-						data: payload,
+						data: data,
 						headers: {"Content-Type" : "application/json"}
 					});
 				} else {
+					data.comments[payload.id] = payload;
 					await axios({
-						url: 'comments/' + payload.id,
+						url: `post-api/${payload.post_key}`,
 						method: 'put',
-						data: payload,
+						data: data,
 						headers: {"Content-Type" : "application/json"}
 					});
 				}
 			} catch(e) {
 				console.log('ERROR', e.response.data);
-				commit('UPDATE_STATE', {
-					loading: false
-				});
 			} finally {
-				const res = await axios.get('comments')
-				.then(response => response.data.filter(item => 	item.post_key == payload.post_key))
+				// const res = await _fetchPost(payload.post_key).then(response => response.data.comments);
 				commit('UPDATE_STATE', {
-					comments: res,
+					// comments: res,
 					loading: false
 				});
 			}
 		},
 		async deleteComment({ commit }, payload) {
 			try {
-				await axios.delete('comments/' + payload.id);
+				//
+				// NEEDS REVISION
+				//
+				// DELETE api needed
+				// const comments = await _fetchPost(payload.post_key).then(response => response.comments);
+				// console.log(comments)
+				// await axios.delete('comments/' + payload.id);
 			} catch(e) {
 				console.log('ERROR', e.response.data);
 			} finally {
-				const res = await axios.get('comments')
-				.then(response => response.data.filter(item => 	item.post_key == payload.post_key))
+				const res = await _fetchPost(payload.post_key)
+					.then(response => response.comments);
 				commit('UPDATE_STATE', {
-					comments: res
+					comments: res,
 				});
 			}
 		},
-		async deletePostComments({ commit }, payload) {
-			try {
-				const comments = await _fetchComment(payload);
-				for (let i = 0; i < comments.length; i++) {
-					await axios.delete('comments/' + comments[i].id);
-				}
-			} catch(e) {
-				console.log('ERROR', e.response.data);
-			}finally {
-				commit('UPDATE_STATE', {
-					comments: []
-				});
-			}
-		}
-	}
+	},
 }
 
-async function _fetchPost(payload, id = 0) {
-	let	res = await axios.get('posts')
-		.then(response => response.data)
-	if (payload) {
-		res = res.filter(item => ((item.content.indexOf(payload) !== -1) || (item.title.indexOf(payload) !== -1)));
-	}
-	let filtered;
-	if (!id) {
-		filtered = res.filter(item => {
-			return (item.tag == '소분' || item.tag == '나눔');
-		})
-	} else {
-		filtered = res.filter(item => item.id == id)
-	}
-	return filtered;
+async function _fetchBoard() {
+	const	data0 = await axios.get('board-api?tag=0')
+		.then(response => response.data);
+	const data1 = await axios.get('board-api?tag=1')
+		.then(response => response.data);
+	const data2 = await axios.get('board-api?tag=2')
+		.then(response => response.data);
+	const	res = data0.concat(...data1.concat(...data2));
+	return res;
 }
 
-async function _fetchComment(payload) {
-	const res = await axios.get('comments')
-		.then(response => response.data.filter(item => item.post_key == payload))
+async function _fetchPost(payload) {
+	const res = await axios.get(`post-api/${payload}`)
+		.then(response => response.data);
 	return res;
 }
