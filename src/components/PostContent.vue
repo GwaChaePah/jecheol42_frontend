@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
 	name: 'PostContent',
@@ -77,10 +77,6 @@ export default {
 		...mapState('post', ['comments']),
 	},
 	methods: {
-		...mapActions('post', [
-			'deletePost',
-			'deletePostComments'
-		]),
 		scrollBottom() {
 			const container = document.getElementsByClassName('content-title-post');
 			const height = container[0].clientHeight + 100;
@@ -89,7 +85,7 @@ export default {
 		deletePost() {
 			const id = this.$route.params.id;
 			if (confirm("지우시겠습니까?")) {
-				this.deletePost(id);
+				this.$store.dispatch('post/deletePost', id);
 				this.$router.push('/board');
 			}
 		},

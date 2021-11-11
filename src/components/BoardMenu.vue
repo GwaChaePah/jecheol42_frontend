@@ -2,7 +2,7 @@
 	<div class="menu-bar">
 		<!-- <div> -->
 			<select class="dropdown" v-model="tag" @change="apply($event)">
-				<option	v-for="item, index in filters[1].items" :key="item" :value="item">
+				<option	v-for="item in filters[1].items" :key="item" :value="item">
 					{{ item }}
 				</option>
 			</select>
@@ -85,6 +85,9 @@ export default {
 			this.$store.dispatch('post/searchPostTags', this.search);
 		},
 	},
+	mounted() {
+		this.tag = 3;
+	}
 }
 </script>
 
