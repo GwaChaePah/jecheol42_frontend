@@ -3,7 +3,6 @@ import axios from 'axios';
 export default {
 	namespaced: true,
 	state: () => ({
-		fetched: [],
 		board: [],
 		boardView: [],
 		post: {},
@@ -33,9 +32,7 @@ export default {
 		async initBoard({ state, commit }, payload) {
 			if (state.loading) return;
 			if (!payload) {
-				const ret = await _fetchBoard();
 				commit('UPDATE_STATE', {
-					fetched: ret,
 					boardTag: 3,
 					board: [],
 				});
@@ -48,12 +45,12 @@ export default {
 			try {
 				if (payload) {
 					res = await axios.get(`board-api?search=${payload}`)
-							.then(response => response.data);
+						.then(response => response.data);
 				} else {
-					res = state.fetched;
+					res = await _fetchBoard();
 				}
 			} catch(e) {
-				console.log('ERROR', e.response.data);
+				console.log('ERROR> ', e);
 				res = [];
 			} finally {
 				commit('UPDATE_STATE', {
@@ -63,7 +60,7 @@ export default {
 						else return (item.tag === state.boardTag);
 					}),
 					loading: false,
-				})
+				});
 			}
 		},
 		async searchPostWithId({ commit, state }, payload) {
@@ -76,11 +73,11 @@ export default {
 			let post;
 			let comments;
 			try {
-				const res = await _fetchPost(payload.id);
+				const res = await _fetchPost(payload);
 				post = res.post;
 				comments = res.comments;
 			} catch (e) {
-				console.log('ERROR', e.response.data);
+				console.log('ERROR> ', e);
 				post = {};
 				comments = [];
 			} finally {
@@ -112,7 +109,7 @@ export default {
 					res = state.board.filter(item => item.tag === state.boardTag);
 				}
 			} catch (e) {
-				console.log('ERROR', e.response.data);
+				console.log('ERROR> ', e);
 				res = state.board;
 			} finally {
 				commit('UPDATE_STATE', {
@@ -123,16 +120,13 @@ export default {
 		},
 		async deletePost({ commit }, payload) {
 			try {
-				//
-				// NEEDS REVISION
-				//
-				// DELETE api needed
 				await axios.delete(`post-api/${payload}`);
 			} catch(e) {
-				console.log('ERROR', e.response.data);
+				console.log('ERROR> ', e);
 			} finally {
 				commit('UPDATE_STATE', {
-					post: {}
+					post: {},
+					comments: []
 				});
 			}
 		},
@@ -141,50 +135,38 @@ export default {
 			commit('UPDATE_STATE', {
 				loading: true
 			});
-			//
-			// NEEDS REVISION
-			//
-			// POST/PUT api needed
 			try {
-				let data = await _fetchPost(payload.post_key);
 				if (option) {
-					data.comments = data.comments.concat(payload);
 					await axios({
-						url: `post-api/${payload.post_key}`,
+						url: `comment-api/${payload.post_key}`,
 						method: 'post',
-						data: data,
+						data: payload,
 						headers: {"Content-Type" : "application/json"}
 					});
 				} else {
-					data.comments[payload.id] = payload;
 					await axios({
-						url: `post-api/${payload.post_key}`,
+						url: `comment_detail-api/${payload.id}`,
 						method: 'put',
-						data: data,
+						data: payload,
 						headers: {"Content-Type" : "application/json"}
 					});
 				}
 			} catch(e) {
-				console.log('ERROR', e.response.data);
+				console.log('ERROR> ', e);
 			} finally {
-				// const res = await _fetchPost(payload.post_key).then(response => response.data.comments);
+				const res = await _fetchPost(payload.post_key)
+					.then(response => response.comments);
 				commit('UPDATE_STATE', {
-					// comments: res,
+					comments: res,
 					loading: false
 				});
 			}
 		},
 		async deleteComment({ commit }, payload) {
 			try {
-				//
-				// NEEDS REVISION
-				//
-				// DELETE api needed
-				// const comments = await _fetchPost(payload.post_key).then(response => response.comments);
-				// console.log(comments)
-				// await axios.delete('comments/' + payload.id);
+				await axios.delete('comment_detail-api/' + payload.id);
 			} catch(e) {
-				console.log('ERROR', e.response.data);
+				console.log('ERROR> ', e);
 			} finally {
 				const res = await _fetchPost(payload.post_key)
 					.then(response => response.comments);
