@@ -193,7 +193,22 @@ export default {
 				});
 			}
 		},
-	},
+		async updatePost({ commit }, payload) {
+			try {
+				await axios({
+					url: `post-api/${payload.post_key}`,
+					method: 'put',
+					data: payload
+				})
+			} catch(e) {
+				console.log('ERROR', e.response.data);
+			} finally {
+				commit('UPDATE_STATE', {
+					post: payload
+				});
+			}
+		}
+	}
 }
 
 async function _fetchBoard() {
@@ -208,7 +223,7 @@ async function _fetchBoard() {
 }
 
 async function _fetchPost(payload) {
-	const res = await axios.get(`post-api/${payload}`)
+	const res = await axios.get(`post_comment-api/${payload}`)
 		.then(response => response.data);
 	return res;
 }
