@@ -51,9 +51,7 @@ export default {
 		])
 	},
 	created() {
-		this.$store.dispatch('post/searchPostWithId', {
-			id: this.$route.params.id
-		});
+		this.$store.dispatch('post/searchPostWithId', this.$route.params.id);
 		this.$store.dispatch('post/initMobileNav', null);
 	}
 }

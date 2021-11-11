@@ -16,7 +16,7 @@
 				<ul class="navlist" v-else>
 					<li ><span @click="toBoard">게시판</span></li>
 					<!-- to mypage -->
-					<li><span @click="">{{ userInfo.first_name }}</span></li>
+					<li><span @click="" class="user">{{ userInfo.first_name }}</span></li>
 					<li><span @click="logoutUser">로그아웃</span></li>
 				</ul>
 			</div>
@@ -32,7 +32,7 @@
 						<li @click="toRegister">회원가입</li>
 					</ul>
 					<ul v-else>
-						<li><b>username</b></li>
+						<li class="user">{{ userInfo.first_name }}</li>
 						<li @click="toMain">메인</li>
 						<li @click="toBoard">게시판</li>
 						<li @click="logoutUser">로그아웃</li>
@@ -173,9 +173,9 @@ export default {
 		updateScroll() {
 			const header = document.getElementById('searchbar');
 			const sticky = header.offsetTop;
-			if (window.pageYOffset > sticky) {
+			if (sticky && window.pageYOffset > sticky) {
 				this.scrollPosition = true;
-			} else {
+			} else if (window.pageYOffset <= 50){
 				this.scrollPosition = false;
 			}
 		}
@@ -354,7 +354,9 @@ export default {
 			color: #000;
 			transition: .5s ease all;
 			&:hover {
-				background-color: $color_prime_yellow;
+				text-decoration: underline wavy;
+				color: $color_prime_orange;
+				// background-color: $color_prime_yellow;
 			}
 		}
 		@media ( max-width: 500px ) {
@@ -377,6 +379,10 @@ export default {
 	.mobile-nav-enter-to {
 		transform: translateX(0);
 	}
+}
+.user {
+	font-weight: bold;
+	font-size: 1.2em;
 }
 .scrolled-header {
 	height: 100px;
