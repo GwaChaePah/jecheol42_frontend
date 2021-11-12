@@ -20,11 +20,11 @@ export default {
 		Footer
   },
   methods: {
-	  ...mapActions('login', ['getMemberInfo']),
+	  ...mapActions('login', ['loggedIn']),
   },
   beforeCreate() {
-  this.$store.dispatch('login/getMemberInfo');
-   }
+  	this.$store.dispatch('login/loggedIn')
+	}
 }
 </script>
 
