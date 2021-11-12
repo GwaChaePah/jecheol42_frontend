@@ -19,12 +19,12 @@
   						<option>소분</option>
   						<option>나눔</option>
 					</select> -->
-					<div class="key">분류</div>
+					<!-- <div class="key">분류</div>
 					<div class="stick"></div>
 					<input type="radio" id='sale' value=0 v-model="form.tag">
 					<label for="sale">소분</label>
 					<input type="radio" id='share' value=1 v-model="form.tag">
-					<label for="share">나눔</label>
+					<label for="share">나눔</label> -->
 				</div>
 				<div class="price">
 					<div class="key">가격</div>
@@ -35,7 +35,7 @@
 				<div>
 					<input multiple @change="onInputImage()" ref="postImage" type="file">
 				</div>
-			<button class="registerBtn" @click="checkForm()">작성</button>
+			<button class="registerBtn" @click.prevent="checkForm()">작성</button>
 			<button class="cancelBtn" @click="cancel()">취소</button>	
 		</form>
 	</div>
@@ -51,7 +51,7 @@ export default {
 			form: {
 				id:'',
 				title: '',
-				tag: 1,
+				tag: 0,
 				created_at: '',
 				user_key: 2,
 				content: '',
@@ -71,9 +71,9 @@ export default {
 			if (!this.form.title) {
 				confirm("제목은 필수입니다.")
 			}
-			if (!this.form.tag) {
-				confirm("카테고리를 설정해주세요.")
-			}
+			// if (!this.form.tag) {
+			// 	confirm("카테고리를 설정해주세요.")
+			// }
 			if (!this.form.content) {
 				confirm("내용은 필수입니다.")
 			}
@@ -88,7 +88,7 @@ export default {
 		},
 		async register() {
 			let variable = this.form.image1;
-			console.log(variable);
+			// console.log(variable);
 			const postObj =
 			{
 				id: this.id,
@@ -98,15 +98,20 @@ export default {
 				content: this.form.content,
 				price: this.form.price,
 				created_at: this.currentDate(),
-				// image1: variable,
+				image1: variable,
 				view_count: 0
 			};
+			let formData = new FormData();
+			for (let key in postObj) {
+				formData.append(key, postObj[key]);
+			}
 			await axios({
 				url: 'board-api/',
 				method: 'post',
-				data: postObj,
+				data: formData,
 				headers: {
-        			"Content-Type": "application/json"
+					// 'accept' : 'multipart/form-data',
+        			'Content-Type' : 'multipart/form-data'
               }
 			})
 			this.$router.push('/board');
