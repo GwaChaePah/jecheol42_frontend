@@ -6,7 +6,7 @@
 					<h1>회원가입 페이지가 될 어쩌구</h1>
 					<div>
 						<div for="username">사용자 이름: </div>
-						<input type="text" class="username" v-model="username">
+						<input type="text" class="username" v-model="username" @change="validateId"/>
 						<div>
 							<div for="password">비밀번호: </div>
 							<input type="password" class="password" v-model="password">

@@ -15,7 +15,7 @@ export default {
 			state.isLogin = true
 			state.isLoginError = false
 			state.userInfo = payload
-			console.log("성공~")
+			console.log("로그인~")
 		},
 		logout(state) {
 			state.isLogin = false
@@ -58,53 +58,10 @@ export default {
 				console.log(error)
 			})
 		},
-		// loggedIn({ commit }) {
-		// 	let access = localStorage.getItem("access_token")
-		// 	let refresh = localStorage.getItem("refresh_token")
-		// 	let config = {
-		// 		headers: {
-		// 			"access_token" : access,
-		// 			"refresh_token" : refresh
-		// 		}
-		// 	}
-		// 	console.log(config.headers)
-		// 	if (access == null) {
-		// 		console.log(access)
-		// 		if (refresh != null) {
-		// 			axios
-		// 			.post("api/token/", loginObj)
-		// 			.then (res => {
-		// 				console.log(res)
-		// 				let access = res.data.access
-		// 				commit('updateAccess', { access })
-		// 				localStorage.setItem("access_token", access)
-		// 			})		
-		// 			.catch(error => {
-		// 				console.log(error)
-		// 			})
-		// 			console.log("응 엑세스 재발급~")
-		// 		}
-		// 		else {
-		// 			console.log("로그아웃~")
-		// 			router.push('/login')
-		// 		}
-		// 	}
-		// 	else {
-		// 		commit("loginSuccess")
-		// 		router.push('/')
-		// 	}
-		// },
 		loggedIn({ commit }) {
 			let localAccess = localStorage.getItem("access_token")
 			let localRefresh = localStorage.getItem("refresh_token")
-			// let config = {
-			// 	headers: {
-			// 		"access_token" : localAccess,
-			// 		"refresh_token" : localRefresh
-			// 	}
-			// }
 			console.log(localRefresh)
-			// console.log(config.headers)
 			axios
 			.post ("api/token/refresh/", localRefresh)
 			.then (res => {
@@ -121,7 +78,7 @@ export default {
 			.catch (err => {
 				console.log("우쨜래미")
 				// router.push('/login')
-			})	
+			})
 		},
 		logout({ commit }) {
 			commit("destroyToken")

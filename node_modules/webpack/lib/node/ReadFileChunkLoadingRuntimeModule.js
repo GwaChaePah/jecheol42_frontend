@@ -25,8 +25,8 @@ class ReadFileChunkLoadingRuntimeModule extends RuntimeModule {
 	 * @returns {string} runtime code
 	 */
 	generate() {
-		const { chunk } = this;
-		const { chunkGraph, runtimeTemplate } = this.compilation;
+		const { chunkGraph, chunk } = this;
+		const { runtimeTemplate } = this.compilation;
 		const fn = RuntimeGlobals.ensureChunkHandlers;
 		const withBaseURI = this.runtimeRequirements.has(RuntimeGlobals.baseURI);
 		const withExternalInstallChunk = this.runtimeRequirements.has(
@@ -61,6 +61,10 @@ class ReadFileChunkLoadingRuntimeModule extends RuntimeModule {
 			false
 		);
 
+		const stateExpression = withHmr
+			? `${RuntimeGlobals.hmrRuntimeStatePrefix}_readFileVm`
+			: undefined;
+
 		return Template.asString([
 			withBaseURI
 				? Template.asString([
@@ -74,7 +78,9 @@ class ReadFileChunkLoadingRuntimeModule extends RuntimeModule {
 			"",
 			"// object to store loaded chunks",
 			'// "0" means "already loaded", Promise means loading',
-			"var installedChunks = {",
+			`var installedChunks = ${
+				stateExpression ? `${stateExpression} = ${stateExpression} || ` : ""
+			}{`,
 			Template.indent(
 				Array.from(initialChunkIds, id => `${JSON.stringify(id)}: 0`).join(
 					",\n"
