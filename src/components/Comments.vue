@@ -120,7 +120,7 @@ export default {
 					post_key: this.postId,
 					user_key: 14,
 					content: this.editedComment,
-					created_at: this.currentDate()
+					// created_at: this.currentDate()
 				};
 				this.updateComment({
 					option: 0,
