@@ -9,7 +9,7 @@
 						<input type="text" class="username" v-model="username" @change="validateId"/>
 						<div>
 							<div for="password">비밀번호: </div>
-							<input type="password" class="password" v-model="password">
+							<input type="password" class="password" v-model="password"  @change="validatePw">
 						</div>
 						<div>
 							<div for="passwordConfirmation">비밀번호 확인: </div>
@@ -91,7 +91,7 @@ export default {
 			alert("비밀번호는 8자리 ~ 20자리 이내로 입력해주세요.")
 			return false
 		} 
-		else if (this.password.search(/\s/) !== -1) {
+		else if (password.search(/\s/) !== -1) {
 			alert("비밀번호는 공백을 넣을 수 없습니다")
 			return false
 		}
