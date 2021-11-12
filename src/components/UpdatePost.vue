@@ -5,9 +5,9 @@
 				<div class="tag">
 					<select v-model="form.tag">
 						<option disabled value="">소분/나눔</option>
-  						<option>소분</option>
-  						<option>나눔</option>
-						<option>완료</option>
+  						<option value=1>소분</option>
+  						<option value=2>나눔</option>
+						<option value=3>완료</option>
 					</select>
 				</div>
 				<div class="title">
@@ -21,7 +21,7 @@
 					<div class="stick"></div>
 					<!-- {{thePost.price}} -->
 					<!-- {{thePost.tag}} -->
-					<input v-if="form.tag !== '나눔'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
+					<input v-if="form.tag !== 1" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
 					<div v-else> {{form.price = 0}} </div>
 				</div>
 				<div class="content">
@@ -44,9 +44,6 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'UpdatePost',
-	computed: {
-		...mapState('post', ['thePost']),
-	},
 	data() {
 		const index = this.$route.params.id;
 		return {
@@ -64,24 +61,29 @@ export default {
 			}
 		}
 	},
+	computed: {
+		...mapState('post', ['post'])
+	},
 	created : function() {
-		this.$store.dispatch('post/searchPostWithId', { id: this.$route.params.id });
+		// this.$store.dispatch('post/searchPostWithId', { id: this.$route.params.id });
+		// console.log(this.post.title);
 		setTimeout(() => { 
-			this.form.title = this.thePost.title;
-			this.form.tag = this.thePost.tag;
-			this.form.price = this.thePost.price;
-			this.form.content = this.thePost.content;
-			this.form.user = this.thePost.user;
-			this.form.image = this.thePost.image;
-			this.form.region = this.thePost.region;
-			this.form.view_count = this.thePost.view_count;
-			// this.for.created_at = this.thePost.created_at;
+			this.form.title = this.post.title;
+			this.form.tag = this.post.tag;
+			this.form.price = this.post.price;
+			this.form.content = this.post.content;
+			this.form.user = this.post.user;
+			// this.form.image = this.post.image;
+			this.form.region = this.post.region;
+			this.form.view_count = this.post.view_count;
+			// this.for.created_at = this.post.created_at;
 		}, 100);
 	},
 	methods: {
 		...mapActions('post', ['updatePost']),
 		onInputImage() {
-			this.form.image = this.$refs.postImage.files
+			this.form.image1 = this.$refs.postImage.files[0];
+			console.log(this.form.image1);
 		},
 		checkForm(e){
 			if (!this.form.title) {
@@ -96,13 +98,14 @@ export default {
 			if (this.form.tag === "소분" && !this.form.price) {
 				confirm("가격을 입력해주세요.")
 			}
-			if (this.form.title && this.form.tag && this.form.content) {
-				if ((this.form.tag === "소분" && this.form.price) ||
-					((this.form.tag === "나눔" || this.form.tag === "완료") && !this.form.price))
-					this.update();
-			}
+				this.update();
+			// if (this.form.title && this.form.tag && this.form.content) {
+			// 	if ((this.form.tag === "소분" && this.form.price) ||
+			// 		((this.form.tag === "나눔" || this.form.tag === "완료") && !this.form.price))
+			// }
 		},
 		async update() {
+			let variable = this.form.image1;
 			const index = this.$route.params.id;
 			const postObj = {
 				id: index,
@@ -113,10 +116,21 @@ export default {
 				region: this.form.region,
 				content: this.form.content,
 				price: this.form.price,
-				image: this.thePost.image,
+				image1: variable,
 				view_count: this.form.view_count
 			};
-			this.$store.dispatch('post/updatePost', postObj);
+			console.log(index);
+			let formData = new FormData();
+			for (let key in postObj) {
+				formData.append(key, postObj[key]);
+			}
+			// for (var key of formData.keys()) {
+  			// console.log("key is " + formData.keys()[0]);
+			// }
+			// for (var value of formData.values()) {
+				console.log("value is " + formData.get('id'));
+			// }
+			this.$store.dispatch('post/updatePost', formData);
 			this.$router.push('/board');
 		},
 		currentDate() {
