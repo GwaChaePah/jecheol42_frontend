@@ -7,57 +7,81 @@ export default {
 		userInfo: null,
 		isLogin: false,
 		isLoginError: false,
+		accessToken: null,
+		refreshToken: null
 	},
 	mutations: {
 		loginSuccess(state, payload) {
 			state.isLogin = true
 			state.isLoginError = false
 			state.userInfo = payload
-			console.log("성공~")
+			console.log("로그인~")
 		},
 		logout(state) {
 			state.isLogin = false
 			state.isLoginError = false
 			console.log("로그아웃~")
+		},
+		updateAccess (state, { access }) {
+			state.accessToken = access
+		},
+		updateStorage (state, { access, refresh }) {
+			state.accessToken = access
+			state.refreshToken = refresh
+		},
+		reissuanceAccess (state, { access}) {
+			state.accessToken = access
+		},
+		destroyToken (state) {
+			state.accessToken = null
+			state.refreshToken = null
 		}
 	},
 	actions: {
-		login({ dispatch }, loginObj) {
+		login({ commit, dispatch }, loginObj) {
 			axios
-			.post("https://reqres.in/api/login", loginObj)
-			.then(response => {
-				let token = response.data.token
-				localStorage.setItem("access_token", token)
-				dispatch("getMemberInfo")
-					.catch(err => {
-						alert("아이디와 비밀번호를 확인하세요")
-					})
-			})
+			.post("api/token/", loginObj)
+			.then (response => {
+				// console.log(response)
+				let access = response.data.access
+				let refresh = response.data.refresh
+				commit('updateStorage', { access,refresh })
+				localStorage.setItem("access_token", access)
+				localStorage.setItem("refresh_token", refresh)
+
+				// dispatch("loggedIn")
+				commit("loginSuccess")
+				router.push('/')
+			})		
 			.catch(error => {
-				alert("아이디와 비밀번호를 확인하세요")
+				// alert("아이디와 비밀번호를 확인하세요")
+				console.log(error)
 			})
 		},
-		getMemberInfo({commit}) {
-			let token = localStorage.getItem("access_token")
-			let config = {
-				headers: {
-					"access-token" : token
-				}
-			}
+		loggedIn({ commit }) {
+			let localAccess = localStorage.getItem("access_token")
+			let localRefresh = localStorage.getItem("refresh_token")
+			console.log(localRefresh)
 			axios
-			.get("https://reqres.in/api/users/2", config)
-			.then(res => {
-				let userInfo = {
-					avatar: res.data.data.avatar,
-					id: res.data.data.id,
-					first_name: res.data.data.first_name,
-					last_name: res.data.data.last_name,
+			.post ("api/token/refresh/", localRefresh)
+			.then (res => {
+				console.log(res)
+				let newAccess = res.data.access
+				if (localAccess !== newAccess) {
+					commit('updateAccess', { access })
+					localStorage.setItem("access_token", newAccess)
 				}
-				commit("loginSuccess", userInfo)
-				// router.push('/')
+				else {
+					console.log("글케댓다")
+				}				
+			})
+			.catch (err => {
+				console.log("우쨜래미")
+				// router.push('/login')
 			})
 		},
 		logout({ commit }) {
+			commit("destroyToken")
 			commit("logout")
 		}
 	}
