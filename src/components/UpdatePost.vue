@@ -1,0 +1,250 @@
+<template>
+	<div class="background">
+		<form class="createPostArea">
+			<div class="createInfo">게시글 수정</div>
+				<div class="tag">
+					<select v-model="form.tag">
+						<option disabled value="">소분/나눔</option>
+  						<option value=1>소분</option>
+  						<option value=2>나눔</option>
+						<option value=3>완료</option>
+					</select>
+				</div>
+				<div class="title">
+					<div class="key">title</div>
+					<div class="stick"></div>
+					<!-- <div>{{ thePost.title }}</div> -->
+					<input id="title" v-model="form.title" type="string" placeholder="제목이에용"/>
+				</div>
+				<div class="price">
+					<div class="key">price</div>
+					<div class="stick"></div>
+					<!-- {{thePost.price}} -->
+					<!-- {{thePost.tag}} -->
+					<input v-if="form.tag !== 1" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
+					<div v-else> {{form.price = 0}} </div>
+				</div>
+				<div class="content">
+					<div class="key">content</div>
+					<div class="stick"></div>
+					<!-- {{thePost.content}} -->
+					<textarea v-model="form.content" type="string" placeholder="내용이에용"/>
+				</div>
+				<div>
+					<input multiple @change='onInputImage()' ref="postImage" type="file">
+				</div>
+			<button class="registerBtn" @click="checkForm()">수정</button>
+			<button class="cancelBtn" @click="cancel()">취소</button>	
+		</form>
+	</div>
+</template>
+
+<script>
+import { mapState, mapActions } from 'vuex';
+
+export default {
+	name: 'UpdatePost',
+	data() {
+		const index = this.$route.params.id;
+		return {
+			form: {
+				id: index,
+				title: '',
+				tag: '',
+				created_at: '',
+				user: '',
+				region: '',
+				content: '',
+				price: '',
+				image: [],
+				view_count: ''
+			}
+		}
+	},
+	computed: {
+		...mapState('post', ['post'])
+	},
+	created : function() {
+		// this.$store.dispatch('post/searchPostWithId', { id: this.$route.params.id });
+		// console.log(this.post.title);
+		setTimeout(() => { 
+			this.form.title = this.post.title;
+			this.form.tag = this.post.tag;
+			this.form.price = this.post.price;
+			this.form.content = this.post.content;
+			this.form.user = this.post.user;
+			// this.form.image = this.post.image;
+			this.form.region = this.post.region;
+			this.form.view_count = this.post.view_count;
+			// this.for.created_at = this.post.created_at;
+		}, 100);
+	},
+	methods: {
+		...mapActions('post', ['updatePost']),
+		onInputImage() {
+			this.form.image1 = this.$refs.postImage.files[0];
+			console.log(this.form.image1);
+		},
+		checkForm(e){
+			if (!this.form.title) {
+				confirm("제목은 필수입니다.")
+			}
+			if (!this.form.tag) {
+				confirm("카테고리를 설정해주세요.")
+			}
+			if (!this.form.content) {
+				confirm("내용은 필수입니다.")
+			}
+			if (this.form.tag === "소분" && !this.form.price) {
+				confirm("가격을 입력해주세요.")
+			}
+				this.update();
+			// if (this.form.title && this.form.tag && this.form.content) {
+			// 	if ((this.form.tag === "소분" && this.form.price) ||
+			// 		((this.form.tag === "나눔" || this.form.tag === "완료") && !this.form.price))
+			// }
+		},
+		async update() {
+			let variable = this.form.image1;
+			const index = this.$route.params.id;
+			const postObj = {
+				id: index,
+				title: this.form.title,
+				tag: this.form.tag,
+				created_at: this.currentDate(),
+				user: this.form.user,
+				region: this.form.region,
+				content: this.form.content,
+				price: this.form.price,
+				image1: variable,
+				view_count: this.form.view_count
+			};
+			console.log(index);
+			let formData = new FormData();
+			for (let key in postObj) {
+				formData.append(key, postObj[key]);
+			}
+			// for (var key of formData.keys()) {
+  			// console.log("key is " + formData.keys()[0]);
+			// }
+			// for (var value of formData.values()) {
+				console.log("value is " + formData.get('id'));
+			// }
+			this.$store.dispatch('post/updatePost', formData);
+			this.$router.push('/board');
+		},
+		currentDate() {
+			const current = new Date();
+			const month = (current.getMonth() + 1 < 10) ? '0' + current.getMonth() + 1 : current.getMonth() + 1;
+			const date = (current.getDate() < 10) ? '0' + current.getDate() : current.getDate();
+			const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes() : current.getMinutes();
+			const hour = (current.getHours() < 10) ? '0' + current.getHours() : current.getHours();
+			const fullDate = `${current.getFullYear()}.${month}.${date} ${hour}:${minute}`
+			return fullDate;
+		},
+		cancel() {
+			this.$router.push('/board')
+		}
+	}
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../scss/main.scss';
+@import '../scss/commons.scss';
+
+@mixin center {
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+	text-align: center;
+}
+@mixin input {
+	width: 15vh;
+	height: 3vh;
+	padding-left: 8px;
+	font-size: 15px;
+}
+@mixin block($size){
+	width: $size;
+	display: inline-block;
+}
+.background{
+	padding: 300px 70px 70px 70px;
+	@include center;
+	.createPostArea {
+		@include center;
+		border-radius: .3em;
+		box-shadow: 0 0 10px 0 $color_shadow_03;
+		min-width: 200px;
+		min-height: 250px;
+		width: 100vh;
+		height: 50vh;
+		border: 20px;
+		padding: 30px;
+		.createInfo{
+			margin: 0px 0px;
+			font-size: 20px;
+			color: rgba(#76862c, 0.76);
+		}
+		.title {
+			padding: 10px;
+			margin: auto;
+			display: block;
+			.key {			
+				@include block(20%);
+				border: solid black;
+				border-width: 0px 1px 0px 0px;
+			}		
+			.stick {
+				@include block(10%);
+			}
+			input {
+				@include block(70%);
+				@include input;
+				color: rgba(#76862c, 0.76);
+			}
+		}
+		.content {
+			padding: 10px;
+			margin: auto;
+			display: block;
+			.key {			
+				@include block(20%);
+				border: solid black;
+				border-width: 0px 1px 0px 0px;
+			}		
+			.stick {
+				@include block(10%);
+			}
+			input {
+				@include block(70%);
+				@include input;
+				color: rgba(#76862c, 0.76);
+			}
+		}
+		.registerBtn {
+			margin: 40px;
+			font-size: 17px;
+			width: 10vh;
+			height: 3vh;
+			border-radius: .3em;
+			border-color: rgba(187, 212, 68, 30%);
+			box-shadow: 0 0 10px 0 $color_shadow_03;
+			background-color: rgba(#76862c, 0.76);
+			color: white;
+		}
+		.cancelBtn {
+			margin: 40px;
+			font-size: 17px;
+			width: 10vh;
+			height: 3vh;
+			border-radius: .3em;
+			border-color: rgba(187, 212, 68, 30%);
+			box-shadow: 0 0 10px 0 $color_shadow_03;
+			background-color: white;
+			color: rgba(#76862c, 0.76);
+		}
+	}
+}
+</style>

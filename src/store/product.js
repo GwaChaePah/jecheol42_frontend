@@ -102,7 +102,7 @@ export default {
 }
 
 async function _fetchProduct() {
-	const res = await axios.get('product-api')
+	const res = await axios.get('product-api/')
 		.then(response => response.data.results);
 	return res;
 }

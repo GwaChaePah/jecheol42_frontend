@@ -3,8 +3,8 @@
 		<div class="user-menu" v-if="1">
 			<button class="material-icons" @click="showMenu">more_vert</button>
 			<div class="dropdown" v-show="click">
-				<div>
-					<span class="text">글수정</span>
+				<div @click="updatePost">
+					<span class="text" @click="updatePost">글수정</span>
 					<span class="material-icons-outlined" title="수정">edit</span>
 				</div>
 				<div @click="deletePost">
@@ -91,6 +91,14 @@ export default {
 		},
 		showMenu() {
 			this.click = !this.click;
+		},
+		updatePost() {
+			this.$router.push({
+				name: 'UpdatePost',
+				params: {
+					id: this.$route.params.id
+				}
+			});
 		}
 	}
 }

@@ -54,7 +54,7 @@ export default {
 					last_name: res.data.data.last_name,
 				}
 				commit("loginSuccess", userInfo)
-				router.push('/')
+				// router.push('/')
 			})
 		},
 		logout({ commit }) {

@@ -6,6 +6,8 @@ import Post from './Post'
 import Product from './Product'
 import Search from './Search'
 import NotFound from './NotFound'
+import CreatePost from './CreatePost'
+import UpdatePost from '~/components/UpdatePost'
 
 export default createRouter({
   history: createWebHashHistory(),
@@ -45,6 +47,16 @@ export default createRouter({
 			path: '/:notFound(.*)',
 			name: 'NotFound',
 			component: NotFound
+		},
+		{
+			path: '/create',
+			name: 'CreatePost',
+			component: CreatePost
+		},
+		{
+			path: '/update/:id',
+			name: 'UpdatePost',
+			component: UpdatePost
 		}
   ]
 })
