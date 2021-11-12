@@ -118,7 +118,7 @@ export default {
 				const commentObj = {
 					id: comment.id,
 					post_key: this.postId,
-					user_key: "test",
+					user_key: 14,
 					content: this.editedComment,
 					created_at: this.currentDate()
 				};

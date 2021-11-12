@@ -6,7 +6,7 @@
 					{{ item }}
 				</option>
 			</select>
-			<button class="menu-bar__list" type="button">글쓰기</button>
+			<button class="menu-bar__list" type="button" @click="createPost">글쓰기</button>
 			<!-- </div> -->
 			<!-- <div>
 			<select class="dropdown" v-for="filter in filters" v-model="$data[filter.name]" 	:key="filter.name" @change="apply($event)">
@@ -84,6 +84,11 @@ export default {
 			this.tag = value;
 			this.$store.dispatch('post/searchPostTags', this.search);
 		},
+		createPost() {
+			this.$router.push({
+			path: '/create'
+		})
+		}
 	},
 	mounted() {
 		this.tag = 3;
