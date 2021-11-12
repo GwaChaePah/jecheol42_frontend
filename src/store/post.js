@@ -119,6 +119,7 @@ export default {
 			}
 		},
 		async deletePost({ commit }, payload) {
+			console.log(payload);
 			try {
 				await axios.delete(`post-api/${payload}`);
 			} catch(e) {
@@ -187,6 +188,21 @@ export default {
 			} finally {
 				commit('UPDATE_STATE', {
 					post: payload
+				});
+			}
+		},
+		async updatePost({ commit }, payload) {
+			try {
+				await axios({
+					url: 'posts/' + payload.id,
+					method: 'put',
+					data: payload
+				})
+			} catch(e) {
+				console.log('ERROR', e.response.data);
+			} finally {
+				commit('UPDATE_STATE', {
+					thePost: payload
 				});
 			}
 		}
