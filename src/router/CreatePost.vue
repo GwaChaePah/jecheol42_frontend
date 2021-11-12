@@ -21,15 +21,15 @@
 					</select> -->
 					<div class="key">분류</div>
 					<div class="stick"></div>
-					<input type="radio" id='sale' value="0" v-model="form.tag">
+					<input type="radio" id='sale' value=0 v-model="form.tag">
 					<label for="sale">소분</label>
-					<input type="radio" id='share' value="1" v-model="form.tag">
+					<input type="radio" id='share' value=1 v-model="form.tag">
 					<label for="share">나눔</label>
 				</div>
 				<div class="price">
 					<div class="key">가격</div>
 					<div class="stick"></div>
-					<input v-if="form.tag !== '1'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
+					<input v-if="form.tag !== 1" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
 					<div class="zero" v-else> {{form.price = 0}} </div>
 				</div>
 				<div>
@@ -51,9 +51,9 @@ export default {
 			form: {
 				id:'',
 				title: '',
-				tag: '',
+				tag: 1,
 				created_at: '',
-				user: '',
+				user_key: 2,
 				content: '',
 				price: '',
 				image1: '',
@@ -80,11 +80,11 @@ export default {
 			if (this.form.tag === "소분" && !this.form.price) {
 				confirm("가격을 입력해주세요.")
 			}
-			if (this.form.title && this.form.tag && this.form.content) {
-				if ((this.form.tag === "0" && this.form.price) ||
-					((this.form.tag === "1" || this.form.tag === "2") && !this.form.price))
-					this.register();
-			}
+			this.register();
+			// if (this.form.title && this.form.tag && this.form.content) {
+			// 	if ((this.form.tag === 0 && this.form.price) ||
+			// 		((this.form.tag === 1 || this.form.tag === 2) && !this.form.price))
+			// }
 		},
 		async register() {
 			let variable = this.form.image1;
@@ -92,23 +92,22 @@ export default {
 			const postObj =
 			{
 				id: this.id,
-				tag: this.form.tag,
+				tag: 0,
 				title: this.form.title,
-				user: ylee,
+				user_key: 2,
 				content: this.form.content,
 				price: this.form.price,
 				created_at: this.currentDate(),
-				image1: variable,
+				// image1: variable,
 				view_count: 0
 			};
-			console.log("image is this " + postObj.image1);
 			await axios({
-				url: 'board-api',
+				url: 'board-api/',
 				method: 'post',
 				data: postObj,
-			// 	headers: {
-        	// 		"Content-Type": "multipart/form-data"
-            //   }
+				headers: {
+        			"Content-Type": "application/json"
+              }
 			})
 			this.$router.push('/board');
 		},
@@ -197,7 +196,7 @@ export default {
 				@include block(70%);
 				@include input;
 				border: 2px solid rgba(#76862c, 0.76);
-				width: 30%;
+				width: 50vw;
 				height: 40px;
 				// border: 0 none;
 			}
