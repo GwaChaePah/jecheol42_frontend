@@ -86,8 +86,8 @@ export default {
 		},
 		createPost() {
 			this.$router.push({
-			path: '/create'
-		})
+				path: '/create'
+			})
 		}
 	},
 	mounted() {
@@ -106,12 +106,14 @@ export default {
 	margin-bottom: 1em;
 	width: 100%;
 	select {
+		font-family: 'Gowun Dodum', sans-serif;
 		margin: 0 .1em;
 		padding: .4em 0.2em;
 		letter-spacing: 2px;
 	}
   option {
 		color: black;
+		font-family: 'Gowun Dodum', sans-serif;
 	}
 	.dropdown {
 		margin: 0 20px 0 -15px;
@@ -125,6 +127,7 @@ export default {
 	background-color: white;
 	border-radius: .2em;
 	letter-spacing: 2px;
+	font-family: 'Gowun Dodum', sans-serif;
 	&:hover {
 		background-color: #383838;
 		color: white;

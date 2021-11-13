@@ -25,7 +25,7 @@
 			</div>
 			<div class="title__info">
 				<p id="writer"><span class="material-icons">account_circle</span>
-					{{ post.user }}
+					{{ post.user_key }}
 				</p>
 				<p id="time"><span class="material-icons">schedule</span>
 					{{ post.created_at }}
@@ -84,7 +84,7 @@ export default {
 		},
 		deletePost() {
 			const id = this.$route.params.id;
-			if (confirm("지우시겠습니까?")) {
+			if (confirm("정말 지우시겠습니까?")) {
 				this.$store.dispatch('post/deletePost', id);
 				this.$router.push('/board');
 			}
@@ -201,6 +201,7 @@ export default {
 			padding: .2em;
 			font-size: 1.3em;
 			span {
+				font-family: 'Gowun Dodum', sans-serif;
 				padding: 0 .3em;
 			}
 			@media (max-width: 770px) {
@@ -241,6 +242,9 @@ export default {
 					margin: 0 2px;
 					transform: translateY(2px);
 				}
+			}
+			#writer {
+				font-family: 'Gowun Dodum', sans-serif;
 			}
 			#time {
 				color: rgb(114, 115, 114);

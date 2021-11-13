@@ -79,24 +79,14 @@ export default {
 		handleSubmit(e) {
 			const commentObj = {
 				post_key: this.postId,
-				user_key: "test",
+				user_key: 14,
 				content: this.comment,
-				created_at: this.currentDate()
 			};
 			this.updateComment({
 				payload: commentObj
 			});
 			this.user = '';
 			this.comment = '';
-		},
-		currentDate() {
-			const current = new Date();
-			const month = (current.getMonth() + 1 < 10) ? '0' + current.getMonth() + 1 : current.getMonth() + 1;
-			const date = (current.getDate() < 10) ? '0' + current.getDate() : current.getDate();
-			const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes() : current.getMinutes();
-			const hour = (current.getHours() < 10) ? '0' + current.getHours() : current.getHours();
-			const fullDate = `${current.getFullYear()}.${month}.${date} ${hour}:${minute}`
-			return fullDate;
 		},
 		cancel() {
 			this.newComment.user = '';
@@ -111,23 +101,19 @@ export default {
 			}, 1);
 		},
 		saveComment(comment) {
-			if (comment.content === this.editedComment) {
-				this.editingId = '';
-			}
-			else {
+			if (comment.content !== this.editedComment) {
 				const commentObj = {
 					id: comment.id,
 					post_key: this.postId,
 					user_key: 14,
 					content: this.editedComment,
-					// created_at: this.currentDate()
 				};
 				this.updateComment({
 					option: 0,
 					payload: commentObj
 				});
-				this.editingId = '';
 			}
+			this.editingId = '';
 		},
 		async delComment(comment) {
 			if (confirm("정말 지우시겠습니까?")) {
@@ -208,6 +194,7 @@ export default {
 				padding: .3em .5em;
 				margin-right: 2em;
 				font-weight: bold;
+				font-family: 'Gowun Dodum', sans-serif;
 				.material-icons {
 					font-size: 20px;
 					transform: translateY(3px);

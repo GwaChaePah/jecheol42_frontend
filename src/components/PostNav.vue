@@ -4,7 +4,7 @@
 			<span class="material-icons">arrow_back</span>
 			뒤로가기
 		</button>
-		<button id="write" @click="createPost">
+		<button id="write">
 			<span class="material-icons">create</span>
 			글쓰기
 		</button>
@@ -47,10 +47,6 @@ export default {
 		toTop() {
 			document.body.scrollTop = 0;
 			document.documentElement.scrollTop = 0;
-		},
-		createPost() {
-			console.log("create part");
-			this.$router.push('/create');
 		}
 	}
 }
@@ -66,6 +62,7 @@ export default {
 	position: absolute;
 	z-index: 30;
 	button {
+		font-family: 'Gowun Dodum', sans-serif;
 		box-shadow: 0 0 5px 0 $color_shadow_03;
 		display: block;
 		width: 70px;

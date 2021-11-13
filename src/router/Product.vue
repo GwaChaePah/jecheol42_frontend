@@ -95,6 +95,7 @@ export default {
 				}
 				strong {
 					color: white;
+					font-family: 'Gowun Dodum', sans-serif;
 					font-size: 2.5em;
 					position: absolute;
 					left: 20%;

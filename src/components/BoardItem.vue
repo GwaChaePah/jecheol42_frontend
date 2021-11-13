@@ -165,6 +165,7 @@ export default {
 			.info__category {
 				display: inline-block;
 				font-weight: bold;
+				font-family: 'Gowun Dodum', sans-serif;
 				padding: .4em;
 				// color: $color_prime_orange;
 				@media (max-width: 400px) {
@@ -185,6 +186,7 @@ export default {
 				padding: .5em .8em;
 				font-size: .9em;
 				font-weight: bold;
+				font-family: 'Gowun Dodum', sans-serif;
 				&::after {
 					content: '원';
 				}
