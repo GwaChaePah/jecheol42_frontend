@@ -1,4 +1,8 @@
 import axios from 'axios';
+<<<<<<< HEAD
+=======
+import _ from 'lodash';
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 
 export default {
 	namespaced: true,
@@ -9,7 +13,12 @@ export default {
 		comments: [],
 		loading: false,
 		mobileNav: false,
+<<<<<<< HEAD
 		boardTag: ''
+=======
+		boardTag: 3,
+		page: 1
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
@@ -29,12 +38,20 @@ export default {
 				boardTag: payload
 			});
 		},
+<<<<<<< HEAD
 		async initBoard({ state, commit }, payload) {
+=======
+		async initBoard({ state, commit }, { payload, page = 1 }) {
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 			if (state.loading) return;
 			if (!payload) {
 				commit('UPDATE_STATE', {
 					boardTag: 3,
 					board: [],
+<<<<<<< HEAD
+=======
+					page: 1
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 				});
 			}
 			commit('UPDATE_STATE', {
@@ -44,6 +61,7 @@ export default {
 			let res;
 			try {
 				if (payload) {
+<<<<<<< HEAD
 					res = await axios.get(`board-api?search=${payload}`)
 						.then(response => response.data);
 					for (let i = 0; i < res.length; i++) {
@@ -54,17 +72,33 @@ export default {
 					}
 				} else {
 					res = await _fetchBoard();
+=======
+					res = await _fetchBoardwSearch(payload);
+				} else {
+					commit('UPDATE_STATE', {
+						page: page
+					});
+					res = await _fetchBoard(state.page);
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 				}
 			} catch(e) {
 				console.log('initBoard> ', e);
 				res = [];
 			} finally {
+<<<<<<< HEAD
 				commit('UPDATE_STATE', {
 					board: res,
 					boardView: res.filter(item => {
 						if (state.boardTag === 3) return (item.tag === 1 || item.tag === 0);
 						else return (item.tag === state.boardTag);
 					}),
+=======
+				const boardView = (state.boardTag === 3) ? res :
+					await _fetchwTag(state.boardTag, payload);
+				commit('UPDATE_STATE', {
+					board: res,
+					boardView: boardView,
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 					loading: false,
 				});
 			}
@@ -79,6 +113,7 @@ export default {
 			let post;
 			let comments;
 			try {
+<<<<<<< HEAD
 				const res = await _fetchPost(payload);
 				post = res.post;
 				const date = post.created_at.slice(0, 10).replaceAll('-', '.');
@@ -92,6 +127,10 @@ export default {
 					const created_at = date.concat('. '.concat(...time));
 					comments[i].created_at = created_at;
 				}
+=======
+				post = await _fetchPost(payload);
+				comments = await _fetchComment(payload);
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 			} catch (e) {
 				console.log('searchPostWithId> ', e);
 				post = {};
@@ -111,6 +150,7 @@ export default {
 				loading: true
 			});
 			let res;
+<<<<<<< HEAD
 			if (!state.board) {
 				res = await axios.get(`board-api?search=${payload}`)
 					.then(response => response.data);
@@ -130,6 +170,17 @@ export default {
 				} else {
 					res = state.board.filter(item => item.tag === state.boardTag);
 				}
+=======
+			try {
+				if (!state.board) {
+					res = await _fetchBoardwSearch(payload);
+					commit('UPDATE_STATE', {
+						board: res,
+					});
+				}
+				res = (state.boardTag === 3) ? state.board :
+					await _fetchwTag(state.boardTag, payload);
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 			} catch (e) {
 				console.log('searchPostTags> ', e);
 				res = state.board;
@@ -169,7 +220,11 @@ export default {
 				} else {
 					await axios({
 						url: `comment-api/${payload.id}/`,
+<<<<<<< HEAD
 						method: 'put',
+=======
+						method: 'patch',
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 						data: payload,
 						headers: {"Content-Type" : "application/json"}
 					});
@@ -177,6 +232,7 @@ export default {
 			} catch(e) {
 				console.log('updateComment> ', e);
 			} finally {
+<<<<<<< HEAD
 				const res = await _fetchPost(post_key)
 				.then(response => response.comments);
 				for (let i = 0; i < res.length; i++) {
@@ -185,6 +241,9 @@ export default {
 					const created_at = date.concat('. '.concat(...time));
 					res[i].created_at = created_at;
 				}
+=======
+				const res = await _fetchComment(post_key);
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 				commit('UPDATE_STATE', {
 					comments: res,
 					loading: false
@@ -197,16 +256,28 @@ export default {
 			} catch(e) {
 				console.log('deleteComment> ', e);
 			} finally {
+<<<<<<< HEAD
 				const res = await _fetchPost(payload.post_key)
 				.then(response => response.comments);
+=======
+				const res = await _fetchComment(payload.post_key);
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 				commit('UPDATE_STATE', {
 					comments: res,
 				});
 			}
 		},
 		async updatePost({ commit }, payload) {
+			/*
+			const newPayload = _.chain(payload)
+				.toPairs()
+				.filter(([k, v]) => !_.isNil(v))
+				.fromPairs()
+				.value()
+			*/
+			let data
 			try {
-				await axios({
+				data = await axios({
 					url: `post-api/${payload.get('id')}/`,
 					method: 'patch',
 					data: payload,
@@ -216,6 +287,7 @@ export default {
 				})
 			} catch(e) {
 				console.log('updatePost> ', e);
+<<<<<<< HEAD
 			} finally {
 				commit('UPDATE_STATE', {
 					post: payload
@@ -227,6 +299,17 @@ export default {
 async function _fetchBoard() {
 	let res = await axios.get('board-api/')
 	.then(response => response.data.results);
+=======
+				return
+			}
+			commit('UPDATE_STATE', { post: data })
+		},
+	},
+}
+async function _fetchBoard(payload) {
+	const	res = await axios.get(`board-api/?page=${payload}`)
+		.then(response => response.data.results);
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 	for (let i = 0; i < res.length; i++) {
 		const date = res[i].created_at.slice(0, 10).replaceAll('-', '.');
 		const time = res[i].created_at.slice(11, 16);
@@ -236,7 +319,55 @@ async function _fetchBoard() {
 	return res;
 }
 async function _fetchPost(payload) {
+<<<<<<< HEAD
 	const res = await axios.get(`post_comment-api/${payload}/`)
 	.then(response => response.data);
+=======
+	const res = await axios.get(`post-api/${payload}/`)
+		.then(response => response.data);
+	const date = res.created_at.slice(0, 10).replaceAll('-', '.');
+	const time = res.created_at.slice(11, 16);
+	const created_at = date.concat('. '.concat(...time));
+	res.created_at = created_at;
+	return res;
+}
+async function _fetchComment(payload) {
+	const res = await axios.get(`post_comment-api/${payload}/`)
+		.then(response => response.data.comments);
+	for (let i = 0; i < res.length; i++) {
+		const date = res[i].updated_at.slice(0, 10).replaceAll('-', '.');
+		const time = res[i].updated_at.slice(11, 16);
+		const updated_at = date.concat('. '.concat(...time));
+		res[i].updated_at = updated_at;
+	}
+	return res;
+}
+async function _fetchBoardwSearch(payload) {
+	const	res = await axios.get(`board-api?search=${payload}`)
+		.then(response => response.data);
+		for (let i = 0; i < res.length; i++) {
+			const date = res[i].created_at.slice(0, 10).replaceAll('-', '.');
+			const time = res[i].created_at.slice(11, 16);
+			const created_at = date.concat('. '.concat(...time));
+			res[i].created_at = created_at;
+		}
+	return res;
+}
+async function _fetchwTag(tag, payload) {
+	let res;
+	if (payload) {
+		res = await axios.get(`board-api?search=${payload}&tag=${tag}`)
+		.then(response => response.data);
+	} else {
+		res = await axios.get(`board-api?tag=${tag}`)
+		.then(response => response.data);
+	}
+	for (let i = 0; i < res.length; i++) {
+		const date = res[i].created_at.slice(0, 10).replaceAll('-', '.');
+		const time = res[i].created_at.slice(11, 16);
+		const created_at = date.concat('. '.concat(...time));
+		res[i].created_at = created_at;
+	}
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 	return res;
 }

@@ -139,8 +139,8 @@ export default {
 			this.$router.push('/Register');
 		},
 		toBoard() {
-			this.initBoard();
 			this.updateSearch();
+			this.initBoard({payload:null});
 			this.initMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -153,7 +153,7 @@ export default {
 		},
 		apply() {
 			if (this.search) {
-				this.initBoard(this.search);
+				this.initBoard({payload:this.search});
 				this.updateSearch(this.search);
 				this.searchProduct(this.search);
 				this.search = '';

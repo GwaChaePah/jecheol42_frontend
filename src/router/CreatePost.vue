@@ -29,7 +29,7 @@
 				<div class="price">
 					<div class="key">가격</div>
 					<div class="stick"></div>
-					<input v-if="form.tag !== 1" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
+					<input v-if="form.tag !== '1'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
 					<div class="zero" v-else> {{form.price = 0}} </div>
 				</div>
 				<div>
@@ -65,31 +65,49 @@ export default {
 	methods: {
 		onInputImage() {
 			this.form.image1 = this.$refs.postImage.files[0];
-			console.log(this.form.image1);
+			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
+			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
 		},
 		checkForm(e){
-			if (!this.form.title) {
+			if (!this.form.title)
 				confirm("제목은 필수입니다.")
+<<<<<<< HEAD
 			}
 			if (!this.form.tag) {
 				confirm("카테고리를 설정해주세요.")
 			}
 			if (!this.form.content) {
+=======
+			if (!this.form.tag)
+				confirm("카테고리를 설정해주세요.")
+			if (!this.form.content)
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 				confirm("내용은 필수입니다.")
-			}
-			if (this.form.tag === "소분" && !this.form.price) {
+			if (this.form.tag === "소분" && !this.form.price)
 				confirm("가격을 입력해주세요.")
-			}
-			this.register();
-			// if (this.form.title && this.form.tag && this.form.content) {
-			// 	if ((this.form.tag === 0 && this.form.price) ||
-			// 		((this.form.tag === 1 || this.form.tag === 2) && !this.form.price))
-			// }
+			if (this.$refs.postImage.files[3])
+				confirm("사진은 3장까지 선택 가능합니다.")
+			if (!this.$refs.postImage.files[0])
+				confirm("최소 하나의 사진은 필수입니다.")
+			if (this.form.title && this.form.tag && this.form.content) {
+				if ((this.form.tag === '0' && this.form.price) ||
+					((this.form.tag === '1' || this.form.tag === '2') && !this.form.price)) {
+						if (!this.$refs.postImage.files[3] && this.$refs.postImage.files[0])
+							this.register();
+					}
+				}
 		},
 		async register() {
 			let variable = this.form.image1;
+<<<<<<< HEAD
 			const index = this.$route.params.id;
 			// console.log(variable);
+=======
+			let variable1 = this.form.image2;
+			let variable2 = this.form.image3;
+			const index = this.$route.params.id;
+			// console.log(variable2);
+>>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 			const postObj =
 			{
 				id: index,
@@ -100,6 +118,8 @@ export default {
 				price: this.form.price,
 				created_at: this.currentDate(),
 				image1: variable,
+				image2: variable1,
+				image3: variable2,
 				view_count: 0
 			};
 			let formData = new FormData();
