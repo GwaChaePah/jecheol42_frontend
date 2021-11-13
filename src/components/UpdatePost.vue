@@ -5,9 +5,9 @@
 				<div class="tag">
 					<select v-model="form.tag">
 						<option disabled value="">소분/나눔</option>
-  						<option value=1>소분</option>
-  						<option value=2>나눔</option>
-						<option value=3>완료</option>
+  						<option value=0>소분</option>
+  						<option value=1>나눔</option>
+						<option value=2>완료</option>
 					</select>
 				</div>
 				<div class="title">
@@ -65,25 +65,24 @@ export default {
 		...mapState('post', ['post'])
 	},
 	created : function() {
-		// this.$store.dispatch('post/searchPostWithId', { id: this.$route.params.id });
-		// console.log(this.post.title);
 		setTimeout(() => { 
 			this.form.title = this.post.title;
 			this.form.tag = this.post.tag;
 			this.form.price = this.post.price;
 			this.form.content = this.post.content;
 			this.form.user = this.post.user;
-			// this.form.image = this.post.image;
+			this.form.image1 = this.post.image;
 			this.form.region = this.post.region;
 			this.form.view_count = this.post.view_count;
-			// this.for.created_at = this.post.created_at;
 		}, 100);
 	},
 	methods: {
 		...mapActions('post', ['updatePost']),
 		onInputImage() {
-			this.form.image1 = this.$refs.postImage.files[0];
-			console.log(this.form.image1);
+			if (this.form.image1 = undefined)
+				this.form.image1 = this.post.image1;
+			else
+				this.form.image1 = this.$refs.postImage.files[0];
 		},
 		checkForm(e){
 			if (!this.form.title) {
@@ -111,36 +110,17 @@ export default {
 				id: index,
 				title: this.form.title,
 				tag: this.form.tag,
-				created_at: this.currentDate(),
-				user: this.form.user,
-				region: this.form.region,
 				content: this.form.content,
 				price: this.form.price,
-				image1: variable,
-				view_count: this.form.view_count
+				// image1: variable,
 			};
 			console.log(index);
 			let formData = new FormData();
 			for (let key in postObj) {
 				formData.append(key, postObj[key]);
 			}
-			// for (var key of formData.keys()) {
-  			// console.log("key is " + formData.keys()[0]);
-			// }
-			// for (var value of formData.values()) {
-				console.log("value is " + formData.get('id'));
-			// }
 			this.$store.dispatch('post/updatePost', formData);
 			this.$router.push('/board');
-		},
-		currentDate() {
-			const current = new Date();
-			const month = (current.getMonth() + 1 < 10) ? '0' + current.getMonth() + 1 : current.getMonth() + 1;
-			const date = (current.getDate() < 10) ? '0' + current.getDate() : current.getDate();
-			const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes() : current.getMinutes();
-			const hour = (current.getHours() < 10) ? '0' + current.getHours() : current.getHours();
-			const fullDate = `${current.getFullYear()}.${month}.${date} ${hour}:${minute}`
-			return fullDate;
 		},
 		cancel() {
 			this.$router.push('/board')

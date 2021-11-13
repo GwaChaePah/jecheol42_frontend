@@ -14,11 +14,11 @@
 					<textarea class="textbox" v-model="form.content" type="string" placeholder="내용이에용"/>
 				</div>
 				<div class="tag">
-					<!-- <select v-model="form.tag">
+					<select v-model="form.tag">
 						<option disabled value="">소분/나눔</option>
-  						<option>소분</option>
-  						<option>나눔</option>
-					</select> -->
+  						<option value=0>소분</option>
+  						<option value=1>나눔</option>
+					</select>
 					<!-- <div class="key">분류</div>
 					<div class="stick"></div>
 					<input type="radio" id='sale' value=0 v-model="form.tag">
@@ -51,9 +51,9 @@ export default {
 			form: {
 				id:'',
 				title: '',
-				tag: 0,
+				tag: '',
 				created_at: '',
-				user_key: 2,
+				user_key: '',
 				content: '',
 				price: '',
 				image1: '',
@@ -71,9 +71,9 @@ export default {
 			if (!this.form.title) {
 				confirm("제목은 필수입니다.")
 			}
-			// if (!this.form.tag) {
-			// 	confirm("카테고리를 설정해주세요.")
-			// }
+			if (!this.form.tag) {
+				confirm("카테고리를 설정해주세요.")
+			}
 			if (!this.form.content) {
 				confirm("내용은 필수입니다.")
 			}
@@ -88,11 +88,12 @@ export default {
 		},
 		async register() {
 			let variable = this.form.image1;
+			const index = this.$route.params.id;
 			// console.log(variable);
 			const postObj =
 			{
-				id: this.id,
-				tag: 0,
+				id: index,
+				tag: this.form.tag,
 				title: this.form.title,
 				user_key: 2,
 				content: this.form.content,
@@ -110,7 +111,6 @@ export default {
 				method: 'post',
 				data: formData,
 				headers: {
-					// 'accept' : 'multipart/form-data',
         			'Content-Type' : 'multipart/form-data'
               }
 			})

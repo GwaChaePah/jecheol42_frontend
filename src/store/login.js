@@ -42,7 +42,8 @@ export default {
 			axios
 			.post("api/token/", loginObj)
 			.then (response => {
-				// console.log(response)
+				// console.log(response.status)
+				let userInfo = loginObj.username
 				let access = response.data.access
 				let refresh = response.data.refresh
 				commit('updateStorage', { access,refresh })
@@ -50,7 +51,7 @@ export default {
 				localStorage.setItem("refresh_token", refresh)
 
 				// dispatch("loggedIn")
-				commit("loginSuccess")
+				commit("loginSuccess", userInfo)
 				router.push('/')
 			})		
 			.catch(error => {

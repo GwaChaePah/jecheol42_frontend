@@ -69,27 +69,22 @@ export default {
 				const res = await axios.get(`search-api?search=${data}`)
 					.then(response => response.data);
 				const price = res[0];
-				try {
-					if (price) {
-						commit('UPDATE_STATE', {
-							theSearch: {
-								name: price.item_name,
-								price: price.price,
-								unit: price.unit,
-								average_price: price.average_price,
-								date: price.date
-							},
-						});
-						postSearch = price.item_name;
-					}	else {
-						commit('RESET_STATE');
-					}
-				} catch(e) {
-					console.log(e.message);
+				if (price) {
+					commit('UPDATE_STATE', {
+						theSearch: {
+							name: price.item_name,
+							price: price.price,
+							unit: price.unit,
+							average_price: price.average_price,
+							date: price.date
+						},
+					});
+					postSearch = price.item_name;
+				}	else {
 					commit('RESET_STATE');
 				}
 			} catch (e) {
-				console.log(e.message);
+				console.log('searchProduct> ', e);
 				commit('RESET_STATE');
 			} finally {
 				commit('UPDATE_STATE', {

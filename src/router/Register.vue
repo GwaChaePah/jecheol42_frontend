@@ -6,17 +6,20 @@
 					<h1>회원가입 페이지가 될 어쩌구</h1>
 					<div>
 						<div for="username">사용자 이름: </div>
-						<input type="text" class="username" v-model="username" @change="validateId"/>
+						<input type="text" class="username" v-model="username"/>
+						<button @click="sameUser">중복 확인</button>
+						<!-- <input type="text" class="username" v-model="username" @change="validateId"/> -->
 						<div>
 							<div for="password">비밀번호: </div>
-							<input type="password" class="password" v-model="password"  @change="validatePw">
+							<input type="password" class="password" v-model="password">
+							<!-- <input type="password" class="password" v-model="password"  @change="validatePw"> -->
 						</div>
 						<div>
 							<div for="passwordConfirmation">비밀번호 확인: </div>
-							<input type="password" class="passwordConfirmation" v-model="passwordConfirmation">
-							<div v-if="notSame">비밀번호가 다릅니다</div>
+							<input type="password" class="passwordConfirmation" v-model="passwordConfirmation" @change="comparisonPW">
+							<div v-if="notSamePw">비밀번호가 다릅니다</div>
 						</div>
-						<button @click="comparisonPW">회원가입</button>
+						<button >회원가입</button>
 					</div>
 					<p>Password 입력값: {{ password }}</p>
 					<p>passwordConfirmation 입력값: {{ passwordConfirmation }}</p>
@@ -27,38 +30,50 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
+	
   data: function () {
     return {
-        username : null,
-        password : null,
-        passwordConfirmation : null,
-		notSame : false,
-		same : false,
-		allUsers: [
-			{ id: 0, username: "test123456", password: "test1"},
-			{ id: 1, username: "test1", password: "test1"},
-			{ id: 2, username: "test2", password: "test2"},
-		],
+		username : '',
+		password : '',
+        passwordConfirmation : '',
+		duplicateId: false,
+		useId: false,
+		notSamePw: false
     }
   },
   methods: {
-	comparisonPW: function() {
-		if (this.password === this.passwordConfirmation)
-			this.same = true
+	comparisonPW() {
+		if (this.password !== this.passwordConfirmation)
+			this.notSamePw = true
 		else
-			this.notSame = true
+			this.notSamePw = false
 	},
 	sameUser() {
 		let select = null
-		this.allUsers.forEach(user => {
-			if (user.username === this.username)
-			select = user
+		console.log(this.username)
+		let username = this.username
+		axios.post("user_check/", {
+			username: username
 		})
-		if (select === null)
-			console.log("안겹쳐")
-		else
-			console.log("겹쳐")
+		.then(res => {
+			console.log(res.status)
+			if (res.status === 202)
+				console.log("사용이 가능한 어쩌구 웅앵")
+		})
+		.catch(err => {
+				console.log("사용이 불가능한 어쩌구 웅앵")
+		})
+
+		// this.allUsers.forEach(user => {
+		// 	if (user.username === this.username)
+		// 	select = user
+		// })
+		// if (select === null)
+		// 	console.log("안겹쳐")
+		// else
+		// 	console.log("겹쳐")
 	},
 	validateId() {
 		if (this.username.length < 6 ) {

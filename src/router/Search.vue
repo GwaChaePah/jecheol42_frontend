@@ -7,9 +7,14 @@
 						<h1>검색 중입니다</h1>
 					</div>
 					<div v-else-if="theSearch.price != ''">
-						<p class="search-content">
+						<!-- <p class="search-content">
 							<span>요즘 <strong class="search-name">{{ theSearch.name }}</strong>(은)는&nbsp;</span>
 							<span><strong class="search-price">&nbsp;{{ theSearch.price }}</strong><strong class="search-unit">{{ theSearch.unit }}</strong>&nbsp;입니다</span>
+							<span><strong class="search-date">&nbsp;({{ theSearch.date }})</strong></span>
+						</p> -->
+						<p class="search-content">
+							<span>요즘 <strong class="search-name">{{ theSearch.name }}</strong>&nbsp;</span>
+							<span><strong class="search-unit">{{ theSearch.unit }}</strong><strong class="search-price">&nbsp;{{ theSearch.price }}</strong></span>
 							<span><strong class="search-date">&nbsp;({{ theSearch.date }})</strong></span>
 						</p>
 						<p class="search-average">
@@ -69,6 +74,7 @@ export default {
 .content {
 	.searchResult {
 		// background-color: $color_prime_white;
+
 		text-align: center;
 		display: flex;
 		justify-content: center;
@@ -107,71 +113,54 @@ export default {
 			}
 			.search-name {
 				font-size: 1.5em;
+				font-family: 'Gowun Dodum', sans-serif;
 				padding: 0 .2em;
+				&:after {
+					content: ',';
+				}
 				@media ( max-width: 500px ) {
 					font-size: 1.2em;
 				}
 			}
 			.search-price {
 				font-size: 1.5em;
+				font-family: 'Gowun Dodum', sans-serif;
 				&:after {
-					content: '원/';
-					font-size: .5em;
+					content: '원';
+					// font-size: .5em;
 				}
 				@media ( max-width: 500px ) {
 					font-size: 1.2em;
 				}
 			}
 			.search-unit {
-				font-size: .8em;
+				font-size: 1.2em;
+				&:after {
+					content: '에';
+					font-size: .8em;
+				}
 			}
 			.search-date {
 				font-size: .7em;
 			}
 		}
 		.search-average {
-			font-size: 1.2em;
+			font-size: 1em;
 			@media ( max-width: 500px ) {
-				font-size: 1em;
+				font-size: .8em;
 			}
 			.search-price {
+				font-family: 'Gowun Dodum', sans-serif;
+				font-weight: bold;
 				&:after {
-					content: '원/';
-					font-size: .8em;
+					content: '원';
+					// font-size: .8em;
 				}
 			}
 			.search-unit {
-				font-size: .8em;
-			}
-		}
-		.divider {
-			margin: 0 auto;
-			width: 70%;
-			border: 1px solid $color_shadow_03;
-		}
-		.search-seasons {
-			text-align: center;
-			line-height: 1.5;
-			@media ( max-width: 500px ) {
-				font-size: .7em;
-			}
-			.search-inSeason {
-				display: inline-block;
-				font-size: 1.5em;
-			}
-			.search-seasonNow {
-				$color: darken($color_prime_orange, 20%);
-				display: inline-block;
-				font-family: 'Do Hyeon', sans-serif;
-				font-size: 1em;
-				color: $color_prime_orange;
-  			transform: translate(-8px, -3px);
-			}
-			.search-season {
-				font-size: 1.5em;
-				display: inline-block;
-				&:after {
-					content: '월 '
+				font-size: .9em;
+				&:before {
+					content: '/';
 				}
 			}
 		}

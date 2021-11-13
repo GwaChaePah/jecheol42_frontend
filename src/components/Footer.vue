@@ -34,6 +34,9 @@ export default {
 		li {
 			display: inline-block;
 			margin: 0 15px;
+			a:hover {
+				text-decoration: underline wavy;
+			}
 			img {
 				width: 15px;
 				height: auto;

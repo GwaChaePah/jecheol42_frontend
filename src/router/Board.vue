@@ -63,13 +63,6 @@ export default {
 		if (!this.fromSearch) {
 			this.initBoard();
 		}
-		else {
-			setTimeout(()=> {
-				if (this.search) {
-					this.initBoard(this.search);
-				}
-			}, 1);
-		}
 	},
 }
 </script>

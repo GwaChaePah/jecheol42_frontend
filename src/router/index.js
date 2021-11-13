@@ -17,10 +17,12 @@ export default createRouter({
   routes: [
     {
       path: '/',
+			name: 'Home',
       component: Product
     },
 		{
       path: '/board',
+			name: 'Board',
       component: Board
     },
 		{
