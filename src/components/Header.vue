@@ -40,9 +40,9 @@
 				</div>
 			</transition>
 			<div class="searchbar-wrapper" id="searchbar">
-				<input type="text" v-model="search" class="searchbar desktopInput" placeholder="제철 과채를 검색해보세요" @keyup.enter="apply"/>
-				<input type="text" v-model="search" class="searchbar mobileInput" placeholder="제철일까?" @keyup.enter="apply"/>
-				<button class="material-icons" @click="apply">search</button>
+				<input type="text" v-model="search" class="searchbar desktopInput" placeholder="제철 과채를 검색해보세요" @keyup.enter.prevent="apply"/>
+				<input type="text" v-model="search" class="searchbar mobileInput" placeholder="제철일까?" @keyup.enter.prevent="apply"/>
+				<button class="material-icons" @click.prevent="apply">search</button>
 			</div>
 		</div>
 	</div>
@@ -383,6 +383,7 @@ export default {
 .user {
 	font-weight: bold;
 	font-size: 1.2em;
+	font-family: 'Gowun Dodum', sans-serif;
 }
 .scrolled-header {
 	height: 100px;

@@ -58,26 +58,44 @@ export default {
 				console.log(error)
 			})
 		},
-		loggedIn({ commit }) {
+		// loggedIn({ commit }) {
+		// 	let access = localStorage.getItem("access_token")
+		// 	let refresh = localStorage.getItem("refresh_token")
+		// 	console.log(refresh)
+		// 	axios
+		// 	.post ("api/token/refresh/", refresh)
+		// 	.then (res => {
+		// 		console.log(res)
+		// 		let newAccess = res.data.access
+		// 		if (access !== newAccess) {
+		// 			commit('updateAccess', { newAccess })
+		// 			localStorage.setItem("access_token", newAccess)
+		// 		}
+		// 		else {
+		// 			console.log("글케댓다")
+		// 		}				
+		// 	})
+		// 	.catch (err => {
+		// 		console.log("우쨜래미")
+		// 		// router.push('/login')
+		// 	})
+		// },
+		headerSave() {
 			let access = localStorage.getItem("access_token")
 			let refresh = localStorage.getItem("refresh_token")
-			console.log(refresh)
-			axios
-			.post ("api/token/refresh/", refresh)
-			.then (res => {
-				console.log(res)
-				let newAccess = res.data.access
-				if (access !== newAccess) {
-					commit('updateAccess', { newAccess })
-					localStorage.setItem("access_token", newAccess)
+			let config = {
+				headers: {
+					"access-token" : access,
+					"refresh_token" : refresh
 				}
-				else {
-					console.log("글케댓다")
-				}				
+			}
+			axios
+			.get("user data api", config)
+			.then(res => {
+				console.log(res)
 			})
-			.catch (err => {
-				console.log("우쨜래미")
-				// router.push('/login')
+			.catch(error => {
+				console.log(error)
 			})
 		},
 		logout({ commit }) {
