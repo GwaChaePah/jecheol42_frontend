@@ -12,7 +12,7 @@
 							<button class="material-icons-outlined" @click="delComment(comment)" title="삭제">clear</button>
 						</div>
 						<div class="id"><span class="material-icons">cruelty_free</span>{{ comment.user_key }}</div>
-						<div class="time">{{ comment.created_at }}</div>
+						<div class="time">{{ comment.updated_at }}</div>
 						<div v-if="(editingId === comment.id)" class="textarea-wrapper">
 							<textarea class="textarea" rows="4"
 								v-model="editedComment" :id="`edit-comment-${comment.id}`" @keydown.enter="saveComment(comment)"/>

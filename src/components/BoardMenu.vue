@@ -75,9 +75,7 @@ export default {
 	},
 	methods: {
 		apply(e) {
-			if (!this.search) {
-				this.search = this.postSearch;
-			}
+			this.search = this.postSearch;
 			const value = e.target.value === '소분' ? 0 :
 										e.target.value === '나눔' ? 1 :
 										e.target.value === '완료' ? 2 : 3;
