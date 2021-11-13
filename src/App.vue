@@ -15,15 +15,24 @@ import Footer from '~/components/Footer'
 import { mapActions } from 'vuex';
 
 export default {
-  components: {
-    Header,
+	data: function () {
+		return {
+			allUsers: [
+				{ id: 0, username: "test123456", password: "test1", email: "a@a.com", },
+				{ id: 1, username: "test1", password: "test1"},
+				{ id: 2, username: "test2", password: "test2"},
+			],
+		}
+	},
+	components: {
+	Header,
 		Footer
-  },
-  methods: {
-	  ...mapActions('login', ['loggedIn']),
-  },
-  beforeCreate() {
-  	this.$store.dispatch('login/loggedIn')
+	},
+	methods: {
+		...mapActions('login', ['loggedIn']),
+	},
+	beforeCreate() {
+	this.$store.dispatch('login/loggedIn')
 	}
 }
 </script>

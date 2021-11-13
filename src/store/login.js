@@ -59,16 +59,16 @@ export default {
 			})
 		},
 		loggedIn({ commit }) {
-			let localAccess = localStorage.getItem("access_token")
-			let localRefresh = localStorage.getItem("refresh_token")
-			console.log(localRefresh)
+			let access = localStorage.getItem("access_token")
+			let refresh = localStorage.getItem("refresh_token")
+			console.log(refresh)
 			axios
-			.post ("api/token/refresh/", localRefresh)
+			.post ("api/token/refresh/", refresh)
 			.then (res => {
 				console.log(res)
 				let newAccess = res.data.access
-				if (localAccess !== newAccess) {
-					commit('updateAccess', { access })
+				if (access !== newAccess) {
+					commit('updateAccess', { newAccess })
 					localStorage.setItem("access_token", newAccess)
 				}
 				else {
