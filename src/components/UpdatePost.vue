@@ -38,6 +38,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import _ from 'lodash';
 
 export default {
 	name: 'UpdatePost',
@@ -115,8 +116,9 @@ export default {
 			};
 			console.log(index);
 			let formData = new FormData();
+			
 			for (let key in postObj) {
-				formData.append(key, postObj[key]);
+				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
 			this.$store.dispatch('post/updatePost', formData);
 			this.$router.push('/board');

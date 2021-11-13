@@ -208,28 +208,29 @@ export default {
 			}
 		},
 		async updatePost({ commit }, payload) {
-			//Object.entries(payload)
+			/*
 			const newPayload = _.chain(payload)
 				.toPairs()
 				.filter(([k, v]) => !_.isNil(v))
 				.fromPairs()
 				.value()
+			*/
+			
+			let data
 			try {
-				await axios({
+				data = await axios({
 					url: `post-api/${payload.get('id')}/`,
 					method: 'patch',
-					data: newPayload,
+					data: payload,
 					headers: {
 						"Content-Type": "multipart/form-data"
 					}
 				})
 			} catch(e) {
 				console.log('updatePost> ', e);
-			} finally {
-				commit('UPDATE_STATE', {
-					post: newPayload
-				});
+				return
 			}
+			commit('UPDATE_STATE', { post: data })
 		},
 	},
 }
