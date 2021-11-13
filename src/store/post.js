@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 export default {
 	namespaced: true,
@@ -128,16 +129,18 @@ export default {
 				if (state.boardTag === 3) {
 					res = state.board.filter(item => item.tag === 0 || item.tag === 1);
 				} else {
-					res = state.board.filter(item => item.tag === state.boardTag);
-				}
-			} catch (e) {
-				console.log('searchPostTags> ', e);
-				res = state.board;
-			} finally {
-				commit('UPDATE_STATE', {
-					boardView: res,
-					loading: false
-				});
+					res = await axios.get(`board-api?tag=${state.boardTag}`)
+						.then(response => response.data);
+					}
+				} catch (e) {
+					console.log('searchPostTags> ', e);
+					res = state.board;
+				} finally {
+					// console.log(res);
+					commit('UPDATE_STATE', {
+						boardView: res,
+						loading: false
+					});
 			}
 		},
 		async deletePost({ dispatch, commit }, payload) {
@@ -205,8 +208,17 @@ export default {
 			}
 		},
 		async updatePost({ commit }, payload) {
+			/*
+			const newPayload = _.chain(payload)
+				.toPairs()
+				.filter(([k, v]) => !_.isNil(v))
+				.fromPairs()
+				.value()
+			*/
+			
+			let data
 			try {
-				await axios({
+				data = await axios({
 					url: `post-api/${payload.get('id')}/`,
 					method: 'patch',
 					data: payload,
@@ -216,11 +228,9 @@ export default {
 				})
 			} catch(e) {
 				console.log('updatePost> ', e);
-			} finally {
-				commit('UPDATE_STATE', {
-					post: payload
-				});
+				return
 			}
+			commit('UPDATE_STATE', { post: data })
 		},
 	},
 }

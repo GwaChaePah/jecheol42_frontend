@@ -13,15 +13,12 @@
 				<div class="title">
 					<div class="key">title</div>
 					<div class="stick"></div>
-					<!-- <div>{{ thePost.title }}</div> -->
 					<input id="title" v-model="form.title" type="string" placeholder="제목이에용"/>
 				</div>
 				<div class="price">
 					<div class="key">price</div>
 					<div class="stick"></div>
-					<!-- {{thePost.price}} -->
-					<!-- {{thePost.tag}} -->
-					<input v-if="form.tag !== 1" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
+					<input v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
 					<div v-else> {{form.price = 0}} </div>
 				</div>
 				<div class="content">
@@ -41,6 +38,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import _ from 'lodash';
 
 export default {
 	name: 'UpdatePost',
@@ -79,28 +77,30 @@ export default {
 	methods: {
 		...mapActions('post', ['updatePost']),
 		onInputImage() {
-			if (this.form.image1 = undefined)
+			if (this.form.image1 == undefined)
 				this.form.image1 = this.post.image1;
 			else
 				this.form.image1 = this.$refs.postImage.files[0];
 		},
 		checkForm(e){
-			if (!this.form.title) {
+			if (!this.form.title)
 				confirm("제목은 필수입니다.")
-			}
-			if (!this.form.tag) {
+			if (!this.form.tag)
 				confirm("카테고리를 설정해주세요.")
-			}
-			if (!this.form.content) {
+			if (!this.form.content)
 				confirm("내용은 필수입니다.")
-			}
-			if (this.form.tag === "소분" && !this.form.price) {
+			if (this.form.tag === "소분" && !this.form.price)
 				confirm("가격을 입력해주세요.")
-			}
+			if (this.$refs.postImage.files[3])
+				confirm("사진은 3장까지 선택 가능합니다.")
+			// if (!this.$refs.postImage.files[0])
+			// 	confirm("최소 하나의 사진은 필수입니다.")
 				this.update();
 			// if (this.form.title && this.form.tag && this.form.content) {
-			// 	if ((this.form.tag === "소분" && this.form.price) ||
-			// 		((this.form.tag === "나눔" || this.form.tag === "완료") && !this.form.price))
+			// 	if ((this.form.tag === '0' && this.form.price) ||
+			// 		((this.form.tag === '1' || this.form.tag === '2') && !this.form.price)) {
+			// 			// if (!this.$refs.postImage.files[3] && this.$refs.postImage.files[0])
+			// 	}
 			// }
 		},
 		async update() {
@@ -112,12 +112,13 @@ export default {
 				tag: this.form.tag,
 				content: this.form.content,
 				price: this.form.price,
-				// image1: variable,
+				image1: variable,
 			};
 			console.log(index);
 			let formData = new FormData();
+			
 			for (let key in postObj) {
-				formData.append(key, postObj[key]);
+				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
 			this.$store.dispatch('post/updatePost', formData);
 			this.$router.push('/board');
