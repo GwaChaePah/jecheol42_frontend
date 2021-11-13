@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 export default {
 	namespaced: true,
@@ -207,11 +208,17 @@ export default {
 			}
 		},
 		async updatePost({ commit }, payload) {
+			//Object.entries(payload)
+			const newPayload = _.chain(payload)
+				.toPairs()
+				.filter(([k, v]) => !_.isNil(v))
+				.fromPairs()
+				.value()
 			try {
 				await axios({
 					url: `post-api/${payload.get('id')}/`,
 					method: 'patch',
-					data: payload,
+					data: newPayload,
 					headers: {
 						"Content-Type": "multipart/form-data"
 					}
@@ -220,7 +227,7 @@ export default {
 				console.log('updatePost> ', e);
 			} finally {
 				commit('UPDATE_STATE', {
-					post: payload
+					post: newPayload
 				});
 			}
 		},

@@ -76,7 +76,7 @@ export default {
 	methods: {
 		...mapActions('post', ['updatePost']),
 		onInputImage() {
-			if (this.form.image1 = undefined)
+			if (this.form.image1 == undefined)
 				this.form.image1 = this.post.image1;
 			else
 				this.form.image1 = this.$refs.postImage.files[0];
@@ -92,15 +92,15 @@ export default {
 				confirm("가격을 입력해주세요.")
 			if (this.$refs.postImage.files[3])
 				confirm("사진은 3장까지 선택 가능합니다.")
-			if (!this.$refs.postImage.files[0])
-				confirm("최소 하나의 사진은 필수입니다.")
-			if (this.form.title && this.form.tag && this.form.content) {
-				if ((this.form.tag === '0' && this.form.price) ||
-					((this.form.tag === '1' || this.form.tag === '2') && !this.form.price)) {
-						if (!this.$refs.postImage.files[3] && this.$refs.postImage.files[0])
-							this.update();
-				}
-			}
+			// if (!this.$refs.postImage.files[0])
+			// 	confirm("최소 하나의 사진은 필수입니다.")
+				this.update();
+			// if (this.form.title && this.form.tag && this.form.content) {
+			// 	if ((this.form.tag === '0' && this.form.price) ||
+			// 		((this.form.tag === '1' || this.form.tag === '2') && !this.form.price)) {
+			// 			// if (!this.$refs.postImage.files[3] && this.$refs.postImage.files[0])
+			// 	}
+			// }
 		},
 		async update() {
 			let variable = this.form.image1;
@@ -111,7 +111,7 @@ export default {
 				tag: this.form.tag,
 				content: this.form.content,
 				price: this.form.price,
-				// image1: variable,
+				image1: variable,
 			};
 			console.log(index);
 			let formData = new FormData();
