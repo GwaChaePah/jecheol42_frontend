@@ -128,16 +128,18 @@ export default {
 				if (state.boardTag === 3) {
 					res = state.board.filter(item => item.tag === 0 || item.tag === 1);
 				} else {
-					res = state.board.filter(item => item.tag === state.boardTag);
-				}
-			} catch (e) {
-				console.log('searchPostTags> ', e);
-				res = state.board;
-			} finally {
-				commit('UPDATE_STATE', {
-					boardView: res,
-					loading: false
-				});
+					res = await axios.get(`board-api?tag=${state.boardTag}`)
+						.then(response => response.data);
+					}
+				} catch (e) {
+					console.log('searchPostTags> ', e);
+					res = state.board;
+				} finally {
+					// console.log(res);
+					commit('UPDATE_STATE', {
+						boardView: res,
+						loading: false
+					});
 			}
 		},
 		async deletePost({ dispatch, commit }, payload) {
