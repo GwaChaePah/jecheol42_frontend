@@ -83,6 +83,7 @@ export default {
 				content: this.comment,
 			};
 			this.updateComment({
+				post_key: commentObj.post_key,
 				payload: commentObj
 			});
 			this.user = '';
@@ -104,12 +105,11 @@ export default {
 			if (comment.content !== this.editedComment) {
 				const commentObj = {
 					id: comment.id,
-					post_key: this.postId,
-					user_key: 14,
 					content: this.editedComment,
 				};
 				this.updateComment({
 					option: 0,
+					post_key: this.postId,
 					payload: commentObj
 				});
 			}

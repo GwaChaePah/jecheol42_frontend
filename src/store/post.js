@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 export default {
 	namespaced: true,
 	state: () => ({
@@ -152,7 +153,7 @@ export default {
 				});
 			}
 		},
-		async updateComment({ state, commit }, { option = 1, payload}) {
+		async updateComment({ state, commit }, { option = 1, payload, post_key}) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
 				loading: true
@@ -176,7 +177,7 @@ export default {
 			} catch(e) {
 				console.log('updateComment> ', e);
 			} finally {
-				const res = await _fetchPost(payload.post_key)
+				const res = await _fetchPost(post_key)
 				.then(response => response.comments);
 				for (let i = 0; i < res.length; i++) {
 					const date = res[i].created_at.slice(0, 10).replaceAll('-', '.');
