@@ -208,7 +208,7 @@ export default {
 			try {
 				await axios({
 					url: `post-api/${payload.get('id')}/`,
-					method: 'put',
+					method: 'patch',
 					data: payload,
 					headers: {
 						"Content-Type": "multipart/form-data"
