@@ -1,13 +1,13 @@
 <template>
 	<div class="content-wrapper">
 		<div class="button-wrapper">
-			<button class="material-icons">first_page</button>
-			<button class="material-icons">chevron_left</button>
+			<button class="material-icons" :class="{unclickable: page == 1, clickable: page !== 1 }" @click.defualt="goToPage(1)">first_page</button>
+			<button class="material-icons" :class="{unclickable: page == 1, clickable: page !== 1 }" @click.defualt="goToPage(page - 1)">chevron_left</button>
 			<div v-for="n in totalPage" :key="`page${n}`" class="pages">
-				<button :class="{clickable: page !== n }" @click.default="goToPage(n)">{{ n }}</button>
+				<button :class="{unclickable: page == n, clickable: page !== n }" @click.default="goToPage(n)">{{ n }}</button>
 			</div>
-			<button class="material-icons">chevron_right</button>
-			<button class="material-icons">last_page</button>
+			<button class="material-icons" :class="{unclickable: page == totalPage, clickable: page !== totalPage }" @click.defualt="goToPage(page + 1)">chevron_right</button>
+			<button class="material-icons" :class="{unclickable: page == totalPage, clickable: page !== totalPage }" @click.defualt="goToPage(totalPage)">last_page</button>
 		</div>
 	</div>
 </template>
@@ -21,7 +21,6 @@ export default {
 	data() {
 		return {
 			totalPage: '',
-			currentPage: '',
 		}
 	},
 	computed: {
@@ -39,7 +38,7 @@ export default {
 			this.totalPage = totalPage;
 		},
 		async goToPage(e) {
-			if (e !== this.page) {
+			if (e >= 1 && e !== this.page && e <= this.totalPage) {
 				this.$store.dispatch('post/initBoard', {
 					page: e
 				});
@@ -56,28 +55,52 @@ export default {
 
 
 .content-wrapper {
-	text-align: center;
-	width: 100%;
-	margin-top: 1em;
-	.pages {
-		display: inline-block;
-		margin: 0 1em;
-		button {
-			font-family: 'Gowun Dodum', san-serif;
-			border: none;
-			border-radius: .2em;
-			padding: .2em .8em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 2em;
+	.button-wrapper {
+		border-radius: .1em;
+		display: flex;
+		align-items: center;
+		padding: 0 .2em;
+		.pages {
+			font-size: 1em;
+			button {
+				color: dimgray;
+				font-family: 'Gowun Dodum', san-serif;
+				border: none;
+				padding: .2em .8em;
+				background-color: transparent;
+			}
+			.clickable {
+				cursor: pointer;
+				&:hover {
+					background-color: gainsboro;
+				}
+			}
+			.unclickable {
+				background-color: darken($color_prime_green, 10%);
+				border-radius: .1em;
+				color: $color_prime_white;
+				font-weight: bolder;
+			}
 		}
-	}
-	.material-icons {
-		margin: 0 1em;
-		border: none;
-	}
-}
-.clickable {
-	cursor: pointer;
-	&:hover {
-		background-color: $color_prime_green;
+		.clickable {
+			cursor: pointer;
+		}
+		.material-icons {
+			color: dimgray;
+			background-color: transparent;
+			border: none;
+		}
+		.material-icons:active,
+		.pages > button:active {
+			transform: translateY(2px);
+		}
+		.unclickable {
+			color: gainsboro;
+		}
 	}
 }
 </style>
