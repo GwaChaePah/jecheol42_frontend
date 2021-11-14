@@ -47,14 +47,11 @@ export default {
 		toTop() {
 			document.body.scrollTop = 0;
 			document.documentElement.scrollTop = 0;
-<<<<<<< HEAD
-=======
 		},
 		createPost() {
 			this.$router.push({
 				path: '/create'
 			})
->>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 		}
 	}
 }

@@ -71,17 +71,9 @@ export default {
 		checkForm(e){
 			if (!this.form.title)
 				confirm("제목은 필수입니다.")
-<<<<<<< HEAD
-			}
-			if (!this.form.tag) {
-				confirm("카테고리를 설정해주세요.")
-			}
-			if (!this.form.content) {
-=======
 			if (!this.form.tag)
 				confirm("카테고리를 설정해주세요.")
 			if (!this.form.content)
->>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 				confirm("내용은 필수입니다.")
 			if (this.form.tag === "소분" && !this.form.price)
 				confirm("가격을 입력해주세요.")
@@ -99,15 +91,10 @@ export default {
 		},
 		async register() {
 			let variable = this.form.image1;
-<<<<<<< HEAD
-			const index = this.$route.params.id;
-			// console.log(variable);
-=======
 			let variable1 = this.form.image2;
 			let variable2 = this.form.image3;
 			const index = this.$route.params.id;
 			// console.log(variable2);
->>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 			const postObj =
 			{
 				id: index,

@@ -77,11 +77,7 @@ export default {
 	methods: {
 		...mapActions('post', ['updatePost']),
 		onInputImage() {
-<<<<<<< HEAD
-			if (this.form.image1 = undefined)
-=======
 			if (this.form.image1 == undefined)
->>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 				this.form.image1 = this.post.image1;
 			else
 				this.form.image1 = this.$refs.postImage.files[0];
@@ -116,11 +112,7 @@ export default {
 				tag: this.form.tag,
 				content: this.form.content,
 				price: this.form.price,
-<<<<<<< HEAD
-				// image1: variable,
-=======
 				image1: variable,
->>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 			};
 			console.log(index);
 			let formData = new FormData();

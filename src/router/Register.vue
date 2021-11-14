@@ -5,19 +5,23 @@
 				<div>
 					<h1>회원가입 페이지가 될 어쩌구</h1>
 					<div>
-						<div for="username">사용자 이름: </div>
-						<input type="text" class="username" v-model="username"/>
+						<div for="username">아이디: </div>
+						<input type="text" class="username" v-model="username" @change="validateId"/>
 						<button @click="sameUser">중복 확인</button>
-						<!-- <input type="text" class="username" v-model="username" @change="validateId"/> -->
+						<div class="duplicateId" v-if="duplicateId">사용할 수 없는 아이디입니다</div>
+						<div class="useId" v-if="useId">사용할 수 있는 아이디입니다</div>
 						<div>
 							<div for="password">비밀번호: </div>
-							<input type="password" class="password" v-model="password">
-							<!-- <input type="password" class="password" v-model="password"  @change="validatePw"> -->
+							<input type="password" class="password" v-model="password"  @change="validatePw">
 						</div>
 						<div>
 							<div for="passwordConfirmation">비밀번호 확인: </div>
 							<input type="password" class="passwordConfirmation" v-model="passwordConfirmation" @change="comparisonPW">
 							<div v-if="notSamePw">비밀번호가 다릅니다</div>
+						</div>
+						<div>
+							<div for="local">지역: </div>
+							<input type="local" class="localNum" v-model="localNum">
 						</div>
 						<button >회원가입</button>
 					</div>
@@ -38,6 +42,7 @@ export default {
 		username : '',
 		password : '',
         passwordConfirmation : '',
+		local: '',
 		duplicateId: false,
 		useId: false,
 		notSamePw: false
@@ -51,50 +56,45 @@ export default {
 			this.notSamePw = false
 	},
 	sameUser() {
-		let select = null
-		console.log(this.username)
 		let username = this.username
 		axios.post("user_check/", {
 			username: username
 		})
 		.then(res => {
-			console.log(res.status)
 			if (res.status === 202)
 				console.log("사용이 가능한 어쩌구 웅앵")
+				this.useId = true
+				this.duplicateId = false
 		})
 		.catch(err => {
 				console.log("사용이 불가능한 어쩌구 웅앵")
+				this.useId = false
+				this.duplicateId = true
 		})
-
-		// this.allUsers.forEach(user => {
-		// 	if (user.username === this.username)
-		// 	select = user
-		// })
-		// if (select === null)
-		// 	console.log("안겹쳐")
-		// else
-		// 	console.log("겹쳐")
 	},
 	validateId() {
-		if (this.username.length < 6 ) {
-			alert("아이디는 최소 6자리 이상입니다.")
+		let username = this.username
+		let num = username.search(/[0-9]/);
+		let eng = username.search(/[a-z]/);
+		let spe = username.search(/[~!#$%^&*()|<>?:{}]/);
+		if (this.username.length > 20 ) {
+			alert("아이디는 최대 20자 입니다.")
 			return false
 		} 
 		else if (this.username.search(/\s/) !== -1) {
 			alert("아이디는 공백을 넣을 수 없습니다")
 			return false
 		}
-		else {
-			let select = null
-			this.allUsers.forEach(user => {
-				if (user.username === this.username)
-				select = user
-			})
-			if (select !== null)
-				alert("아이디를 사용할 수 없습니다")
-			else
-				console.log("아이디 통과!")
+		else if(spe !== -1) {
+			alert("아이디는 '@' '.' '/' '+' '-' '_'만 넣을 수 있습니다")
+			return false
 		}
+		else if(num < 0 || eng < 0){
+			alert("영문, 숫자를 혼합하여 입력해주세요.");
+			return false;
+		}
+		else
+			console.log("아이디 통과!")
 	},
 	validatePw() {
 		let password = this.password
@@ -102,8 +102,8 @@ export default {
 		let eng = password.search(/[a-z]/ig);
 		let spe = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
-		if (password.length < 8 || password.length > 20 ) {
-			alert("비밀번호는 8자리 ~ 20자리 이내로 입력해주세요.")
+		if (password.length > 16 ) {
+			alert("비밀번호는 최대 20자 입니다.")
 			return false
 		} 
 		else if (password.search(/\s/) !== -1) {
@@ -118,7 +118,6 @@ export default {
 			console.log("비밀번호 통과!")
 	}
   }
-
 }
 </script>
 

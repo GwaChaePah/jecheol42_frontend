@@ -61,15 +61,11 @@ export default {
 	},
 	created() {
 		if (!this.fromSearch) {
-<<<<<<< HEAD
-			this.initBoard();
-=======
 			this.$store.dispatch('post/initBoard', {payload: null});
 		} else {
 			setTimeout(() => {
 				this.$store.dispatch('post/initBoard', {payload: this.postSearch});
 			}, 500);
->>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 		}
 	},
 }

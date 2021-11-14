@@ -27,11 +27,7 @@ export default createRouter({
     },
 		{
 			path: '/login',
-<<<<<<< HEAD
-			name: 'Pologinst',
-=======
 			name: 'Login',
->>>>>>> ebf88c9e66e24badd65ba16f26c58ec582b8dfd2
 			component: Login
 		},
 		{
