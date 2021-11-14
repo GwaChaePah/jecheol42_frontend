@@ -16,7 +16,7 @@
 				<ul class="navlist" v-else>
 					<li ><span @click="toBoard">게시판</span></li>
 					<!-- to mypage -->
-					<li><span @click="" class="user">룰루랄라</span></li>
+					<li><span @click="" class="user">{{ userInfo }}</span></li>
 					<li><span @click="logoutUser">로그아웃</span></li>
 				</ul>
 			</div>
@@ -32,7 +32,7 @@
 						<li @click="toRegister">회원가입</li>
 					</ul>
 					<ul v-else>
-						<li class="user">룰루랄라</li>
+						<li class="user">{{ userInfo }}</li>
 						<li @click="toMain">메인</li>
 						<li @click="toBoard">게시판</li>
 						<li @click="logoutUser">로그아웃</li>
@@ -139,8 +139,8 @@ export default {
 			this.$router.push('/Register');
 		},
 		toBoard() {
-			this.initBoard();
 			this.updateSearch();
+			this.initBoard({payload:null});
 			this.initMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -153,7 +153,7 @@ export default {
 		},
 		apply() {
 			if (this.search) {
-				this.initBoard(this.search);
+				this.initBoard({payload:this.search});
 				this.updateSearch(this.search);
 				this.searchProduct(this.search);
 				this.search = '';

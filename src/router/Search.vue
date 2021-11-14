@@ -55,9 +55,6 @@ export default {
 		])
 	},
 	created() {
-		setTimeout(() => {
-			this.$store.dispatch('post/initBoard', this.postSearch);
-		}, 500);
 		this.$store.dispatch('post/initMobileNav', null);
 	},
 }
@@ -167,7 +164,7 @@ export default {
 	}
 }
 .board {
-	margin: 2em 0 2em;
+	margin-top: 2em;
 	.title-wrapper {
 		margin: 0 5em;
 		text-align: center;

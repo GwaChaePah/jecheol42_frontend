@@ -21,10 +21,10 @@ export default {
 		Footer
 	},
 	methods: {
-		...mapActions('login', ['headerSave']),
+		...mapActions('login', ['loggedIn']),
 	},
 	async beforeCreate() {
-		// this.$store.dispatch('login/headerSave')
+		this.$store.dispatch('login/loggedIn')
 	}
 }
 </script>

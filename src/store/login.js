@@ -15,12 +15,12 @@ export default {
 			state.isLogin = true
 			state.isLoginError = false
 			state.userInfo = payload
-			console.log("로그인~")
+			console.log("로그인")
 		},
 		logout(state) {
 			state.isLogin = false
 			state.isLoginError = false
-			console.log("로그아웃~")
+			console.log("로그아웃")
 		},
 		updateAccess (state, { access }) {
 			state.accessToken = access
@@ -28,9 +28,6 @@ export default {
 		updateStorage (state, { access, refresh }) {
 			state.accessToken = access
 			state.refreshToken = refresh
-		},
-		reissuanceAccess (state, { access}) {
-			state.accessToken = access
 		},
 		destroyToken (state) {
 			state.accessToken = null
@@ -42,63 +39,47 @@ export default {
 			axios
 			.post("api/token/", loginObj)
 			.then (response => {
-				// console.log(response)
+				console.log(response)
+				let userInfo = loginObj.username
 				let access = response.data.access
 				let refresh = response.data.refresh
 				commit('updateStorage', { access,refresh })
 				localStorage.setItem("access_token", access)
 				localStorage.setItem("refresh_token", refresh)
-
-				// dispatch("loggedIn")
-				commit("loginSuccess")
-				router.push('/')
+				localStorage.setItem("userInfo", userInfo)
+				dispatch("loggedIn")
 			})		
 			.catch(error => {
-				// alert("아이디와 비밀번호를 확인하세요")
 				console.log(error)
+				alert("아이디와 비밀번호를 확인하세요")
 			})
 		},
-		// loggedIn({ commit }) {
-		// 	let access = localStorage.getItem("access_token")
-		// 	let refresh = localStorage.getItem("refresh_token")
-		// 	console.log(refresh)
-		// 	axios
-		// 	.post ("api/token/refresh/", refresh)
-		// 	.then (res => {
-		// 		console.log(res)
-		// 		let newAccess = res.data.access
-		// 		if (access !== newAccess) {
-		// 			commit('updateAccess', { newAccess })
-		// 			localStorage.setItem("access_token", newAccess)
-		// 		}
-		// 		else {
-		// 			console.log("글케댓다")
-		// 		}				
-		// 	})
-		// 	.catch (err => {
-		// 		console.log("우쨜래미")
-		// 		// router.push('/login')
-		// 	})
-		// },
-		headerSave() {
-			let access = localStorage.getItem("access_token")
-			let refresh = localStorage.getItem("refresh_token")
-			let config = {
-				headers: {
-					"access-token" : access,
-					"refresh_token" : refresh
-				}
-			}
+		loggedIn({ commit }) {
+			let localRefresh = localStorage.getItem("refresh_token")
+			let userInfo = localStorage.getItem("userInfo")
+			let config = { "token" : localRefresh }
 			axios
-			.get("user data api", config)
-			.then(res => {
-				console.log(res)
+			.post ("api/token/verity/", config)
+			.then (res => {
+				commit("loginSuccess", userInfo)
+				// router.push('/')
 			})
-			.catch(error => {
-				console.log(error)
+			.catch (err => {
+				axios
+				.post ("api/token/refresh/", {
+					refresh: localRefresh
+				})
+				.then (response => {
+					let newAccess = response.data.access
+					commit('updateAccess', { newAccess })
+					localStorage.setItem("access_token", newAccess)
+				})
+				.catch (error => {
+				})
 			})
 		},
 		logout({ commit }) {
+			localStorage.removeItem('refresh_token')
 			commit("destroyToken")
 			commit("logout")
 		}

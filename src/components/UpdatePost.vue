@@ -5,23 +5,20 @@
 				<div class="tag">
 					<select v-model="form.tag">
 						<option disabled value="">소분/나눔</option>
-  						<option value=1>소분</option>
-  						<option value=2>나눔</option>
-						<option value=3>완료</option>
+  						<option value=0>소분</option>
+  						<option value=1>나눔</option>
+						<option value=2>완료</option>
 					</select>
 				</div>
 				<div class="title">
 					<div class="key">title</div>
 					<div class="stick"></div>
-					<!-- <div>{{ thePost.title }}</div> -->
 					<input id="title" v-model="form.title" type="string" placeholder="제목이에용"/>
 				</div>
 				<div class="price">
 					<div class="key">price</div>
 					<div class="stick"></div>
-					<!-- {{thePost.price}} -->
-					<!-- {{thePost.tag}} -->
-					<input v-if="form.tag !== 1" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
+					<input v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
 					<div v-else> {{form.price = 0}} </div>
 				</div>
 				<div class="content">
@@ -41,6 +38,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import _ from 'lodash';
 
 export default {
 	name: 'UpdatePost',
@@ -65,43 +63,44 @@ export default {
 		...mapState('post', ['post'])
 	},
 	created : function() {
-		// this.$store.dispatch('post/searchPostWithId', { id: this.$route.params.id });
-		// console.log(this.post.title);
 		setTimeout(() => { 
 			this.form.title = this.post.title;
 			this.form.tag = this.post.tag;
 			this.form.price = this.post.price;
 			this.form.content = this.post.content;
 			this.form.user = this.post.user;
-			// this.form.image = this.post.image;
+			this.form.image1 = this.post.image;
 			this.form.region = this.post.region;
 			this.form.view_count = this.post.view_count;
-			// this.for.created_at = this.post.created_at;
 		}, 100);
 	},
 	methods: {
 		...mapActions('post', ['updatePost']),
 		onInputImage() {
-			this.form.image1 = this.$refs.postImage.files[0];
-			console.log(this.form.image1);
+			if (this.form.image1 == undefined)
+				this.form.image1 = this.post.image1;
+			else
+				this.form.image1 = this.$refs.postImage.files[0];
 		},
 		checkForm(e){
-			if (!this.form.title) {
+			if (!this.form.title)
 				confirm("제목은 필수입니다.")
-			}
-			if (!this.form.tag) {
+			if (!this.form.tag)
 				confirm("카테고리를 설정해주세요.")
-			}
-			if (!this.form.content) {
+			if (!this.form.content)
 				confirm("내용은 필수입니다.")
-			}
-			if (this.form.tag === "소분" && !this.form.price) {
+			if (this.form.tag === "소분" && !this.form.price)
 				confirm("가격을 입력해주세요.")
-			}
+			if (this.$refs.postImage.files[3])
+				confirm("사진은 3장까지 선택 가능합니다.")
+			// if (!this.$refs.postImage.files[0])
+			// 	confirm("최소 하나의 사진은 필수입니다.")
 				this.update();
 			// if (this.form.title && this.form.tag && this.form.content) {
-			// 	if ((this.form.tag === "소분" && this.form.price) ||
-			// 		((this.form.tag === "나눔" || this.form.tag === "완료") && !this.form.price))
+			// 	if ((this.form.tag === '0' && this.form.price) ||
+			// 		((this.form.tag === '1' || this.form.tag === '2') && !this.form.price)) {
+			// 			// if (!this.$refs.postImage.files[3] && this.$refs.postImage.files[0])
+			// 	}
 			// }
 		},
 		async update() {
@@ -111,36 +110,18 @@ export default {
 				id: index,
 				title: this.form.title,
 				tag: this.form.tag,
-				created_at: this.currentDate(),
-				user: this.form.user,
-				region: this.form.region,
 				content: this.form.content,
 				price: this.form.price,
 				image1: variable,
-				view_count: this.form.view_count
 			};
 			console.log(index);
 			let formData = new FormData();
+			
 			for (let key in postObj) {
-				formData.append(key, postObj[key]);
+				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
-			// for (var key of formData.keys()) {
-  			// console.log("key is " + formData.keys()[0]);
-			// }
-			// for (var value of formData.values()) {
-				console.log("value is " + formData.get('id'));
-			// }
 			this.$store.dispatch('post/updatePost', formData);
 			this.$router.push('/board');
-		},
-		currentDate() {
-			const current = new Date();
-			const month = (current.getMonth() + 1 < 10) ? '0' + current.getMonth() + 1 : current.getMonth() + 1;
-			const date = (current.getDate() < 10) ? '0' + current.getDate() : current.getDate();
-			const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes() : current.getMinutes();
-			const hour = (current.getHours() < 10) ? '0' + current.getHours() : current.getHours();
-			const fullDate = `${current.getFullYear()}.${month}.${date} ${hour}:${minute}`
-			return fullDate;
 		},
 		cancel() {
 			this.$router.push('/board')
