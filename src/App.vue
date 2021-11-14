@@ -16,15 +16,24 @@ import Footer from '~/components/Footer'
 import { mapActions } from 'vuex';
 
 export default {
-  components: {
-    Header,
+	components: {
+	Header,
 		Footer
+<<<<<<< HEAD
   },
   methods: {
 	  ...mapActions('login', ['loggedIn']),
   },
   beforeCreate() {
   	// this.$store.dispatch('login/loggedIn')
+=======
+	},
+	methods: {
+		...mapActions('login', ['loggedIn']),
+	},
+	async beforeCreate() {
+		this.$store.dispatch('login/loggedIn')
+>>>>>>> a42de4fb274c95ee92b308ac9af2183c6cb96bbd
 	}
 }
 </script>

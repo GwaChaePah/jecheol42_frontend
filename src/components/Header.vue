@@ -16,7 +16,11 @@
 				<ul class="navlist" v-else>
 					<li ><span @click="toBoard">게시판</span></li>
 					<!-- to mypage -->
+<<<<<<< HEAD
 					<li><span @click="" class="user">{{ userInfo }}</span></li>
+=======
+					<li><span @click="" class="user">{{ username }}</span></li>
+>>>>>>> a42de4fb274c95ee92b308ac9af2183c6cb96bbd
 					<li><span @click="logoutUser">로그아웃</span></li>
 				</ul>
 			</div>
@@ -32,7 +36,7 @@
 						<li @click="toRegister">회원가입</li>
 					</ul>
 					<ul v-else>
-						<li class="user">룰루랄라</li>
+						<li class="user">{{ username }}</li>
 						<li @click="toMain">메인</li>
 						<li @click="toBoard">게시판</li>
 						<li @click="logoutUser">로그아웃</li>
@@ -99,7 +103,7 @@ export default {
 		...mapState('login', [
 			'isLogin',
 			'isLoginError',
-			'userInfo'
+			'username'
 		]),
 	},
 	mounted() {
