@@ -4,7 +4,7 @@ import router from '../router';
 export default {
 	namespaced: true,
 	state: {
-		userInfo: null,
+		username: null,
 		isLogin: false,
 		isLoginError: false,
 		accessToken: null,
@@ -14,7 +14,7 @@ export default {
 		loginSuccess(state, payload) {
 			state.isLogin = true
 			state.isLoginError = false
-			state.userInfo = payload
+			state.username = payload
 			console.log("로그인")
 		},
 		logout(state) {
@@ -37,16 +37,19 @@ export default {
 	actions: {
 		login({ commit, dispatch }, loginObj) {
 			axios
-			.post("api/token/", loginObj)
+			.post("token/api/", loginObj)
 			.then (response => {
-				console.log(response)
-				let userInfo = loginObj.username
+				let userInfo = {
+					local: response.data.local,
+					pk: response.data.pk,
+					username: response.data.username
+				}
 				let access = response.data.access
 				let refresh = response.data.refresh
 				commit('updateStorage', { access,refresh })
 				localStorage.setItem("access_token", access)
 				localStorage.setItem("refresh_token", refresh)
-				localStorage.setItem("userInfo", userInfo)
+				localStorage.setItem("userInfo", JSON.stringify(userInfo))
 				dispatch("loggedIn")
 			})		
 			.catch(error => {
@@ -56,17 +59,17 @@ export default {
 		},
 		loggedIn({ commit }) {
 			let localRefresh = localStorage.getItem("refresh_token")
-			let userInfo = localStorage.getItem("userInfo")
+			let userInfo = JSON.parse(localStorage.getItem("userInfo"))
 			let config = { "token" : localRefresh }
 			axios
-			.post ("api/token/verity/", config)
+			.post ("token/api/verity/", config)
 			.then (res => {
-				commit("loginSuccess", userInfo)
+				commit("loginSuccess", userInfo.username)
 				// router.push('/')
 			})
 			.catch (err => {
 				axios
-				.post ("api/token/refresh/", {
+				.post ("token/api/refresh/", {
 					refresh: localRefresh
 				})
 				.then (response => {
@@ -79,7 +82,7 @@ export default {
 			})
 		},
 		logout({ commit }) {
-			localStorage.removeItem('refresh_token')
+			localStorage.clear()
 			commit("destroyToken")
 			commit("logout")
 		}
