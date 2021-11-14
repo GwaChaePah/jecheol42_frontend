@@ -11,12 +11,12 @@
 				<ul class="navlist" v-if="!isLogin">
 					<li><span @click="toBoard">게시판</span></li>
 					<li><span @click="toLogin">로그인</span></li>
-					<li><span @click="">회원가입</span></li>
+					<li><span @click="toRegister">회원가입</span></li>
 				</ul>
 				<ul class="navlist" v-else>
 					<li ><span @click="toBoard">게시판</span></li>
 					<!-- to mypage -->
-					<li><span @click="" class="user">{{ userInfo.first_name }}</span></li>
+					<li><span @click="" class="user">{{ username }}</span></li>
 					<li><span @click="logoutUser">로그아웃</span></li>
 				</ul>
 			</div>
@@ -29,10 +29,10 @@
 						<li @click="toMain">메인</li>
 						<li @click="toBoard">게시판</li>
 						<li @click="toLogin">로그인</li>
-						<li href="#">회원가입</li>
+						<li @click="toRegister">회원가입</li>
 					</ul>
 					<ul v-else>
-						<li class="user">{{ userInfo.first_name }}</li>
+						<li class="user">{{ username }}</li>
 						<li @click="toMain">메인</li>
 						<li @click="toBoard">게시판</li>
 						<li @click="logoutUser">로그아웃</li>
@@ -73,6 +73,10 @@ export default {
 					href: '/login'
 				},
 				{
+					name: 'Register',
+					href: '/Register'
+				},
+				{
 					name: 'Post',
 					href: '/post'
 				},
@@ -95,7 +99,7 @@ export default {
 		...mapState('login', [
 			'isLogin',
 			'isLoginError',
-			'userInfo'
+			'username'
 		]),
 	},
 	mounted() {
@@ -129,6 +133,10 @@ export default {
 		toLogin() {
 			this.initMobileNav(null);
 			this.$router.push('/login');
+		},
+		toRegister() {
+			this.initMobileNav(null);
+			this.$router.push('/Register');
 		},
 		toBoard() {
 			this.updateSearch();

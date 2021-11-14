@@ -1,40 +1,46 @@
 <template>
-  <form class="background">
-	<div class="loginMsg">
-		Sign in to 제철42</div>
-	<p class="msgBox" v-if="isLogin">로그인 완료</p>
-	<p class="msgBox" v-else-if="isLoginError">아이디와 비밀번호를 확인해주세요</p>
-	<div class="loginBox">		
-		<div class="ID">
-			<label class="key" for="username">User ID</label>
-			<input
-				id="username"
-				type="text" 
-				v-model="username"
-				required/>
+	<div class="l_main">
+		<div class="l_wrapper">
+			<div class="content">
+				<div class="background">
+					<div class="loginMsg">
+						Sign in to 제철42</div>
+					<p class="msgBox" v-if="isLogin">로그인 완료</p>
+					<p class="msgBox" v-else-if="isLoginError">아이디와 비밀번호를 확인해주세요</p>
+					<div class="loginBox">		
+						<div class="ID">
+							<label class="key" for="username">User ID</label>
+							<input
+								id="username"
+								type="text" 
+								v-model="username"
+								required/>
+						</div>
+						<div class="PW">
+							<label class="key" for="password">Password</label>
+							<input
+								id="password"
+								type="password" 
+								v-model="password" 
+								required/>
+							<button 
+								type="submit"
+								class="loginBtn" 
+								@click="login({
+									username,
+									password
+								})"
+								>SIGN IN</button>
+						</div>	
+						<div class="register">
+							아직 회원이 아니신가요? <a href="#">회원가입</a>
+						</div>
+						<p>Password 입력값: {{ password }}</p>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="PW">
-			<label class="key" for="password">Password</label>
-			<input
-				id="password"
-				type="password" 
-				v-model="password" 
-				required/>
-			<button 
-				type="submit"
-				class="loginBtn" 
-				@click="login({
-					username,
-					password
-				})"
-				>SIGN IN</button>
-		</div>	
-		<div class="register">
-			아직 회원이 아니신가요? <a href="#">회원가입</a>
-		</div>
-		<p>Password 입력값: {{ password }}</p>
 	</div>
-  </form>
 </template>
  
 <script>
@@ -84,6 +90,7 @@ export default {
 	}
 
 .background{
+	height: 400px;
 	font-family: sans-serif;
 	@include center;
 	.msgBox {
