@@ -16,8 +16,8 @@ import Footer from '~/components/Footer'
 import { mapActions } from 'vuex';
 
 export default {
-	components: {
-	Header,
+  components: {
+    Header,
 		Footer
 	},
 	methods: {

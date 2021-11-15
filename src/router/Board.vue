@@ -23,7 +23,7 @@
 					<div v-if="(!boardView.length && !loading)" class="empty-content">
 						<h1>검색된 정보가 없습니다 따흐흑</h1>
 					</div>
-					<BoardPage v-else-if="(!search && !fromSearch && boardTag === 3)"/>
+					<BoardPage v-else />
 				</div>
 			</div>
 		</div>
@@ -60,11 +60,9 @@ export default {
 		}
 	},
 	created() {
-		if (!this.fromSearch) {
-			this.$store.dispatch('post/initBoard', {payload: null});
-		} else {
+		if (this.fromSearch) {
 			setTimeout(() => {
-				this.$store.dispatch('post/initBoard', {payload: this.postSearch});
+				this.$store.dispatch('post/getBoard', {payload: this.postSearch});
 			}, 500);
 		}
 	},
@@ -170,10 +168,12 @@ h3 {
 	.empty-content{
 		max-width: 1000px;
 		width: 100%;
+		height: 320px;
 		margin: 10px auto;
 		padding: 60px;
 		text-align: center;
 		h1 {
+			margin-top: 2em;
 			font-size: 1.6em;
 		}
 	}

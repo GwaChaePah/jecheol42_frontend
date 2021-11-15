@@ -20,26 +20,21 @@ export default {
 	name: 'BoardPage',
 	data() {
 		return {
-			totalPage: '',
 		}
 	},
 	computed: {
 		...mapState('product', ['postSearch']),
-		...mapState('post', ['page'])
-	},
-	created() {
-		this.getTotalPage();
+		...mapState('post', [
+			'page',
+			'totalPage'
+		])
 	},
 	methods: {
-		async getTotalPage() {
-			const res = await axios.get('board-api/')
-				.then(response => response.data.count);
-			const totalPage = (res % 12) ? ~~(res / 12) + 1 : ~~(res / 12);
-			this.totalPage = totalPage;
-		},
 		async goToPage(e) {
+			const search = this.postSearch ? this.postSearch : '';
 			if (e >= 1 && e !== this.page && e <= this.totalPage) {
-				this.$store.dispatch('post/initBoard', {
+				this.$store.dispatch('post/getBoard', {
+					payload: search,
 					page: e
 				});
 			}
