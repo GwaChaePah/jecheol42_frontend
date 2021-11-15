@@ -116,7 +116,7 @@ export default {
 	methods: {
 		...mapActions('post', [
 			'initMobileNav',
-			'initBoard',
+			'getBoard',
 			'updateTag'
 		]),
 		...mapActions('product', [
@@ -139,8 +139,9 @@ export default {
 			this.$router.push('/Register');
 		},
 		toBoard() {
+			this.updateTag(3);
 			this.updateSearch();
-			this.initBoard({payload:null});
+			this.getBoard({payload: ''});
 			this.initMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -153,11 +154,11 @@ export default {
 		},
 		apply() {
 			if (this.search) {
-				this.initBoard({payload:this.search});
+				this.updateTag(3);
 				this.updateSearch(this.search);
 				this.searchProduct(this.search);
+				this.getBoard({payload:this.search});
 				this.search = '';
-				this.updateTag(3);
 				this.$router.push('/search');
 			}
 		},

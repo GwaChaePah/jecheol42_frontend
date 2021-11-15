@@ -1,17 +1,17 @@
 import axios from 'axios';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 export default {
 	namespaced: true,
 	state: () => ({
-		board: [],
 		boardView: [],
+		boardTag: 3,
+		page: 1,
+		totalPage: 1,
 		post: {},
 		comments: [],
 		loading: false,
 		mobileNav: false,
-		boardTag: 3,
-		page: 1
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
@@ -24,45 +24,34 @@ export default {
 		initMobileNav({ commit }, payload) {
 			commit('UPDATE_STATE', {
 				mobileNav: payload
-			})
+			});
 		},
 		updateTag({ commit }, payload) {
 			commit('UPDATE_STATE', {
 				boardTag: payload
 			});
 		},
-		async initBoard({ state, commit }, { payload, page = 1 }) {
+		async getBoard({ state, commit }, { payload, page = 1 }) {
 			if (state.loading) return;
-			if (!payload) {
-				commit('UPDATE_STATE', {
-					boardTag: 3,
-					board: [],
-					page: 1
-				});
-			}
 			commit('UPDATE_STATE', {
 				boardView: [],
+				page: page,
 				loading: true,
 			});
-			let res;
+			let boardView;
+			let totalPage;
 			try {
-				if (payload) {
-					res = await _fetchBoardwSearch(payload);
-				} else {
-					commit('UPDATE_STATE', {
-						page: page
-					});
-					res = await _fetchBoard(state.page);
-				}
+				const data = await _fetchBoard(payload, state.boardTag, page);
+				totalPage = calcTotalPage(data.count);
+				boardView = data.results;
 			} catch(e) {
-				console.log('initBoard> ', e);
-				res = [];
+				console.log('getBoard> ', e);
+				boardView = [];
+				totalPage = 1;
 			} finally {
-				const boardView = (state.boardTag === 3) ? res :
-					await _fetchwTag(state.boardTag, payload);
 				commit('UPDATE_STATE', {
-					board: res,
 					boardView: boardView,
+					totalPage: totalPage,
 					loading: false,
 				});
 			}
@@ -91,39 +80,12 @@ export default {
 				});
 			}
 		},
-		async searchPostTags({ state, commit }, payload) {
-			if (state.loading) return;
-			commit('UPDATE_STATE', {
-				boardView: [],
-				loading: true
-			});
-			let res;
+		async deletePost({ commit }, payload) {
 			try {
-				if (!state.board) {
-					res = await _fetchBoardwSearch(payload);
-					commit('UPDATE_STATE', {
-						board: res,
-					});
-				}
-				res = (state.boardTag === 3) ? state.board :
-					await _fetchwTag(state.boardTag, payload);
-			} catch (e) {
-				console.log('searchPostTags> ', e);
-				res = state.board;
-			} finally {
-				commit('UPDATE_STATE', {
-					boardView: res,
-					loading: false
-				});
-			}
-		},
-		async deletePost({ dispatch, commit }, payload) {
-			try {
-				await axios.delete(`post-api/${payload}/`);
+				await axios.delete(`post/api/${payload}/`);
 			} catch(e) {
 				console.log('deletePost> ', e);
 			} finally {
-				dispatch('initBoard');
 				commit('UPDATE_STATE', {
 					post: {},
 					comments: []
@@ -138,14 +100,14 @@ export default {
 			try {
 				if (option) {
 					await axios({
-						url: 'comment-api/',
+						url: 'comment/api/',
 						method: 'post',
 						data: payload,
 						headers: {"Content-Type" : "application/json"}
 					});
 				} else {
 					await axios({
-						url: `comment-api/${payload.id}/`,
+						url: `comment/api/detail/${payload.id}/`,
 						method: 'patch',
 						data: payload,
 						headers: {"Content-Type" : "application/json"}
@@ -163,7 +125,7 @@ export default {
 		},
 		async deleteComment({ commit }, payload) {
 			try {
-				await axios.delete('comment-api/' + payload.id + '/');
+				await axios.delete('comment/api/detail/' + payload.id + '/');
 			} catch(e) {
 				console.log('deleteComment> ', e);
 			} finally {
@@ -184,7 +146,7 @@ export default {
 			let data
 			try {
 				data = await axios({
-					url: `post-api/${payload.get('id')}/`,
+					url: `post/api/${payload.get('id')}/`,
 					method: 'patch',
 					data: payload,
 					headers: {
@@ -199,19 +161,26 @@ export default {
 		},
 	},
 }
-async function _fetchBoard(payload) {
-	const	res = await axios.get(`board-api/?page=${payload}`)
-		.then(response => response.data.results);
-	for (let i = 0; i < res.length; i++) {
-		const date = res[i].created_at.slice(0, 10).replaceAll('-', '.');
-		const time = res[i].created_at.slice(11, 16);
-		const created_at = date.concat('. '.concat(...time));
-		res[i].created_at = created_at;
+async function _fetchBoard(payload, tag, page) {
+	const search = payload ? encodeURI(payload) : '';
+	let data;
+	if (tag !== 3) {
+		data = await axios.get(`board/api?search=${search}&tag=${tag}&page=${page}`)
+			.then(res => res.data);
+	} else {
+		data = await axios.get(`board/api?search=${search}&page=${page}`)
+			.then(res => res.data);
 	}
-	return res;
+	for (let i = 0; i < data.results.length; i++) {
+		const date = data.results[i].created_at.slice(0, 10).replaceAll('-', '.');
+		const time = data.results[i].created_at.slice(11, 16);
+		const created_at = date.concat('. '.concat(...time));
+		data.results[i].created_at = created_at;
+	}
+	return data;
 }
 async function _fetchPost(payload) {
-	const res = await axios.get(`post-api/${payload}/`)
+	const res = await axios.get(`post/api/${payload}/`)
 		.then(response => response.data);
 	const date = res.created_at.slice(0, 10).replaceAll('-', '.');
 	const time = res.created_at.slice(11, 16);
@@ -220,8 +189,8 @@ async function _fetchPost(payload) {
 	return res;
 }
 async function _fetchComment(payload) {
-	const res = await axios.get(`post_comment-api/${payload}/`)
-		.then(response => response.data.comments);
+	const res = await axios.get(`comment/api/list/${payload}/`)
+		.then(response => response.data);
 	for (let i = 0; i < res.length; i++) {
 		const date = res[i].updated_at.slice(0, 10).replaceAll('-', '.');
 		const time = res[i].updated_at.slice(11, 16);
@@ -230,31 +199,6 @@ async function _fetchComment(payload) {
 	}
 	return res;
 }
-async function _fetchBoardwSearch(payload) {
-	const	res = await axios.get(`board-api?search=${payload}`)
-		.then(response => response.data);
-		for (let i = 0; i < res.length; i++) {
-			const date = res[i].created_at.slice(0, 10).replaceAll('-', '.');
-			const time = res[i].created_at.slice(11, 16);
-			const created_at = date.concat('. '.concat(...time));
-			res[i].created_at = created_at;
-		}
-	return res;
-}
-async function _fetchwTag(tag, payload) {
-	let res;
-	if (payload) {
-		res = await axios.get(`board-api?search=${payload}&tag=${tag}`)
-		.then(response => response.data);
-	} else {
-		res = await axios.get(`board-api?tag=${tag}`)
-		.then(response => response.data);
-	}
-	for (let i = 0; i < res.length; i++) {
-		const date = res[i].created_at.slice(0, 10).replaceAll('-', '.');
-		const time = res[i].created_at.slice(11, 16);
-		const created_at = date.concat('. '.concat(...time));
-		res[i].created_at = created_at;
-	}
-	return res;
+function calcTotalPage(payload) {
+	return (payload % 12) ? ~~(payload / 12) + 1 : ~~(payload / 12);
 }
