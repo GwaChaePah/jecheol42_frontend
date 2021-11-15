@@ -65,21 +65,18 @@ export default {
 			})
 			let postSearch = payload;
 			try {
-				const data = encodeURI(payload);
-				const res = await axios.get(`search-api?search=${data}`)
-					.then(response => response.data);
-				const price = res[0];
-				if (price) {
+				const res = await _fetchSearch(encodeURI(payload));
+				if (res) {
 					commit('UPDATE_STATE', {
 						theSearch: {
-							name: price.item_name,
-							price: price.price,
-							unit: price.unit,
-							average_price: price.average_price,
-							date: price.date
+							name: res.item_name,
+							price: res.price,
+							unit: res.unit,
+							average_price: res.average_price,
+							date: res.date
 						},
 					});
-					postSearch = price.item_name;
+					postSearch = res.item_name;
 				}	else {
 					commit('RESET_STATE');
 				}
@@ -97,7 +94,12 @@ export default {
 }
 
 async function _fetchProduct() {
-	const res = await axios.get('product-api/')
+	const res = await axios.get('product/api/')
 		.then(response => response.data.results);
+	return res;
+}
+async function _fetchSearch(payload){
+	const res = await axios.get(`search/api?search=${payload}`)
+		.then(response => response.data[0]);
 	return res;
 }

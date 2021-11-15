@@ -80,7 +80,11 @@ export default {
 										e.target.value === '나눔' ? 1 :
 										e.target.value === '완료' ? 2 : 3;
 			this.tag = value;
-			this.$store.dispatch('post/searchPostTags', this.search);
+			if (this.search) {
+				this.$store.dispatch('post/getBoard', {	payload:this.search	});
+			} else {
+				this.$store.dispatch('post/getBoard', {	payload:'' });
+			}
 		},
 		createPost() {
 			this.$router.push({
