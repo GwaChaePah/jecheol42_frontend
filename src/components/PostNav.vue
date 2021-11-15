@@ -49,9 +49,17 @@ export default {
 			document.documentElement.scrollTop = 0;
 		},
 		createPost() {
-			this.$router.push({
-				path: '/create'
-			})
+			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+			if (userInfo == null)
+			{
+				confirm("글 작성은 로그인 후 가능합니다.");
+				this.$router.push('/login');
+			}
+			else {
+				this.$router.push({
+					path: '/create'
+				})
+			}
 		}
 	}
 }

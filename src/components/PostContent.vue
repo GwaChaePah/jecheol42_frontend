@@ -25,7 +25,7 @@
 			</div>
 			<div class="title__info">
 				<p id="writer"><span class="material-icons">account_circle</span>
-					{{ post.user_name }}
+					{{ post.username }}
 				</p>
 				<p id="time"><span class="material-icons">schedule</span>
 					{{ post.created_at }}
@@ -96,7 +96,8 @@ export default {
 		updatePost() {
 			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
 			let pk = userInfo.pk;
-			console.log(pk);
+			if (userInfo == null || this.post.user_key !== pk)
+				confirm("수정 권한이 없습니다.");
 			if (this.post.user_key === pk)
 				this.$router.push({
 				name: 'UpdatePost',
@@ -104,8 +105,6 @@ export default {
 					id: this.$route.params.id
 				}
 			});
-			else
-				confirm("수정 권한이 없습니다.");
 		},
 	}
 }
