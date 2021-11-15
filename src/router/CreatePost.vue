@@ -33,6 +33,7 @@
 					<div class="zero" v-else> {{form.price = 0}} </div>
 				</div>
 				<div>
+					<p>이미지는 3장까지 선택 가능합니다.</p>
 					<input multiple @change="onInputImage()" ref="postImage" type="file">
 				</div>
 			<button class="registerBtn" @click.prevent="checkForm()">작성</button>
