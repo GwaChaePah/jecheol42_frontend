@@ -25,7 +25,7 @@
 			</div>
 			<div class="title__info">
 				<p id="writer"><span class="material-icons">account_circle</span>
-					{{ post.user_name }}
+					{{ post.username }}
 				</p>
 				<p id="time"><span class="material-icons">schedule</span>
 					{{ post.created_at }}
