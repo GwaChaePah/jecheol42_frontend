@@ -97,7 +97,7 @@ export default {
 				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
 			this.$store.dispatch('post/updatePost', formData);
-			this.$router.push('/board');
+			this.$router.push(`/post/${index}`);
 		},
 		cancel() {
 			this.$router.push('/board')
