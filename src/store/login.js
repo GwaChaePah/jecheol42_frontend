@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { concat } from 'lodash';
 import router from '../router';
 
 export default {
@@ -39,30 +40,20 @@ export default {
 			axios
 			.post("token/api/", loginObj)
 			.then (response => {
-<<<<<<< HEAD
-				// console.log(response.status)
-				let userInfo = loginObj.username
-=======
+				console.log(response)
 				let userInfo = {
-					local: response.data.local,
 					pk: response.data.pk,
-					username: response.data.username
+					username: response.data.username,
+					region: response.data.region,
 				}
->>>>>>> a42de4fb274c95ee92b308ac9af2183c6cb96bbd
 				let access = response.data.access
 				let refresh = response.data.refresh
 				commit('updateStorage', { access,refresh })
 				localStorage.setItem("access_token", access)
 				localStorage.setItem("refresh_token", refresh)
-<<<<<<< HEAD
-
-				// dispatch("loggedIn")
-				commit("loginSuccess", userInfo)
-				router.push('/')
-=======
 				localStorage.setItem("userInfo", JSON.stringify(userInfo))
 				dispatch("loggedIn")
->>>>>>> a42de4fb274c95ee92b308ac9af2183c6cb96bbd
+				router.push('/')
 			})		
 			.catch(error => {
 				console.log(error)
@@ -77,7 +68,6 @@ export default {
 			.post ("token/api/verity/", config)
 			.then (res => {
 				commit("loginSuccess", userInfo.username)
-				// router.push('/')
 			})
 			.catch (err => {
 				axios

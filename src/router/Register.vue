@@ -23,7 +23,15 @@
 							<div for="local">지역: </div>
 							<input type="local" class="localNum" v-model="localNum">
 						</div>
-						<button >회원가입</button>
+						<button 
+							type="submit"
+							class="registerBtn" 
+							@click="register({
+								username,
+								password,
+								localNum
+							})"
+							>회원가입</button>
 					</div>
 					<p>Password 입력값: {{ password }}</p>
 					<p>passwordConfirmation 입력값: {{ passwordConfirmation }}</p>
@@ -42,7 +50,7 @@ export default {
 		username : '',
 		password : '',
         passwordConfirmation : '',
-		local: '',
+		localNum: '',
 		duplicateId: false,
 		useId: false,
 		notSamePw: false
@@ -57,7 +65,7 @@ export default {
 	},
 	sameUser() {
 		let username = this.username
-		axios.post("user_check/", {
+		axios.post("user/api/check/", {
 			username: username
 		})
 		.then(res => {
@@ -89,10 +97,10 @@ export default {
 			alert("아이디는 '@' '.' '/' '+' '-' '_'만 넣을 수 있습니다")
 			return false
 		}
-		else if(num < 0 || eng < 0){
-			alert("영문, 숫자를 혼합하여 입력해주세요.");
-			return false;
-		}
+		// else if(num < 0 || eng < 0){
+		// 	alert("영문, 숫자를 혼합하여 입력해주세요.");
+		// 	return false;
+		// }
 		else
 			console.log("아이디 통과!")
 	},
@@ -110,12 +118,15 @@ export default {
 			alert("비밀번호는 공백을 넣을 수 없습니다")
 			return false
 		}
-		else if(num < 0 || eng < 0 || spe < 0 ){
-			alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
-			return false;
-		}
+		// else if(num < 0 || eng < 0 || spe < 0 ){
+		// 	alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
+		// 	return false;
+		// }
 		else
 			console.log("비밀번호 통과!")
+	},
+	register(registerObj) {
+		console.log(registerObj)
 	}
   }
 }

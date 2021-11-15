@@ -114,7 +114,7 @@ export default {
 				formData.append(key, postObj[key]);
 			}
 			await axios({
-				url: 'board-api/',
+				url: 'board/api/',
 				method: 'post',
 				data: formData,
 				headers: {

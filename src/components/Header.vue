@@ -16,11 +16,7 @@
 				<ul class="navlist" v-else>
 					<li ><span @click="toBoard">게시판</span></li>
 					<!-- to mypage -->
-<<<<<<< HEAD
-					<li><span @click="" class="user">{{ userInfo }}</span></li>
-=======
 					<li><span @click="" class="user">{{ username }}</span></li>
->>>>>>> a42de4fb274c95ee92b308ac9af2183c6cb96bbd
 					<li><span @click="logoutUser">로그아웃</span></li>
 				</ul>
 			</div>
