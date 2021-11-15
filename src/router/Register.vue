@@ -6,30 +6,44 @@
 					<h1>회원가입 페이지가 될 어쩌구</h1>
 					<div>
 						<div for="username">아이디: </div>
-						<input type="text" class="username" v-model="username" @change="validateId"/>
-						<button @click="sameUser">중복 확인</button>
+						<input type="text" 
+								class="username" 
+								v-model="username" 
+								@change="validateId"
+								@input="useId = false"
+								required>
+						<button @click="sameUser" @change="useId = false">중복 확인</button>
 						<div class="duplicateId" v-if="duplicateId">사용할 수 없는 아이디입니다</div>
 						<div class="useId" v-if="useId">사용할 수 있는 아이디입니다</div>
 						<div>
 							<div for="password">비밀번호: </div>
-							<input type="password" class="password" v-model="password"  @change="validatePw">
+							<input type="password" 
+									class="password" 
+									v-model="password"  
+									@change="validatePw"
+									required>
 						</div>
 						<div>
 							<div for="passwordConfirmation">비밀번호 확인: </div>
-							<input type="password" class="passwordConfirmation" v-model="passwordConfirmation" @change="comparisonPW">
+							<input type="password" 
+									class="passwordConfirmation" 
+									v-model="passwordConfirmation" 
+									@change="comparisonPW"
+									required>
 							<div v-if="notSamePw">비밀번호가 다릅니다</div>
 						</div>
 						<div>
 							<div for="local">지역: </div>
-							<input type="local" class="localNum" v-model="localNum">
+							<input type="region" class="region" v-model="region" required>
 						</div>
 						<button 
 							type="submit"
-							class="registerBtn" 
+							class="registerBtn"
+							v-bind:disabled="!useId"
 							@click="register({
 								username,
 								password,
-								localNum
+								region
 							})"
 							>회원가입</button>
 					</div>
@@ -50,7 +64,7 @@ export default {
 		username : '',
 		password : '',
         passwordConfirmation : '',
-		localNum: '',
+		region: '',
 		duplicateId: false,
 		useId: false,
 		notSamePw: false
@@ -65,6 +79,8 @@ export default {
 	},
 	sameUser() {
 		let username = this.username
+		if (!username)
+			return alert("아이디를 입력해 주세요")
 		axios.post("user/api/check/", {
 			username: username
 		})
@@ -97,6 +113,10 @@ export default {
 			alert("아이디는 '@' '.' '/' '+' '-' '_'만 넣을 수 있습니다")
 			return false
 		}
+		// else if(eng < 0){
+		// 	alert("영문으로 입력해주세요.");
+		// 	return false;
+		// }
 		// else if(num < 0 || eng < 0){
 		// 	alert("영문, 숫자를 혼합하여 입력해주세요.");
 		// 	return false;
@@ -118,6 +138,10 @@ export default {
 			alert("비밀번호는 공백을 넣을 수 없습니다")
 			return false
 		}
+		// else if(eng < 0){
+		// 	alert("영문을 입력해주세요.");
+		// 	return false;
+		// }
 		// else if(num < 0 || eng < 0 || spe < 0 ){
 		// 	alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
 		// 	return false;
@@ -126,7 +150,28 @@ export default {
 			console.log("비밀번호 통과!")
 	},
 	register(registerObj) {
-		console.log(registerObj)
+		if (!this.username || !this.password || !this.region)
+			return alert("모든 데이터를 입력해주세요.")
+		else if (this.notSamePw)
+			return alert("비밀번호를 확인해주세요.")
+		else if (this.username == this.password)
+			return alert("아이디와 비밀번호는 같을 수 없습니다.")
+		else console.log(registerObj)
+		// axios.post("user/api/register/", {
+		// 	"user": {
+		// 			"username": registerObj.username,
+		// 			"password": registerObj.password
+		// 			},
+		// 	"region": {
+		// 				"region": registerObj.region
+		// 			}
+		// })
+		// .then(res => {
+		// 	console.log("가입 완")
+		// })
+		// .catch(err => {
+		// 	console.log("가입 실패")
+		// })
 	}
   }
 }

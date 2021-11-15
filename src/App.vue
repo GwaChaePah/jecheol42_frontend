@@ -13,9 +13,12 @@
 <script>
 import Header from '~/components/Header'
 import Footer from '~/components/Footer'
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
+	computed: {
+		...mapState('login', ['isLogin']),
+	},
   components: {
     Header,
 		Footer
@@ -24,7 +27,13 @@ export default {
 		...mapActions('login', ['loggedIn']),
 	},
 	async beforeCreate() {
-		this.$store.dispatch('login/loggedIn')
+		let localRefresh = localStorage.getItem("refresh_token")
+		if (localRefresh){
+			console.log("재로그인!")
+			this.$store.dispatch('login/loggedIn')
+		}
+		else
+			console.log("로컬 스토리지는 너굴맨이 싸악 지웠다구!")
 	}
 }
 </script>

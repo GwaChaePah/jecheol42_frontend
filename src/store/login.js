@@ -65,7 +65,7 @@ export default {
 			let userInfo = JSON.parse(localStorage.getItem("userInfo"))
 			let config = { "token" : localRefresh }
 			axios
-			.post ("token/api/verity/", config)
+			.post ("token/api/verify/", config)
 			.then (res => {
 				commit("loginSuccess", userInfo.username)
 			})
@@ -80,6 +80,9 @@ export default {
 					localStorage.setItem("access_token", newAccess)
 				})
 				.catch (error => {
+					console.log(error)
+					dispatch("logout")
+					router.push('/')
 				})
 			})
 		},

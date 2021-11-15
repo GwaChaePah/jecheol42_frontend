@@ -199,37 +199,6 @@ async function _fetchComment(payload) {
 	}
 	return res;
 }
-<<<<<<< HEAD
-async function _fetchBoardwSearch(payload) {
-	const	res = await axios.get(`board-api?search=${payload}`)
-		.then(response => response.data);
-		for (let i = 0; i < res.length; i++) {
-			const date = res[i].created_at.slice(0, 10).replaceAll('-', '.');
-			const time = res[i].created_at.slice(11, 16);
-			const created_at = date.concat('. '.concat(...time));
-			res[i].created_at = created_at;
-		}
-	return res;
-}
-async function _fetchwTag(tag, payload) {
-	let res;
-	if (payload) {
-		res = await axios.get(`board-api?search=${payload}&tag=${tag}`)
-		.then(response => response.data);
-	} else {
-		res = await axios.get(`board-api?tag=${tag}`)
-		.then(response => response.data);
-	}
-	for (let i = 0; i < res.length; i++) {
-		const date = res[i].created_at.slice(0, 10).replaceAll('-', '.');
-		const time = res[i].created_at.slice(11, 16);
-		const created_at = date.concat('. '.concat(...time));
-		res[i].created_at = created_at;
-	}
-	return res;
-}
-=======
 function calcTotalPage(payload) {
 	return (payload % 12) ? ~~(payload / 12) + 1 : ~~(payload / 12);
 }
->>>>>>> 7317338655ff9960f38336a9bc1201d9d360a887
