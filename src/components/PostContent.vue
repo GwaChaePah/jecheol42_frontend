@@ -86,6 +86,7 @@ export default {
 			const id = this.$route.params.id;
 			if (confirm("정말 지우시겠습니까?")) {
 				this.$store.dispatch('post/deletePost', id);
+				this.$store.dispatch('post/getBoard', {payload: ''});
 				this.$router.push('/board');
 			}
 		},

@@ -16,16 +16,16 @@ import Footer from '~/components/Footer'
 import { mapActions } from 'vuex';
 
 export default {
-	components: {
-	Header,
+  components: {
+    Header,
 		Footer
-	},
-	methods: {
-		...mapActions('login', ['loggedIn']),
-	},
-	async beforeCreate() {
-		this.$store.dispatch('login/loggedIn')
-	}
+  },
+  methods: {
+	  ...mapActions('login', ['getMemberInfo']),
+  },
+  beforeCreate() {
+  	this.$store.dispatch('login/getMemberInfo');
+  }
 }
 </script>
 
