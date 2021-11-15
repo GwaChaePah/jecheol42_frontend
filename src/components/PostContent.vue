@@ -25,7 +25,7 @@
 			</div>
 			<div class="title__info">
 				<p id="writer"><span class="material-icons">account_circle</span>
-					{{ post.user_key }}
+					{{ post.username }}
 				</p>
 				<p id="time"><span class="material-icons">schedule</span>
 					{{ post.created_at }}
@@ -94,13 +94,18 @@ export default {
 			this.click = !this.click;
 		},
 		updatePost() {
-			this.$router.push({
+			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+			let pk = userInfo.pk;
+			if (userInfo == null || this.post.user_key !== pk)
+				confirm("수정 권한이 없습니다.");
+			if (this.post.user_key === pk)
+				this.$router.push({
 				name: 'UpdatePost',
 				params: {
 					id: this.$route.params.id
 				}
 			});
-		}
+		},
 	}
 }
 </script>

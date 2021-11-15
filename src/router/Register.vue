@@ -34,7 +34,10 @@
 						</div>
 						<div>
 							<div for="local">지역: </div>
-							<input type="region" class="region" v-model="region" required>
+							<input type="region" 
+									class="region" 
+									v-model="region" 
+									required>
 						</div>
 						<button 
 							type="submit"

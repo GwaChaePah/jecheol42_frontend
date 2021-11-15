@@ -15,7 +15,7 @@
 					<div class="title-info">
 						<div class="title__writer">
 							<span class="material-icons">account_circle</span>
-							{{ post.user_key }}
+							{{ post.username }}
 						</div>
 						<div class="title__time">
 							<span class="material-icons">schedule</span>

@@ -30,7 +30,7 @@
 				<div>
 					<input multiple @change='onInputImage()' ref="postImage" type="file">
 				</div>
-			<button class="registerBtn" @click="checkForm()">수정</button>
+			<button class="registerBtn" @click="update()">수정</button>
 			<button class="cancelBtn" @click="cancel()">취소</button>	
 		</form>
 	</div>
@@ -54,7 +54,6 @@ export default {
 				region: '',
 				content: '',
 				price: '',
-				image: [],
 				view_count: ''
 			}
 		}
@@ -68,43 +67,19 @@ export default {
 			this.form.tag = this.post.tag;
 			this.form.price = this.post.price;
 			this.form.content = this.post.content;
-			this.form.user = this.post.user;
-			this.form.image1 = this.post.image;
-			this.form.region = this.post.region;
-			this.form.view_count = this.post.view_count;
 		}, 100);
 	},
 	methods: {
 		...mapActions('post', ['updatePost']),
 		onInputImage() {
-			if (this.form.image1 == undefined)
-				this.form.image1 = this.post.image1;
-			else
-				this.form.image1 = this.$refs.postImage.files[0];
-		},
-		checkForm(e){
-			if (!this.form.title)
-				confirm("제목은 필수입니다.")
-			if (!this.form.tag)
-				confirm("카테고리를 설정해주세요.")
-			if (!this.form.content)
-				confirm("내용은 필수입니다.")
-			if (this.form.tag === "소분" && !this.form.price)
-				confirm("가격을 입력해주세요.")
-			if (this.$refs.postImage.files[3])
-				confirm("사진은 3장까지 선택 가능합니다.")
-			// if (!this.$refs.postImage.files[0])
-			// 	confirm("최소 하나의 사진은 필수입니다.")
-				this.update();
-			// if (this.form.title && this.form.tag && this.form.content) {
-			// 	if ((this.form.tag === '0' && this.form.price) ||
-			// 		((this.form.tag === '1' || this.form.tag === '2') && !this.form.price)) {
-			// 			// if (!this.$refs.postImage.files[3] && this.$refs.postImage.files[0])
-			// 	}
-			// }
+			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : undefined;
+			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
+			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
 		},
 		async update() {
 			let variable = this.form.image1;
+			let variable1 = this.form.image2;
+			let variable2 = this.form.image3;
 			const index = this.$route.params.id;
 			const postObj = {
 				id: index,
@@ -113,15 +88,17 @@ export default {
 				content: this.form.content,
 				price: this.form.price,
 				image1: variable,
+				image2: variable1,
+				image3: variable2
 			};
-			console.log(index);
 			let formData = new FormData();
 			
 			for (let key in postObj) {
 				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
 			this.$store.dispatch('post/updatePost', formData);
-			this.$router.push('/board');
+			console.log(index);
+			this.$router.push(`/post/${index}`);
 		},
 		cancel() {
 			this.$router.push('/board')

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { concat } from 'lodash';
 import router from '../router';
 
 export default {

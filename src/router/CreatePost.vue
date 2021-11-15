@@ -33,6 +33,7 @@
 					<div class="zero" v-else> {{form.price = 0}} </div>
 				</div>
 				<div>
+					<p>이미지는 3장까지 선택 가능합니다.</p>
 					<input multiple @change="onInputImage()" ref="postImage" type="file">
 				</div>
 			<button class="registerBtn" @click.prevent="checkForm()">작성</button>
@@ -93,14 +94,15 @@ export default {
 			let variable = this.form.image1;
 			let variable1 = this.form.image2;
 			let variable2 = this.form.image3;
+			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+			let pk = userInfo.pk;
 			const index = this.$route.params.id;
-			// console.log(variable2);
 			const postObj =
 			{
 				id: index,
 				tag: this.form.tag,
 				title: this.form.title,
-				user_key: 2,
+				user_key: pk,
 				content: this.form.content,
 				price: this.form.price,
 				created_at: this.currentDate(),
@@ -109,19 +111,29 @@ export default {
 				image3: variable2,
 				view_count: 0
 			};
+			console.log(postObj.user_key);
 			let formData = new FormData();
 			for (let key in postObj) {
 				formData.append(key, postObj[key]);
 			}
-			await axios({
-				url: 'board/api/',
+			let res;
+			res = await axios({
+				url: 'post/api/',
 				method: 'post',
 				data: formData,
 				headers: {
         			'Content-Type' : 'multipart/form-data'
               }
 			})
-			this.$router.push('/board');
+			console.log(res);
+			if (res.status == 201)
+			{
+				this.$store.dispatch('post/searchPostWithId', res.data.id);
+				// this.$store.dispatch('post/getBoard', {	payload:'' });
+				this.$router.push(`/post/${res.data.id}`);
+			}
+			else
+				console.log(res);
 		},
 		currentDate() {
 			const current = new Date();

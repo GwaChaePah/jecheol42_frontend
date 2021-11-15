@@ -4,7 +4,7 @@
 			<span class="material-icons">arrow_back</span>
 			뒤로가기
 		</button>
-		<button id="write">
+		<button id="write" @click="createPost">
 			<span class="material-icons">create</span>
 			글쓰기
 		</button>
@@ -49,9 +49,17 @@ export default {
 			document.documentElement.scrollTop = 0;
 		},
 		createPost() {
-			this.$router.push({
-				path: '/create'
-			})
+			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+			if (userInfo == null)
+			{
+				confirm("글 작성은 로그인 후 가능합니다.");
+				this.$router.push('/login');
+			}
+			else {
+				this.$router.push({
+					path: '/create'
+				})
+			}
 		}
 	}
 }
