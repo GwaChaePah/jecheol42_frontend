@@ -27,6 +27,10 @@
 							<span class="material-icons">visibility</span>
 							{{ post.view_count }}
 						</div>
+						<div class="title__comments">
+							<span class="material-icons">chat_bubble_outline</span>
+							{{ post.comment_cnt }}
+						</div>
 					</div>
 				</div>
 				<div class="content-info">
@@ -149,11 +153,23 @@ export default {
 					color: #383838;
 				}
 				.title__time {
-					color: gray;
+					color: rgb(114, 115, 114);
 				}
 				.title__count {
 					padding-top: .2em;
 					color: lighten($color_prime_orange, 10%);
+					@media (max-width: 400px) {
+						display: inline-block;
+						margin-right: .5em;
+						font-size: .8em;
+					}
+				}
+				.title__comments {
+					color: gray;
+					@media (max-width: 400px) {
+						display: inline-block;
+						font-size: .8em;
+					}
 				}
 			}
 		}
