@@ -32,7 +32,7 @@
 						<li @click="toRegister">회원가입</li>
 					</ul>
 					<ul v-else>
-						<li class="user">{{ username }}</li>
+						<li class="user ellipsis">{{ username }}</li>
 						<li @click="toMain">메인</li>
 						<li @click="toBoard">게시판</li>
 						<li @click="logoutUser">로그아웃</li>

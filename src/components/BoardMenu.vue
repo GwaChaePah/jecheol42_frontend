@@ -101,7 +101,11 @@ export default {
 		}
 	},
 	mounted() {
-		this.tag = 3;
+		if (this.boardTag !== '') {
+			this.tag = this.boardTag;
+		} else {
+			this.tag = 3;
+		}
 	}
 }
 </script>
@@ -120,6 +124,9 @@ export default {
 		margin: 0 .1em;
 		padding: .4em 0.2em;
 		letter-spacing: 2px;
+		@media (max-width: 500px) {
+			font-size: .7em;
+		}
 	}
   option {
 		color: black;
@@ -138,6 +145,9 @@ export default {
 	border-radius: .2em;
 	letter-spacing: 2px;
 	font-family: 'Gowun Dodum', sans-serif;
+	@media (max-width: 500px) {
+		font-size: .7em;
+	}
 	&:hover {
 		background-color: #383838;
 		color: white;

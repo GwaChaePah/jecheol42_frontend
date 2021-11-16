@@ -13,23 +13,23 @@
 					<button class="icon material-icons">arrow_right</button>
 					<div class="title__title ellipsis">{{ post.title }}</div>
 					<div class="title-info">
-						<div class="title__writer">
+						<div class="title__writer ellipsis">
 							<span class="material-icons">account_circle</span>
-							{{ post.username }}
+							<span class="writer_username">{{ post.username }}</span>
 						</div>
-						<div class="title__time">
-							<span class="material-icons">schedule</span>
-							{{ post.created_at }}
-						</div>
-					</div>
-					<div class="title-info">
-						<div class="title__count">
-							<span class="material-icons">visibility</span>
-							{{ post.view_count }}
-						</div>
-						<div class="title__comments">
-							<span class="material-icons">chat_bubble_outline</span>
-							{{ post.comment_cnt }}
+							<div class="title__time">
+								<span class="material-icons">schedule</span>
+								{{ post.created_at }}
+							</div>
+						<div class="count_comment-wrapper">
+							<div class="title__count">
+								<span class="material-icons">visibility</span>
+								{{ post.view_count }}
+							</div>
+							<div class="title__comments">
+								<span class="material-icons">chat_bubble_outline</span>
+								{{ post.comment_cnt }}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -66,6 +66,7 @@ export default {
 
 .content-wrapper {
 	display: inline-block;
+	position: relative;
 	.content-anchor {
 		display: block;
 		background-color: white;
@@ -79,7 +80,7 @@ export default {
 			width: 280px;
 			height: 370px;
 		}
-		@media (max-width: 400px) {
+		@media (max-width: 500px) {
 			width: 320px;
 			height: 140px;
 		}
@@ -97,7 +98,7 @@ export default {
 				@media (max-width: 745px) {
 					height: 190px;
 				}
-				@media (max-width: 400px) {
+				@media (max-width: 500px) {
 					position: absolute;
 					left: 0;
 					top: 0;
@@ -110,7 +111,7 @@ export default {
 		.content-title {
 			padding: .8em .5em .5em;
 			border-bottom: 1px solid #E8E8E8;
-			@media (max-width: 400px) {
+			@media (max-width: 500px) {
 				position: absolute;
 				width: 52%;
 				left: 50%;
@@ -133,14 +134,13 @@ export default {
 				font-weight: bold;
 				font-size: 1.4em;
 				padding-bottom: .4em;
-				@media (max-width: 400px) {
+				@media (max-width: 500px) {
 					padding-bottom: .2em;
 				}
 			}
 			.title-info {
-				display: flex;
-				justify-content: space-between;
-				@media ( max-width: 400px ) {
+				position: relative;
+				@media ( max-width: 500px ) {
 					display: block;
 					font-size: .9em;
 					line-height: 1.7;
@@ -151,24 +151,32 @@ export default {
 				}
 				.title__writer {
 					color: #383838;
+					width: 50%;
+					.writer_username {
+						margin-left: .3em;
+					}
+					@media (max-width: 500px) {
+						width: 45%;
+					}
 				}
 				.title__time {
 					color: rgb(114, 115, 114);
 				}
-				.title__count {
-					padding-top: .2em;
-					color: lighten($color_prime_orange, 10%);
-					@media (max-width: 400px) {
+				.count_comment-wrapper {
+					position: absolute;
+					top: 0;
+					right: 0;
+					.title__count {
 						display: inline-block;
 						margin-right: .5em;
-						font-size: .8em;
+						color: lighten($color_prime_orange, 10%);
 					}
-				}
-				.title__comments {
-					color: gray;
-					@media (max-width: 400px) {
+					.title__comments {
 						display: inline-block;
-						font-size: .8em;
+						color: gray;
+						@media (max-width: 500px) {
+							margin-right: .5em;
+						}
 					}
 				}
 			}

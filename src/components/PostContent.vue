@@ -51,6 +51,7 @@
 			<div class="post__paragraph">
 				<p>{{ post.content }}</p>
 			</div>
+			<div class="post__price" v-if="post.tag !== 1">{{ post.price }}</div>
 		</div>
 	</div>
 </template>
@@ -277,9 +278,9 @@ export default {
 	}
 	.content-post {
 		max-width: 100%;
-		margin: 1em 0;
+		margin-top: 1em;
 		@media (max-width: 500px) {
-			margin: .2em 0;
+			margin-top: .2em;
 		}
 		.post__img {
 			max-width: 90%;
@@ -304,8 +305,23 @@ export default {
 				font-size: 1.2em;
 			}
 			@media (max-width: 500px) {
-				margin: 0 1.5em;
+				margin: 0 1.5em .5em;
 				font-size: .6em;
+			}
+		}
+		.post__price {
+			font-family: 'Gowun Dodum', sans-serif;
+			font-size: 1.5em;
+			color: darken($color_prime_green, 20%);
+			border-top: 1px solid #ccc;
+			text-align: center;
+			padding: .5em;
+			&:after {
+				content: '원';
+			}
+			@media (max-width: 500px) {
+				font-size: .8em;
+				height: 15px;
 			}
 		}
 	}
