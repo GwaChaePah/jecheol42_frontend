@@ -39,7 +39,6 @@ export default {
 			axios
 			.post("token/api/", loginObj)
 			.then (response => {
-				console.log(response)
 				let userInfo = {
 					pk: response.data.pk,
 					username: response.data.username,
@@ -52,7 +51,7 @@ export default {
 				localStorage.setItem("refresh_token", refresh)
 				localStorage.setItem("userInfo", JSON.stringify(userInfo))
 				dispatch("loggedIn")
-				router.push('/')
+				router.go(-1)
 			})		
 			.catch(error => {
 				console.log(error)
@@ -77,11 +76,13 @@ export default {
 					let newAccess = response.data.access
 					commit('updateAccess', { newAccess })
 					localStorage.setItem("access_token", newAccess)
+					commit("loginSuccess", userInfo.username)
 				})
 				.catch (error => {
 					console.log(error)
 					dispatch("logout")
-					router.push('/')
+					alert("다시 로그인해 주세요")
+					router.push('/login')
 				})
 			})
 		},

@@ -3,55 +3,63 @@
 		<div class="l_wrapper">
 			<div class="content">
 				<div>
-					<h1>회원가입 페이지가 될 어쩌구</h1>
-					<div>
-						<div for="username">아이디: </div>
-						<input type="text" 
-								class="username" 
-								v-model="username" 
-								@change="validateId"
-								@input="useId = false"
-								required>
-						<button @click="sameUser" @change="useId = false">중복 확인</button>
-						<div class="duplicateId" v-if="duplicateId">사용할 수 없는 아이디입니다</div>
-						<div class="useId" v-if="useId">사용할 수 있는 아이디입니다</div>
-						<div>
-							<div for="password">비밀번호: </div>
-							<input type="password" 
-									class="password" 
-									v-model="password"  
-									@change="validatePw"
-									required>
+					<div class="background">
+						<div class="signinBox">
+							<h1 class="signinMsg">회원가입</h1>
+							<div class="userBox">
+								<input for="username"
+										type="text"
+										class="username" 
+										v-model="username"
+										placeholder="아이디"
+										@change="validateId"
+										@input="useId = false"
+										required>
+								<button @click="sameUser" @change="useId = false">검사</button>
+							</div>
+							<div class="duplicateId" v-if="duplicateId">사용할 수 없는 아이디입니다</div>
+							<div class="useId" v-if="useId">사용할 수 있는 아이디입니다</div>
+							<div class="passBox">
+								<input for="password"
+										type="password" 
+										class="password"
+										placeholder="비밀번호"
+										v-model="password" 
+										@change="validatePw"
+										required>
+							</div>
+							<div class="passConBox">
+								<input for="passwordConfirmation"
+										type="password" 
+										class="passwordConfirmation"
+										placeholder="비밀번호"
+										v-model="passwordConfirmation" 
+										@change="comparisonPW"
+										required>
+							</div>
+								<div v-if="notSamePw">비밀번호가 다릅니다</div>
+							<div class="regionBox">
+								<input for="region"
+										type="region" 
+										class="region"
+										placeholder="지역(토글로 바꿈)"
+										v-model="region" 
+										required>
+							</div>
+							<button 
+								type="submit"
+								class="registerBtn"
+								v-bind:disabled="!useId"
+								@click="register({
+									username,
+									password,
+									region
+								})"
+								>회원가입</button>
 						</div>
-						<div>
-							<div for="passwordConfirmation">비밀번호 확인: </div>
-							<input type="password" 
-									class="passwordConfirmation" 
-									v-model="passwordConfirmation" 
-									@change="comparisonPW"
-									required>
-							<div v-if="notSamePw">비밀번호가 다릅니다</div>
-						</div>
-						<div>
-							<div for="local">지역: </div>
-							<input type="region" 
-									class="region" 
-									v-model="region" 
-									required>
-						</div>
-						<button 
-							type="submit"
-							class="registerBtn"
-							v-bind:disabled="!useId"
-							@click="register({
-								username,
-								password,
-								region
-							})"
-							>회원가입</button>
 					</div>
-					<p>Password 입력값: {{ password }}</p>
-					<p>passwordConfirmation 입력값: {{ passwordConfirmation }}</p>
+					<!-- <p>Password 입력값: {{ password }}</p>
+					<p>passwordConfirmation 입력값: {{ passwordConfirmation }}</p> -->
 				</div>
 			</div>
 		</div>
@@ -89,12 +97,10 @@ export default {
 		})
 		.then(res => {
 			if (res.status === 202)
-				console.log("사용이 가능한 어쩌구 웅앵")
 				this.useId = true
 				this.duplicateId = false
 		})
 		.catch(err => {
-				console.log("사용이 불가능한 어쩌구 웅앵")
 				this.useId = false
 				this.duplicateId = true
 		})
@@ -103,9 +109,11 @@ export default {
 		let username = this.username
 		let num = username.search(/[0-9]/);
 		let eng = username.search(/[a-z]/);
+		let engB = username.search(/[A-Z]/);
+		let kor = username.search(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/);
 		let spe = username.search(/[~!#$%^&*()|<>?:{}]/);
-		if (this.username.length > 20 ) {
-			alert("아이디는 최대 20자 입니다.")
+		if (username.length > 20 || username.length < 5) {
+			alert("아이디는 최소 5자, 최대 20자 입니다.")
 			return false
 		} 
 		else if (this.username.search(/\s/) !== -1) {
@@ -116,41 +124,42 @@ export default {
 			alert("아이디는 '@' '.' '/' '+' '-' '_'만 넣을 수 있습니다")
 			return false
 		}
-		// else if(eng < 0){
-		// 	alert("영문으로 입력해주세요.");
-		// 	return false;
-		// }
+		else if(!(kor < 0)){
+			alert("한글은 입력할 수 없습니다.");
+			return false;
+		}
+		else if(!(engB < 0)){
+			alert("대문자 영문은 입력할 수 없습니다.");
+			return false;
+		}
 		// else if(num < 0 || eng < 0){
 		// 	alert("영문, 숫자를 혼합하여 입력해주세요.");
 		// 	return false;
 		// }
-		else
-			console.log("아이디 통과!")
 	},
 	validatePw() {
 		let password = this.password
-		let num = password.search(/[0-9]/g);
-		let eng = password.search(/[a-z]/ig);
-		let spe = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+		let num = password.search(/[0-9]/);
+		let eng = password.search(/[a-z]/);
+		let kor = password.search(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/);
+		let spe = password.search(/[~!#$%^&*()|<>?:{}]/);
 
-		if (password.length > 16 ) {
-			alert("비밀번호는 최대 20자 입니다.")
+		if (password.length > 16 && password.length < 8) {
+			alert("비밀번호는 최소 8자, 최대 16자 입니다.")
 			return false
 		} 
 		else if (password.search(/\s/) !== -1) {
 			alert("비밀번호는 공백을 넣을 수 없습니다")
 			return false
 		}
-		// else if(eng < 0){
-		// 	alert("영문을 입력해주세요.");
-		// 	return false;
-		// }
+		else if(!(kor < 0)){
+			alert("한글은 입력할 수 없습니다.");
+			return false;
+		}
 		// else if(num < 0 || eng < 0 || spe < 0 ){
 		// 	alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
 		// 	return false;
 		// }
-		else
-			console.log("비밀번호 통과!")
 	},
 	register(registerObj) {
 		if (!this.username || !this.password || !this.region)
@@ -159,22 +168,21 @@ export default {
 			return alert("비밀번호를 확인해주세요.")
 		else if (this.username == this.password)
 			return alert("아이디와 비밀번호는 같을 수 없습니다.")
-		else console.log(registerObj)
-		// axios.post("user/api/register/", {
-		// 	"user": {
-		// 			"username": registerObj.username,
-		// 			"password": registerObj.password
-		// 			},
-		// 	"region": {
-		// 				"region": registerObj.region
-		// 			}
-		// })
-		// .then(res => {
-		// 	console.log("가입 완")
-		// })
-		// .catch(err => {
-		// 	console.log("가입 실패")
-		// })
+		axios.post("user/api/register/", {
+			"user": {
+					"username": registerObj.username,
+					"password": registerObj.password
+					},
+			"region": {
+						"region": registerObj.region
+					}
+		})
+		.then(res => {
+			console.log("가입 완료")
+		})
+		.catch(err => {
+			console.log("가입 실패")
+		})
 	}
   }
 }
@@ -185,8 +193,112 @@ export default {
 @import '../scss/main.scss';
 @import '../scss/typography.scss';
 
+@mixin center {
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+	text-align: center;
+}
+@mixin input {
+	width: 15vh;
+	height: 3vh;
+	padding-left: 8px;
+	font-size: 15px;
+}
+@mixin block($size){
+	width: $size;
+	display: inline-block;
+}
+
 .content {
 	text-align: center;
-	
+	font-size: 13px;
+	.background{
+		height: 400px;
+		font-family: sans-serif;
+		@include center;
+		.signinBox {
+			.signinMsg{
+				margin: 30px 0px;
+				font-size: 20px;
+				color: rgba(#76862c, 0.76);
+			}
+			@include center;
+			border-radius: .3em;
+			box-shadow: 0 0 10px 0 $color_shadow_03;
+			width: 100%;
+			height: 98%;
+			border: 20px;
+			padding: 20px;
+			.userBox{
+				display: flex;
+				width: 60%;
+				max-width: 300px;
+				margin: auto;
+				border-bottom: 1px solid #ddd;
+				input{
+					width: 70%;
+					margin: 10px 0px 10px 10px;
+					border-color: transparent;
+				}
+				button{
+					width: 30%;
+					margin: auto;
+					max-width: 50px;
+					border-radius: 3px;
+					color: white;
+					background: rgba(#76862c, 0.76);
+					border-color: transparent;
+				}
+			}
+			.passBox{
+				display: flex;
+				width: 60%;
+				max-width: 300px;
+				margin: auto;
+				border-bottom: 1px solid #ddd;
+				input{
+					width:100%;
+					margin: 10px;
+					border-color: transparent;
+				}
+			}
+			.passConBox{
+				display: flex;
+				width: 60%;
+				max-width: 300px;
+				margin: auto;
+				border-bottom: 1px solid #ddd;
+				//border 하단에 쭈욱 선 그리기
+				input{
+					width: 100%;
+					margin: 10px;
+					border-color: transparent;
+				}
+			}
+			.regionBox{
+				display: flex;
+				width: 60%;
+				max-width: 300px;
+				margin: auto;
+				border-bottom: 1px solid #ddd;
+				input{
+					width: 100%;
+					margin: 10px;
+					border-color: transparent;
+				}
+			}
+			.registerBtn{
+				margin: 30px;
+				width: 30%;
+				max-width: 100px;
+				border-radius: 3px;
+				color: white;
+				background: rgba(#76862c, 0.76);
+				border-color: transparent;
+			}
+		}
+	}
+
 }
 </style>
