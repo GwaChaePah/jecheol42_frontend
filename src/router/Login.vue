@@ -21,11 +21,15 @@
 							<input
 								id="password"
 								type="password" 
-								v-model="password" 
+								v-model="password"  
+								@keydown.enter="login({
+									username,
+									password
+								})"
 								required/>
 							<button 
 								type="submit"
-								class="loginBtn" 
+								class="loginBtn"
 								@click="login({
 									username,
 									password
@@ -57,8 +61,15 @@ export default {
 		}
 	},
 	methods:{
-		...mapActions('login', ['login'])
+		...mapActions('login', ['login']),
   	},
+	mounted() {
+		if (this.isLogin) {
+			alert("이미 로그인한 회원입니다.")
+			this.$router.go(-1)
+		}
+	}
+	
 };
 </script>
  
@@ -84,10 +95,10 @@ export default {
 }
 
 .loginMsg{
-		margin: 30px 0px;
-		font-size: 20px;
-		color: rgba(#76862c, 0.76);
-	}
+	margin: 30px 0px;
+	font-size: 20px;
+	color: rgba(#76862c, 0.76);
+}
 
 .background{
 	height: 400px;
