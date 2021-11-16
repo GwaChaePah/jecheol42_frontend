@@ -168,6 +168,7 @@ export default {
 				right: 0;
 				@media (max-width: 500px) {
 					right: 3px;
+					top: 7px;
 				}
 				.material-icons {
 					font-size: 2em;
@@ -182,6 +183,9 @@ export default {
 				top: 18px;
 				right: 1px;
 				z-index: 2;
+				@media (max-width: 500px) {
+					top: 24px;
+				}
 				.material-icons-outlined {
 					cursor: pointer;
 					color: gray;
@@ -212,8 +216,14 @@ export default {
 				}
 			}
 			.time {
+				position: absolute;
+				right: 1.5em;
 				padding: .3em;
 				color: #696969;
+				@media (max-width: 500px) {
+					right: 2em;
+					top: .7em;
+				}
 			}
 			.id,
 			.time {
