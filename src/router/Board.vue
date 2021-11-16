@@ -64,6 +64,8 @@ export default {
 			setTimeout(() => {
 				this.$store.dispatch('post/getBoard', {payload: this.postSearch});
 			}, 500);
+		} else {
+			this.$store.dispatch('post/getBoard', {payload: ''});
 		}
 	},
 }

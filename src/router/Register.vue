@@ -5,50 +5,54 @@
 				<div>
 					<h1 class="signinMsg">회원가입</h1>
 					<div class="background">
-						<div for="username">아이디: </div>
-						<input type="text" 
-								class="username" 
-								v-model="username" 
-								@change="validateId"
-								@input="useId = false"
-								required>
-						<button @click="sameUser" @change="useId = false">중복 확인</button>
-						<div class="duplicateId" v-if="duplicateId">사용할 수 없는 아이디입니다</div>
-						<div class="useId" v-if="useId">사용할 수 있는 아이디입니다</div>
-						<div>
-							<div for="password">비밀번호: </div>
-							<input type="password" 
-									class="password" 
-									v-model="password"  
-									@change="validatePw"
+						<div class="signinBox">
+							<div for="username">아이디: </div>
+							<input type="text" 
+									class="username" 
+									v-model="username"
+									placeholder="영문, 숫자로 입력해주세요"
+									@change="validateId"
+									@input="useId = false"
 									required>
+							<button @click="sameUser" @change="useId = false">중복 확인</button>
+							<div class="duplicateId" v-if="duplicateId">사용할 수 없는 아이디입니다</div>
+							<div class="useId" v-if="useId">사용할 수 있는 아이디입니다</div>
+							<div>
+								<div for="password">비밀번호: </div>
+								<input type="password" 
+										class="password" 
+										v-model="password" 
+										placeholder="영문, 숫자, 특수문자로 입력해주세요" 
+										@change="validatePw"
+										required>
+							</div>
+							<div>
+								<div for="passwordConfirmation">비밀번호 확인: </div>
+								<input type="password" 
+										class="passwordConfirmation" 
+										v-model="passwordConfirmation" 
+										@change="comparisonPW"
+										required>
+								<div v-if="notSamePw">비밀번호가 다릅니다</div>
+							</div>
+							<div>
+								<div for="local">지역: </div>
+								<input type="region" 
+										class="region" 
+										v-model="region" 
+										required>
+							</div>
+							<button 
+								type="submit"
+								class="registerBtn"
+								v-bind:disabled="!useId"
+								@click="register({
+									username,
+									password,
+									region
+								})"
+								>회원가입</button>
 						</div>
-						<div>
-							<div for="passwordConfirmation">비밀번호 확인: </div>
-							<input type="password" 
-									class="passwordConfirmation" 
-									v-model="passwordConfirmation" 
-									@change="comparisonPW"
-									required>
-							<div v-if="notSamePw">비밀번호가 다릅니다</div>
-						</div>
-						<div>
-							<div for="local">지역: </div>
-							<input type="region" 
-									class="region" 
-									v-model="region" 
-									required>
-						</div>
-						<button 
-							type="submit"
-							class="registerBtn"
-							v-bind:disabled="!useId"
-							@click="register({
-								username,
-								password,
-								region
-							})"
-							>회원가입</button>
 					</div>
 					<p>Password 입력값: {{ password }}</p>
 					<p>passwordConfirmation 입력값: {{ passwordConfirmation }}</p>

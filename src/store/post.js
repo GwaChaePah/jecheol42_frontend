@@ -5,7 +5,7 @@ export default {
 	namespaced: true,
 	state: () => ({
 		boardView: [],
-		boardTag: 3,
+		boardTag: '',
 		page: 1,
 		totalPage: 1,
 		post: {},
@@ -31,17 +31,17 @@ export default {
 				boardTag: payload
 			});
 		},
-		async getBoard({ state, commit }, { payload, page = 1 }) {
+		async getBoard({ state, commit }, { payload, page }) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
 				boardView: [],
-				page: page,
+				page: page ? page : state.page,
 				loading: true,
 			});
 			let boardView;
 			let totalPage;
 			try {
-				const data = await _fetchBoard(payload, state.boardTag, page);
+				const data = await _fetchBoard(payload, state.boardTag, state.page);
 				totalPage = calcTotalPage(data.count);
 				boardView = data.results;
 			} catch(e) {
@@ -164,7 +164,7 @@ export default {
 async function _fetchBoard(payload, tag, page) {
 	const search = payload ? encodeURI(payload) : '';
 	let data;
-	if (tag !== 3) {
+	if (tag !== '' && tag !== 3) {
 		data = await axios.get(`board/api?search=${search}&tag=${tag}&page=${page}`)
 			.then(res => res.data);
 	} else {
