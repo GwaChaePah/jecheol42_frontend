@@ -39,10 +39,11 @@ export default {
 			axios
 			.post("token/api/", loginObj)
 			.then (response => {
+				console.log(response)
 				let userInfo = {
-					local: response.data.local,
 					pk: response.data.pk,
-					username: response.data.username
+					username: response.data.username,
+					region: response.data.region,
 				}
 				let access = response.data.access
 				let refresh = response.data.refresh
@@ -51,6 +52,7 @@ export default {
 				localStorage.setItem("refresh_token", refresh)
 				localStorage.setItem("userInfo", JSON.stringify(userInfo))
 				dispatch("loggedIn")
+				router.push('/')
 			})		
 			.catch(error => {
 				console.log(error)
@@ -65,7 +67,6 @@ export default {
 			.post ("token/api/verify/", config)
 			.then (res => {
 				commit("loginSuccess", userInfo.username)
-				// router.push('/')
 			})
 			.catch (err => {
 				axios
@@ -78,6 +79,9 @@ export default {
 					localStorage.setItem("access_token", newAccess)
 				})
 				.catch (error => {
+					console.log(error)
+					dispatch("logout")
+					router.push('/')
 				})
 			})
 		},
