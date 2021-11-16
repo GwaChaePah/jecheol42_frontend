@@ -1,6 +1,6 @@
 <template>
 	<div class="content-title-post">
-		<div class="user-menu" v-if="1">
+		<div class="user-menu" v-if="checkUser()">
 			<button class="material-icons" @click="showMenu">more_vert</button>
 			<div class="dropdown" v-show="click">
 				<div @click="updatePost">
@@ -93,16 +93,20 @@ export default {
 		showMenu() {
 			this.click = !this.click;
 		},
-		updatePost() {
+		checkUser() {
 			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
-			let pk = userInfo.pk;
-			if (userInfo == null || this.post.user_key !== pk)
-				confirm("수정 권한이 없습니다.");
-			if (this.post.user_key === pk)
-				this.$router.push({
+			let pk = userInfo ? userInfo.pk : '';
+			if (pk && this.post.user_key === pk) {
+				return true;
+			}	else {
+				return false;
+			}
+		},
+		updatePost() {
+			this.$router.push({
 				name: 'UpdatePost',
-				params: {
-					id: this.$route.params.id
+					params: {
+						id: this.$route.params.id
 				}
 			});
 		},

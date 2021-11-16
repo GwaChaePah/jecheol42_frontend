@@ -4,7 +4,7 @@
 			<table class="comment-container">
 				<tr v-for="comment in comments" :key="comment.id">
 					<td class="comment-td">
-						<button class="button_toggle" @click="showMenu(comment.id)">
+						<button class="button_toggle" v-if="pk === comment.user_key" @click="showMenu(comment.id)">
 							<span class="material-icons">more_horiz</span>
 						</button>
 						<div class="button-wrapper" v-show="(click === comment.id) && (editingId !== comment.id)">
@@ -21,7 +21,7 @@
 								<button class="material-icons-outlined" @click="editingId = ''" title="취소">clear</button>
 							</div>
 						</div>
-						<div v-else class="comment-content">&nbsp;{{ comment.content }}</div>
+						<div v-else class="comment-content" :class="{'my-comment': (pk === comment.user_key)}">&nbsp;{{ comment.content }}</div>
 					</td>
 				</tr>
 			</table>
@@ -57,11 +57,16 @@ export default {
 			editingId: '',
 			editedComment: '',
 			click: -1,
+			pk: '',
 		}
 	},
 	computed: {
     ...mapState('post', ['comments']),
   },
+	created() {
+		let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+		this.pk = userInfo? userInfo.pk : '';
+	},
 	methods: {
 		...mapActions('post', [
 			'updateComment',
@@ -77,22 +82,24 @@ export default {
 			}
 		},
 		handleSubmit(e) {
-			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
-			let pk = userInfo.pk;
-			const commentObj = {
-				post_key: this.postId,
-				user_key: pk,
-				content: this.comment,
-			};
-			this.updateComment({
-				post_key: commentObj.post_key,
-				payload: commentObj
-			});
-			this.user = '';
+			if (!this.pk) {
+				if (confirm("로그인 후에만 등록 가능합니다."))
+					this.$router.push('/login');
+			}
+			else {
+				const commentObj = {
+					post_key: this.postId,
+					user_key: this.pk,
+					content: this.comment,
+				};
+				this.updateComment({
+					post_key: commentObj.post_key,
+					payload: commentObj
+				});
+			}
 			this.comment = '';
 		},
 		cancel() {
-			this.newComment.user = '';
 			this.newComment.comment = '';
 		},
 		toggleEdit(comment) {
@@ -254,6 +261,11 @@ export default {
 				&:before {
 					content: '';
 					border: 3px solid lighten($color_prime_yellow, 20%);
+				}
+			}
+			.my-comment {
+				&:before {
+					border: 3px solid lighten($color_prime_orange, 20%);
 				}
 			}
 		}

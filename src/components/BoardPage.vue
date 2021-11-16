@@ -26,7 +26,8 @@ export default {
 		...mapState('product', ['postSearch']),
 		...mapState('post', [
 			'page',
-			'totalPage'
+			'totalPage',
+			'mobileNav'
 		])
 	},
 	methods: {
@@ -37,6 +38,7 @@ export default {
 					payload: search,
 					page: e
 				});
+				document.documentElement.scrollTop = 0;
 			}
 		}
 	}

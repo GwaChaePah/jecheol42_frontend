@@ -21,7 +21,7 @@
 				<div v-else>
 					<BoardItem  v-if="search || boardView" v-for="item in boardView" :key="item.id" :post="item" />
 					<div v-if="(!boardView.length && !loading)" class="empty-content">
-						<h1>검색된 정보가 없습니다 따흐흑</h1>
+						<h1>검색된 정보가 없습니다</h1>
 					</div>
 					<BoardPage v-else />
 				</div>
@@ -175,6 +175,11 @@ h3 {
 		h1 {
 			margin-top: 2em;
 			font-size: 1.6em;
+			@media (max-width: 400px) {
+				white-space: nowrap;
+				margin-top: 1em;
+				font-size: 1.1em;
+			}
 		}
 	}
 }

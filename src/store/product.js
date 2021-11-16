@@ -65,7 +65,7 @@ export default {
 			})
 			let postSearch = payload;
 			try {
-				const res = await _fetchSearch(encodeURI(payload));
+				const res = await _fetchSearch(payload);
 				if (res) {
 					commit('UPDATE_STATE', {
 						theSearch: {
@@ -99,7 +99,7 @@ async function _fetchProduct() {
 	return res;
 }
 async function _fetchSearch(payload){
-	const res = await axios.get(`search/api?search=${payload}`)
-		.then(response => response.data[0]);
+	const res = await axios.get(`search/api?search=${encodeURI(payload)}`)
+		.then(response => response.data.find(item => item.item_name === payload))
 	return res;
 }
