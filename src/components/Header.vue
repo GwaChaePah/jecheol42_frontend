@@ -141,7 +141,7 @@ export default {
 		toBoard() {
 			this.updateTag(3);
 			this.updateSearch();
-			this.getBoard({payload: ''});
+			this.getBoard({payload: '', page: 1});
 			this.initMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -157,7 +157,7 @@ export default {
 				this.updateTag(3);
 				this.updateSearch(this.search);
 				this.searchProduct(this.search);
-				this.getBoard({payload:this.search});
+				this.getBoard({payload:this.search, page: 1});
 				this.search = '';
 				this.$router.push('/search');
 			}

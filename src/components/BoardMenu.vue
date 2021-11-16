@@ -81,9 +81,9 @@ export default {
 										e.target.value === '완료' ? 2 : 3;
 			this.tag = value;
 			if (this.search) {
-				this.$store.dispatch('post/getBoard', {	payload:this.search	});
+				this.$store.dispatch('post/getBoard', {	payload:this.search, page: 1 });
 			} else {
-				this.$store.dispatch('post/getBoard', {	payload:'' });
+				this.$store.dispatch('post/getBoard', {	payload:'', page: 1 });
 			}
 		},
 		createPost() {
