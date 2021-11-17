@@ -72,7 +72,7 @@ export default {
 	mounted() {
 		if (this.isLogin) {
 			alert("이미 로그인한 회원입니다.")
-			this.$router.go(-1)
+			this.$router.push(-1)
 		}
 	}	
 };

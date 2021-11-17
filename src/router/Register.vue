@@ -90,110 +90,111 @@ export default {
 			this.$router.go(-1)
 		}
 	},
-  methods: {
-	comparisonPW() {
-		if (this.password !== this.passwordConfirmation)
-			this.notSamePw = true
-		else
-			this.notSamePw = false
-	},
-	sameUser() {
-		let username = this.username
-		if (!username)
-			return alert("아이디를 입력해 주세요")
-		axios.post("user/api/check/", {
-			username: username
-		})
-		.then(res => {
-			if (res.status === 202)
-				this.useId = true
-				this.duplicateId = false
-		})
-		.catch(err => {
-				this.useId = false
-				this.duplicateId = true
-		})
-	},
-	validateId() {
-		let username = this.username
-		let num = username.search(/[0-9]/);
-		let eng = username.search(/[a-z]/);
-		let engB = username.search(/[A-Z]/);
-		let kor = username.search(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/);
-		let spe = username.search(/[~!#$%^&*()|<>?:{}]/);
-		if (username.length > 20 || username.length < 5) {
-			alert("아이디는 최소 5자, 최대 20자 입니다.")
-			return false
-		} 
-		else if (this.username.search(/\s/) !== -1) {
-			alert("아이디는 공백을 넣을 수 없습니다")
-			return false
-		}
-		else if(spe !== -1) {
-			alert("아이디는 '@' '.' '/' '+' '-' '_'만 넣을 수 있습니다")
-			return false
-		}
-		else if(!(kor < 0)){
-			alert("한글은 입력할 수 없습니다.");
-			return false;
-		}
-		else if(!(engB < 0)){
-			alert("대문자 영문은 입력할 수 없습니다.");
-			return false;
-		}
-		// else if(num < 0 || eng < 0){
-		// 	alert("영문, 숫자를 혼합하여 입력해주세요.");
-		// 	return false;
-		// }
-	},
-	validatePw() {
-		let password = this.password
-		let num = password.search(/[0-9]/);
-		let eng = password.search(/[a-z]/);
-		let kor = password.search(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/);
-		let spe = password.search(/[~!#$%^&*()|<>?:{}]/);
+  	methods: {
+		comparisonPW() {
+			if (this.password !== this.passwordConfirmation)
+				this.notSamePw = true
+			else
+				this.notSamePw = false
+		},
+		sameUser() {
+			let username = this.username
+			if (!username)
+				return alert("아이디를 입력해 주세요")
+			axios.post("user/api/check/", {
+				username: username
+			})
+			.then(res => {
+				if (res.status === 202)
+					this.useId = true
+					this.duplicateId = false
+			})
+			.catch(err => {
+					this.useId = false
+					this.duplicateId = true
+			})
+		},
+		validateId() {
+			let username = this.username
+			let num = username.search(/[0-9]/);
+			let eng = username.search(/[a-z]/);
+			let engB = username.search(/[A-Z]/);
+			let kor = username.search(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/);
+			let spe = username.search(/[~!#$%^&*()|<>?:{}]/);
+			if (username.length > 20 || username.length < 5) {
+				alert("아이디는 최소 5자, 최대 20자 입니다.")
+				return false
+			} 
+			else if (this.username.search(/\s/) !== -1) {
+				alert("아이디는 공백을 넣을 수 없습니다")
+				return false
+			}
+			else if(spe !== -1) {
+				alert("아이디는 '@' '.' '/' '+' '-' '_'만 넣을 수 있습니다")
+				return false
+			}
+			else if(!(kor < 0)){
+				alert("한글은 입력할 수 없습니다.");
+				return false;
+			}
+			else if(!(engB < 0)){
+				alert("대문자 영문은 입력할 수 없습니다.");
+				return false;
+			}
+			// else if(num < 0 || eng < 0){
+			// 	alert("영문, 숫자를 혼합하여 입력해주세요.");
+			// 	return false;
+			// }
+		},
+		validatePw() {
+			let password = this.password
+			let num = password.search(/[0-9]/);
+			let eng = password.search(/[a-z]/);
+			let kor = password.search(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/);
+			let spe = password.search(/[~!#$%^&*()|<>?:{}]/);
 
-		if (password.length > 16 && password.length < 8) {
-			alert("비밀번호는 최소 8자, 최대 16자 입니다.")
-			return false
-		} 
-		else if (password.search(/\s/) !== -1) {
-			alert("비밀번호는 공백을 넣을 수 없습니다")
-			return false
-		}
-		else if(!(kor < 0)){
-			alert("한글은 입력할 수 없습니다.");
-			return false;
-		}
-		// else if(num < 0 || eng < 0 || spe < 0 ){
-		// 	alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
-		// 	return false;
-		// }
-	},
-	register(registerObj) {
-		if (!this.username || !this.password || !this.region)
-			return alert("모든 데이터를 입력해주세요.")
-		else if (this.notSamePw)
-			return alert("비밀번호를 확인해주세요.")
-		else if (this.username == this.password)
-			return alert("아이디와 비밀번호는 같을 수 없습니다.")
-		axios.post("user/api/register/", {
-			"user": {
+			if (password.length > 16 && password.length < 8) {
+				alert("비밀번호는 최소 8자, 최대 16자 입니다.")
+				return false
+			} 
+			else if (password.search(/\s/) !== -1) {
+				alert("비밀번호는 공백을 넣을 수 없습니다")
+				return false
+			}
+			else if(!(kor < 0)){
+				alert("한글은 입력할 수 없습니다.");
+				return false;
+			}
+			// else if(num < 0 || eng < 0 || spe < 0 ){
+			// 	alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
+			// 	return false;
+			// }
+		},
+		register(registerObj) {
+			if (!this.username || !this.password || !this.region)
+				return alert("모든 데이터를 입력해주세요.")
+			else if (this.notSamePw)
+				return alert("비밀번호를 확인해주세요.")
+			else if (this.username == this.password)
+				return alert("아이디와 비밀번호는 같을 수 없습니다.")
+			axios.post("user/api/register/", {
+				"user": {
 					"username": registerObj.username,
 					"password": registerObj.password
-					},
-			"region": {
-						"region": registerObj.region
-					}
-		})
-		.then(res => {
-			console.log("가입 완료")
-		})
-		.catch(err => {
-			console.log("가입 실패")
-		})
+				},
+				"region": {
+					"region": registerObj.region
+				}
+			})
+			.then(res => {
+				console.log("가입 완료")
+				this.$router.push("/")
+			})
+			.catch(err => {
+				console.log("가입 실패")
+			})
+		}
 	}
-  }
 }
 </script>
 
