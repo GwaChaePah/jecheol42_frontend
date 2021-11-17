@@ -1,6 +1,6 @@
 <template>
 	<div class="navbar" :class="{ 'sticky': scrollPosition }" id="navbar">
-		<button id="back" @click="toBack">
+		<button id="back" @click="$router.back()">
 			<span class="material-icons">arrow_back</span>
 			뒤로가기
 		</button>
@@ -36,16 +36,11 @@ export default {
 			if (navbar) {
 				const sticky = navbar.offsetTop + header;
 				if (window.pageYOffset > sticky) {
-					// console.log('scroll', window.pageYOffset, sticky);
 					this.scrollPosition = true;
 				} else {
-					// console.log('scroll', window.pageYOffset, sticky);
 					this.scrollPosition = false;
 				}
 			}
-		},
-		toBack() {
-			this.$router.back();
 		},
 		toTop() {
 			document.documentElement.scrollTop = 0;
@@ -54,8 +49,8 @@ export default {
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			if (userInfo == null)
 			{
-				confirm("글 작성은 로그인 후 가능합니다.");
-				this.$router.push('/login');
+				if (confirm("글 작성은 로그인 후 가능합니다."))
+					this.$router.push('/login');
 			}
 			else {
 				this.$router.push({

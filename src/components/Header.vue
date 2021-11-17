@@ -7,7 +7,7 @@
 					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span>
 				</h1>
 			</div>
-			<div class="navbar" v-show="(!mobile && !scrollPosition)">
+			<div class="navbar" v-show="(!mobileWidth && !scrollPosition)">
 				<ul class="navlist" v-if="!isLogin">
 					<li><span @click="toBoard">게시판</span></li>
 					<li><span @click="toLogin">로그인</span></li>
@@ -20,10 +20,10 @@
 					<li><span @click="logoutUser">로그아웃</span></li>
 				</ul>
 			</div>
-			<div :class="{'menu-list': true, 'sticky': scrollPosition}" v-show="(mobile || scrollPosition)">
+			<div :class="{'menu-list': true, 'sticky': scrollPosition}" v-show="(mobileWidth || scrollPosition)">
 				<button class="material-icons" @click="toggleMobileNav">menu</button>
 			</div>
-			<transition v-if="(mobile || scrollPosition)" name="mobile-nav">
+			<transition v-if="(mobileWidth || scrollPosition)" name="mobile-nav">
 				<div v-show="mobileNav" class="dropdown-nav">
 					<ul v-if="!isLogin">
 						<li @click="toMain">메인</li>
@@ -55,9 +55,7 @@ export default {
 	name: 'Header',
 	data() {
 		return {
-			scrollPosition: null,
 			windowWidth: null,
-			mobile: null,
 			search: '',
 			navigations: [
 				{
@@ -93,7 +91,9 @@ export default {
 			'loading'
 		]),
 		...mapState('post', [
+			'mobileWidth',
 			'mobileNav',
+			'scrollPosition',
 			'loading'
 		]),
 		...mapState('login', [
@@ -115,7 +115,9 @@ export default {
 	},
 	methods: {
 		...mapActions('post', [
-			'initMobileNav',
+			'updateMobileNav',
+			'updateMobileWidth',
+			'updateScrollPosition',
 			'getBoard',
 			'updateTag'
 		]),
@@ -126,27 +128,27 @@ export default {
 		...mapActions('login', ['logout']),
 		toMain() {
 			this.$emit('initSearch', this.search);
-			this.initMobileNav(null);
+			this.updateMobileNav(null);
 			this.search = '';
 			this.$router.push('/');
 		},
 		toLogin() {
-			this.initMobileNav(null);
+			this.updateMobileNav(null);
 			this.$router.push('/login');
 		},
 		toRegister() {
-			this.initMobileNav(null);
+			this.updateMobileNav(null);
 			this.$router.push('/Register');
 		},
 		toBoard() {
 			this.updateTag(3);
 			this.updateSearch();
 			this.getBoard({payload: '', page: 1});
-			this.initMobileNav(null);
+			this.updateMobileNav(null);
 			this.$router.push('/board');
 		},
 		toggleMobileNav() {
-			this.initMobileNav(!this.mobileNav);
+			this.updateMobileNav(!this.mobileNav);
 		},
 		logoutUser() {
 			this.$store.dispatch('login/logout');
@@ -164,20 +166,17 @@ export default {
 		},
 		checkScreen() {
 			this.windowWidth = window.innerWidth;
-			if (this.windowWidth <= 500) {
-				this.mobile = true;
-				return ;
-			}
-			this.mobile = false;
+			const mobile = (this.windowWidth <= 500) ? true : false;
+			this.updateMobileWidth(mobile);
 			return ;
 		},
 		updateScroll() {
 			const header = document.getElementById('searchbar');
 			const sticky = header.offsetTop;
 			if (sticky && window.pageYOffset > sticky) {
-				this.scrollPosition = true;
+				this.updateScrollPosition(true);
 			} else if (window.pageYOffset <= 50){
-				this.scrollPosition = false;
+				this.updateScrollPosition(false);
 			}
 		}
 	}
@@ -192,7 +191,7 @@ export default {
 	position: fixed;
 	top: 0;
 	width: 100%;
-	z-index: 98;
+	z-index: 89;
 	background-color: white;
 	text-align: center;
 	height: 250px;
@@ -418,7 +417,6 @@ export default {
 				margin-left: 42px;
 			}
 		}
-
 		.material-icons {
 			margin-right: 140px;
 			@media ( max-width: 500px ) {

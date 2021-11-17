@@ -11,7 +11,9 @@ export default {
 		post: {},
 		comments: [],
 		loading: false,
+		mobileWidth: false,
 		mobileNav: false,
+		scrollPosition: false,
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
@@ -21,9 +23,19 @@ export default {
 		},
 	},
 	actions: {
-		initMobileNav({ commit }, payload) {
+		updateMobileNav({ commit }, payload) {
 			commit('UPDATE_STATE', {
 				mobileNav: payload
+			});
+		},
+		updateMobileWidth({ commit }, payload) {
+			commit('UPDATE_STATE', {
+				mobileWidth: payload
+			});
+		},
+		updateScrollPosition({ commit }, payload) {
+			commit('UPDATE_STATE', {
+				scrollPosition: payload
 			});
 		},
 		updateTag({ commit }, payload) {
