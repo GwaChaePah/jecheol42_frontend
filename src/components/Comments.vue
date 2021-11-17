@@ -152,6 +152,10 @@ export default {
 		box-shadow: 0 0 5px 0 $color_shadow_02;
 		clip-path: inset(0px -5px -5px -5px);
 		border-radius: .2em;
+		@media (max-width: 500px) {
+			box-shadow: none;
+			clip-path: none;
+		}
 		.comment-td {
 			border-top: 1px solid #ccc;
 			position: relative;
@@ -159,6 +163,8 @@ export default {
 			// height: 80px;
 			@media (max-width: 500px) {
 				padding: 0 1em;
+				border-top: 0px solid #ccc;
+				border-bottom: 1px dotted #ccc;
 			}
 			.button_toggle {
 				background: none;
@@ -184,7 +190,7 @@ export default {
 				right: 1px;
 				z-index: 2;
 				@media (max-width: 500px) {
-					top: 24px;
+					top: 30px;
 				}
 				.material-icons-outlined {
 					cursor: pointer;
@@ -216,6 +222,7 @@ export default {
 				}
 			}
 			.time {
+				font-family: 'Gowun Dodum', sans-serif;
 				position: absolute;
 				right: 1.5em;
 				padding: .3em;
