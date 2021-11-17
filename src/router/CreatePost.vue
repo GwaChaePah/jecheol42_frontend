@@ -210,7 +210,7 @@ export default {
 .l_main {
 	height: 100vh;
 }
-	.content {
+.content {
 	.background{
 		height: 400px;
 		font-family: sans-serif;

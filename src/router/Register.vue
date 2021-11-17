@@ -4,7 +4,7 @@
 			<div class="content">
 				<div class="background">
 					<div class="signinBox">
-						<h1 class="signinMsg">제철42 회원가입</h1>
+						<h1 class="signinMsg">회원가입</h1>
 						<div class="userBox">
 							<input for="username"
 									type="text"
