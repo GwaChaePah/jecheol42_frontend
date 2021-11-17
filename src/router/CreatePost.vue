@@ -94,7 +94,7 @@ export default {
 			let variable = this.form.image1;
 			let variable1 = this.form.image2;
 			let variable2 = this.form.image3;
-			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			let pk = userInfo.pk;
 			const index = this.$route.params.id;
 			const postObj =

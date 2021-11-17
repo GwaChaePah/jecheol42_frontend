@@ -87,7 +87,7 @@ export default {
 			}
 		},
 		createPost() {
-			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			if (userInfo == null)
 			{
 				confirm("글 작성은 로그인 후 가능합니다.");

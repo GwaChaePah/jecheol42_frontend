@@ -24,11 +24,11 @@ export default {
 		...mapActions('login', ['loggedIn']),
 	},
 	async beforeCreate() {
-		let localRefresh = localStorage.getItem("refresh_token")
-		if (localRefresh){
+		let sessionRefresh = sessionStorage.getItem("refresh_token")
+		if (sessionRefresh){
 			this.$store.dispatch('login/loggedIn')
 		}
-	}
+	},
 }
 </script>
 

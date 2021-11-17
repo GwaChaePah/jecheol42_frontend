@@ -64,7 +64,7 @@ export default {
     ...mapState('post', ['comments']),
   },
 	created() {
-		let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+		let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 		this.pk = userInfo? userInfo.pk : '';
 	},
 	methods: {
