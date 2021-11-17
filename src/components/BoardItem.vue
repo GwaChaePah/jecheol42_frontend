@@ -11,7 +11,7 @@
 				</div>
 				<div class="content-title">
 					<button class="icon material-icons">arrow_right</button>
-					<div class="title__title ellipsis">{{ post.title }}</div>
+					<div class="title__title ellipsis" :class="{ 'line-clamp': mobileWidth }">{{ post.title }}</div>
 					<div class="title-info">
 						<div class="title__writer ellipsis">
 							<span class="material-icons">account_circle</span>
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
 	name: 'BoardItem',
 	props: {
@@ -54,6 +56,9 @@ export default {
 			type: Object,
 			default: () => ({})
 		}
+	},
+	computed: {
+		...mapState('post', ['mobileWidth'])
 	},
 	methods: {
 		calcDate() {
@@ -150,6 +155,9 @@ export default {
 				margin: 2px 0 2px -7px;
 				background: none;
 				border: none;
+				@media (max-width: 500px) {
+					margin: 2px 0 2px -13px;
+				}
 			}
 			.title__status-done {
 				background-color: #ccc;
@@ -161,8 +169,16 @@ export default {
 				font-size: 1.4em;
 				padding-bottom: .4em;
 				@media (max-width: 500px) {
+					font-size: 1em;
+					height: 47px;
 					padding-bottom: .2em;
 				}
+				&.ellipsis {
+					white-space: normal;
+				}
+			}
+			.line-clamp {
+				-webkit-line-clamp: 2;
 			}
 			.title-info {
 				position: relative;
@@ -181,9 +197,6 @@ export default {
 					.writer__username {
 						margin-left: .3em;
 						font-size: 1.1em;
-					}
-					@media (max-width: 500px) {
-						width: 45%;
 					}
 				}
 				.title__time {
@@ -253,6 +266,7 @@ export default {
 					right: 8px;
 					bottom: 7px;
 					padding: .3em .8em;
+					font-size: .7em;
 				}
 			}
 			.price_sobun {

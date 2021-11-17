@@ -162,6 +162,7 @@ h3 {
 						right: 8px;
 						bottom: 7px;
 						padding: .3em .8em;
+						font-size: .7em;
 					}
 				}
 			}

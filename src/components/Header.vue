@@ -3,6 +3,7 @@
 		<div class="l_wrapper">
 			<div class="logo">
 				<h1 @click="toMain">
+					<!-- <img src="/src/assets/logo.png" /> -->
 					<span class="logo_word">제철</span>
 					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span>
 				</h1>
@@ -16,7 +17,7 @@
 				<ul class="navlist" v-else>
 					<li ><span @click="toBoard">게시판</span></li>
 					<!-- to mypage -->
-					<li><span @click="" class="user">{{ username }}</span></li>
+					<li><span class="user">{{ username }}</span></li>
 					<li><span @click="logoutUser">로그아웃</span></li>
 				</ul>
 			</div>
@@ -248,6 +249,13 @@ export default {
 					&:hover {
 						text-decoration: underline wavy;
 						color: darken($color_prime_green, 20%);
+					}
+				}
+				.user {
+					cursor: default;
+					&:hover {
+						text-decoration: none;
+						color: black;
 					}
 				}
 				&:last-child {
