@@ -47,9 +47,9 @@ export default {
 				let access = response.data.access
 				let refresh = response.data.refresh
 				commit('updateStorage', { access,refresh })
-				localStorage.setItem("access_token", access)
-				localStorage.setItem("refresh_token", refresh)
-				localStorage.setItem("userInfo", JSON.stringify(userInfo))
+				sessionStorage.setItem("access_token", access)
+				sessionStorage.setItem("refresh_token", refresh)
+				sessionStorage.setItem("userInfo", JSON.stringify(userInfo))
 				dispatch("loggedIn")
 				router.go(-1)
 			})		
@@ -59,9 +59,9 @@ export default {
 			})
 		},
 		loggedIn({ commit }) {
-			let localRefresh = localStorage.getItem("refresh_token")
-			let userInfo = JSON.parse(localStorage.getItem("userInfo"))
-			let config = { "token" : localRefresh }
+			let sessionRefresh = sessionStorage.getItem("refresh_token")
+			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"))
+			let config = { "token" : sessionRefresh }
 			axios
 			.post ("token/api/verify/", config)
 			.then (res => {
@@ -70,12 +70,12 @@ export default {
 			.catch (err => {
 				axios
 				.post ("token/api/refresh/", {
-					refresh: localRefresh
+					refresh: sessionRefresh
 				})
 				.then (response => {
 					let newAccess = response.data.access
 					commit('updateAccess', { newAccess })
-					localStorage.setItem("access_token", newAccess)
+					sessionStorage.setItem("access_token", newAccess)
 					commit("loginSuccess", userInfo.username)
 				})
 				.catch (error => {
@@ -87,7 +87,7 @@ export default {
 			})
 		},
 		logout({ commit }) {
-			localStorage.clear()
+			sessionStorage.clear()
 			commit("destroyToken")
 			commit("logout")
 		}

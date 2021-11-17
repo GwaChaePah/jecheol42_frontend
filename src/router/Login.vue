@@ -68,8 +68,7 @@ export default {
 			alert("이미 로그인한 회원입니다.")
 			this.$router.go(-1)
 		}
-	}
-	
+	}	
 };
 </script>
  

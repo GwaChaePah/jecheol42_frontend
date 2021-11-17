@@ -95,7 +95,7 @@ export default {
 			this.click = !this.click;
 		},
 		checkUser() {
-			let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			let pk = userInfo ? userInfo.pk : '';
 			if (pk && this.post.user_key === pk) {
 				return true;
