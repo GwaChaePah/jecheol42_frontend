@@ -7,7 +7,7 @@
 					<p class="msgBox" v-else-if="isLoginError">아이디와 비밀번호를 확인해주세요</p> -->
 					<div class="loginBox">		
 					<div class="loginMsg">
-						제철42 로그인</div>
+						로그인</div>
 						<div class="textBox">
 							<div class="ID">
 								<label class="key" for="username"></label>
