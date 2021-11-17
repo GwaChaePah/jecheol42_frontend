@@ -15,11 +15,11 @@
 					<div class="title-info">
 						<div class="title__writer ellipsis">
 							<span class="material-icons">account_circle</span>
-							<span class="writer_username">{{ post.username }}</span>
+							<span class="writer__username">{{ post.username }}</span>
 						</div>
 							<div class="title__time">
 								<span class="material-icons">schedule</span>
-								{{ post.created_at }}
+								<span class="time__time">{{ calcDate() }}</span>
 							</div>
 						<div class="count_comment-wrapper">
 							<div class="title__count">
@@ -55,6 +55,32 @@ export default {
 			default: () => ({})
 		}
 	},
+	methods: {
+		calcDate() {
+			let ret;
+			const timestamp = this.post.created_at
+			const postDate = timestamp.slice(8, 10);
+			const postHour = timestamp.slice(12, 14);
+			const postMin = timestamp.slice(15, 17);
+			const current = new Date();
+			const month = (current.getMonth() + 1 < 10) ? '0' + current.getMonth() + 1
+									: current.getMonth() + 1;
+			const date = (current.getDate() < 10) ? '0' + current.getDate()
+									: current.getDate();
+			if (`${current.getFullYear()}.${month}.${date}` === timestamp.slice(0,10)) {
+				const hour = (current.getHours() < 10) ? '0' + current.getHours()
+										: current.getHours();
+				const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes()
+										: current.getMinutes();
+ 				ret = (`${hour}${minute}` === `${postHour}${postMin}`) ? '방금 전'
+							: (hour == postHour) ? `${minute - postMin}분 전`
+							: `${hour - postHour}시간 전`;
+			} else {
+				ret = (date - postDate < 3) ? `${date - postDate}일 전` : timestamp;
+			}
+			return ret;
+		},
+	}
 }
 </script>
 
@@ -152,8 +178,9 @@ export default {
 				.title__writer {
 					color: #383838;
 					width: 50%;
-					.writer_username {
+					.writer__username {
 						margin-left: .3em;
+						font-size: 1.1em;
 					}
 					@media (max-width: 500px) {
 						width: 45%;
@@ -161,6 +188,10 @@ export default {
 				}
 				.title__time {
 					color: rgb(114, 115, 114);
+					.time__time {
+						font-size: .8em;
+						margin-left: .2em;
+					}
 				}
 				.count_comment-wrapper {
 					position: absolute;
