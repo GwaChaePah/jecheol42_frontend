@@ -1,7 +1,7 @@
 <template>
 	<div class="footer-wrapper">
 		<ul class="contact-list">
-			<li><a href="https://github.com/GwaChaePah"><img src="../assets/Github-Mark-32px.png" />GitHub</a></li>
+			<li><a href="https://github.com/GwaChaePah"><img src="Github-Mark-32px.png" />GitHub</a></li>
 			<li><span class="material-icons">room</span> 서울시 강남구 개포로 416</li>
 			<li><span class="material-icons">mail</span> GwaChaePah@gmail.com</li>
 		</ul>

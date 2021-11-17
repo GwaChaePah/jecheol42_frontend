@@ -74,18 +74,19 @@ export default {
 		...mapState('login', ['isLogin']),
 	},	
 	data: function () {
-	return {
-		username : '',
-		password : '',
-		passwordConfirmation : '',
-		region: '',
-		duplicateId: false,
-		useId: false,
-		notSamePw: false
-	}
+		return {
+			username : '',
+			password : '',
+			passwordConfirmation : '',
+			region: '',
+			duplicateId: false,
+			useId: false,
+			notSamePw: false
+		}
 	},
 	mounted() {
 		if (this.isLogin) {
+			console.log(this.isLogin)
 			alert("이미 로그인한 회원입니다.")
 			this.$router.go(-1)
 		}
