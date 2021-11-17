@@ -3,45 +3,51 @@
 		<div class="l_wrapper">
 			<div class="content">
 				<div class="background">
-					<div class="loginMsg">
-						Sign in to 제철42</div>
-					<p class="msgBox" v-if="isLogin">로그인 완료</p>
-					<p class="msgBox" v-else-if="isLoginError">아이디와 비밀번호를 확인해주세요</p>
+					<!-- <p class="msgBox" v-if="!isLogin">로그인 완료</p>
+					<p class="msgBox" v-else-if="isLoginError">아이디와 비밀번호를 확인해주세요</p> -->
 					<div class="loginBox">		
-						<div class="ID">
-							<label class="key" for="username">User ID</label>
-							<input
-								id="username"
-								type="text" 
-								v-model="username"
-								required/>
+					<div class="loginMsg">
+						제철42 로그인</div>
+						<div class="textBox">
+							<div class="ID">
+								<label class="key" for="username"></label>
+								<input
+									id="username"
+									type="text" 
+									v-model="username"
+									placeholder="아이디"
+									required/>
+							</div>
+							<div class="PW">
+								<label class="key" for="password"></label>
+								<input
+									id="password"
+									type="password" 
+									v-model="password"  
+									placeholder="비밀번호"
+									@keydown.enter="login({
+										username,
+										password
+									})"
+									required/>
+							</div>	
+								<button 
+									type="submit"
+									class="loginBtn"
+									v-if="!isLogin"
+									@click="login({
+										username,
+										password
+									})"
+									>로그인</button>
+								<button class="loginBtn" v-if="isLogin">로그인 완료</button>
+							<div class="register">
+								아직 회원이 아니신가요? <router-link to="/register">회원가입</router-link>
+							</div>
 						</div>
-						<div class="PW">
-							<label class="key" for="password">Password</label>
-							<input
-								id="password"
-								type="password" 
-								v-model="password"  
-								@keydown.enter="login({
-									username,
-									password
-								})"
-								required/>
-							<button 
-								type="submit"
-								class="loginBtn"
-								@click="login({
-									username,
-									password
-								})"
-								>SIGN IN</button>
-						</div>	
-						<div class="register">
-							아직 회원이 아니신가요? <a href="#">회원가입</a>
-						</div>
-						<p>Password 입력값: {{ password }}</p>
 					</div>
 				</div>
+				<!-- <p style="text-align: center">Password 입력값: {{ password }}</p> -->
 			</div>
 		</div>
 	</div>
@@ -93,64 +99,71 @@ export default {
 	display: inline-block;
 }
 
-.loginMsg{
-	margin: 30px 0px;
-	font-size: 20px;
-	color: rgba(#76862c, 0.76);
+.l_main {
+	height: 100vh;
 }
-
+.l_wrapper {
+	max-width: 1000px;
+	max-height: 1500px;
+	width: auto;
+	margin: 0 auto;
+	padding: 30px;
+	position: relative;
+		.content {
+		height: 100%;
+	}
+}
 .background{
 	height: 400px;
 	font-family: sans-serif;
+	margin-top: 50px;
 	@include center;
-	.msgBox {
-		width: 250px;
-		height: 30px;
-		margin: auto;
-		text-align: center;
-		padding-top: 5px;
-		color: beige;
-		background: #76862c;
+	.loginMsg{
+		margin: 30px 0px;
+		font-size: 20px;
+		color: rgba(#76862c, 0.76);
 	}
 	.loginBox {
 		@include center;
-		border-radius: .3em;
-		box-shadow: 0 0 10px 0 $color_shadow_03;
-		width: 250px;
-		height: 250px;
-		border: 20px;
+		width: 100%;
 		padding: 20px;
-		.ID {
-			padding: 8px 10px 10px 10px;
+		.textBox {
+			width: 80%;
+			height: 100%;
 			margin: auto;
-			text-align: left;
-			.key {
+			display: block;
+			.ID {
 				width: 100%;
+				max-width: 300px;
+				margin: auto;
+				border-bottom: 1px solid #ddd;
+				input{
+					width: 90%;
+					padding: 8px;
+					margin: 10px 0px;
+					color: rgba(#76862c, 0.76);
+					border-color: transparent;
+				}
 			}
-			input {
-				padding: 8px;
+			.PW {
 				width: 100%;
-				color: rgba(#76862c, 0.76);
-			}
-		}
-		.PW {
-			padding: 10px;
-			margin: auto;
-			text-align: left;
-			position: relative;
-			.key {
-				width: 100%;
-			}
-			input {
-				padding: 8px;
-				width: 100%;
-				color: rgba(#76862c, 0.76);
+				max-width: 300px;
+				margin: auto;
+				border-bottom: 1px solid #ddd;
+				input{
+					width: 90%;
+					padding: 8px;
+					margin: 10px 0px;
+					color: rgba(#76862c, 0.76);
+					border-color: transparent;
+				}
 			}
 			.loginBtn {
 				margin-top: 22px;
 				vertical-align: middle;
 				font-size: 17px;
-				width: 100%;
+				width: 90%;
+				max-width: 300px;
 				height: 15%;
 				padding: 8px;
 				border-radius: .3em;
@@ -160,11 +173,10 @@ export default {
 				color: white;
 			}
 		}
-		
 	}
 	.register {
 		font-size: 13px;
-		padding-top: 25px;
+		padding: 25px 0px;
 		a {
 			color: rgba(#76862c, 0.76);
 			text-decoration: underline;
