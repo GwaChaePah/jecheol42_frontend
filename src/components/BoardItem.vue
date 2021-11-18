@@ -10,7 +10,6 @@
 					onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"/>
 				</div>
 				<div class="content-title">
-					<button class="PC icon material-icons">arrow_right</button>
 					<div class="title__title ellipsis">{{ post.title }}</div>
 					<div class="title-info">
 						<div class="title__writer ellipsis">
