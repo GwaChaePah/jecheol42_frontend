@@ -92,10 +92,9 @@ export default {
 	width: 100%;
 	top: 120px;
 	background-color: white;
-	z-index: 99;
-	height: 50px;
+	z-index: 80;
+	height: 60px;
 	box-shadow: 0 0 5px 0 $color_shadow_03;
-	clip-path: inset(0 -5px -5px -5px);
 	.button-wrapper {
 		width: 90%;
 		margin: 0 auto;
@@ -117,7 +116,7 @@ export default {
 		border-bottom: 1px solid #ccc;
 		border-radius: 0;
 		clip-path: none;
-		margin: 10em .3em 0;
+		margin: 11em .3em 0;
 		padding: .3em .8em .8em;
 	}
 	.content-title {
@@ -125,6 +124,7 @@ export default {
 		padding-bottom: .5em;
 		background-color: white;
 		.material-icons-outlined {
+			color: #ddd;
 			transform: translate(9px, 5px);
 			background: none;
 			border: none;
@@ -140,50 +140,46 @@ export default {
 			font-size: 1.3em;
 			display: inline-block;
 			span {
+				color: #ddd;
 				padding: 0 .3em;
-			}
-			@media (max-width: 770px) {
-				font-size: .8em;
 			}
 			@media (max-width: 500px) {
 				margin: .3em 0;
-				font-size: .5em;
+				font-size: .8em;
 			}
 		}
 		.title__title {
 			margin-top: .4em;
 			h1 {
-				font-size: 2em;
+				color: #ddd;
+				line-height: 1.5;
+				font-size: 2.2em;
 				padding-left: .3em;
-			}
-			@media (max-width: 770px) {
-				h1 {
-					font-size: 1.8em;
-				}
 			}
 			@media (max-width: 500px) {
 				margin: .2em 0;
 				h1 {
-					font-size: 1em;
+					font-size: 1.5em;
 				}
 			}
 		}
 		.title__info {
 			display: block;
 			padding: .5em 0.3em 0;
+			font-size: 1.2em;
 			p {
 				display: inline-block;
 				margin-left: .5em;
-				.material-icons,
-				.material-icons-outlined {
+				.material-icons {
+					color: #ddd;
 					font-size: 1em;
-					margin: 0 2px;
+					margin: 0 3px;
 					transform: translateY(2px);
 				}
 			}
 			@media (max-width: 500px) {
 				padding: 0;
-				font-size: .7em;
+				font-size: 1em;
 				p {
 					margin-left: 0;
 				}

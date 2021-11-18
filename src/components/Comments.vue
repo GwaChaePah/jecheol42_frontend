@@ -272,12 +272,14 @@ export default {
 
 			}
 			.comment-content {
-				// border-bottom: 1px solid #ccc;
 				padding: .3em 1.8em .8em .5em;
 				line-height: 1.6;
 				&:before {
 					content: '';
 					border: 3px solid lighten($color_prime_yellow, 20%);
+				}
+				@media (max-width: 500px) {
+					font-size: 1.1em;
 				}
 			}
 			.my-comment {
@@ -294,6 +296,7 @@ export default {
 		display: flex;
 		justify-content: space-around;
 		@media (max-width: 500px) {
+			box-shadow: none;
 			display: block;
 			padding: .1em 0;
 		}
@@ -341,12 +344,13 @@ export default {
 			vertical-align: top;
 			margin: .3em;
 			.comment-btn {
+				font-family: 'Gowun Dodum', sans-serif;
 				border: none;
 				display: block;
 				border-radius: .2em;
 				margin: 0.4em .3em;
 				letter-spacing: .5em;
-				padding: .5em .3em .5em .8em;
+				padding: .5em .3em .5em .9em;
 				cursor: pointer;
 				&:hover {
 					background-color: rgb(254, 135, 25);
@@ -361,10 +365,12 @@ export default {
 			}
 			@media (max-width: 500px) {
 				display: flex;
-				justify-content: center;
+				justify-content: space-evenly;
 				.comment-btn {
 					display: inline-block;
 					font-size: 1em;
+					letter-spacing: 1em;
+					padding: .5em .8em .5em 1.7em;
 				}
 			}
 		}

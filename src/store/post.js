@@ -14,6 +14,7 @@ export default {
 		mobileWidth: false,
 		mobileNav: false,
 		scrollPosition: false,
+		header: false,
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
@@ -43,12 +44,18 @@ export default {
 				boardTag: payload
 			});
 		},
-		async getBoard({ state, commit }, { payload, page }) {
+		updateHeader({ commit }, payload) {
+			commit('UPDATE_STATE', {
+				header: payload
+			});
+		},
+		async getBoard({ state, commit }, { payload, page, header }) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
 				boardView: [],
 				page: page ? page : state.page,
 				loading: true,
+				header: header,
 			});
 			let boardView;
 			let totalPage;
@@ -100,7 +107,7 @@ export default {
 			} finally {
 				commit('UPDATE_STATE', {
 					post: {},
-					comments: []
+					comments: [],
 				});
 			}
 		},
