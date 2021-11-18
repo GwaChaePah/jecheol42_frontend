@@ -1,12 +1,12 @@
 <template>
 	<div class="header" :class="{ 'scrolled-header': scrollPosition }">
 		<div class="l_wrapper">
-			<div class="logo">
-				<h1 @click="toMain">
-					<img src="https://github.com/GwaChaePah/front/blob/a8a334c3523cfd32400d852a462d302ad441395d/static/logo.png" />
-					<span class="logo_word">제철</span>
-					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span>
-				</h1>
+			<div class="logo" @click="toMain">
+				<img class="pc-logo" src="https://github.com/GwaChaePah/front/blob/134b0073e30fad9bc9c53865217cc51df4023b99/static/logo.png?raw=true" v-if="!mobileWidth"/>
+				<img class="mb-logo" src="" v-if="mobileWidth"/>
+				<img class="scroll-logo" src="" v-if="scrollPosition"/>
+					<!-- <span class="logo_word">제철</span>
+					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span> -->
 			</div>
 			<div class="navbar" v-show="(!mobileWidth && !scrollPosition)">
 				<ul class="navlist" v-if="!isLogin">
@@ -146,7 +146,7 @@ export default {
 		toBoard() {
 			this.updateTag(3);
 			this.updateSearch();
-			this.getBoard({payload: '', page: 1});
+			this.getBoard({payload: '', page: 1, header: true});
 			this.updateMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -162,7 +162,7 @@ export default {
 				this.updateTag(3);
 				this.updateSearch(this.search);
 				this.searchProduct(this.search);
-				this.getBoard({payload:this.search, page: 1});
+				this.getBoard({payload:this.search, page: 1, header: true});
 				this.search = '';
 				this.$router.push('/search');
 			}
@@ -204,23 +204,31 @@ export default {
 		height: 120px;
 	}
 	.logo {
-		h1 {
-			line-height: 2;
-			font-size: 4em;
-			.logo_word {
-				cursor: pointer;
-			}
-			#four {
-				color: $color_prime_orange;
-			}
-			#two {
-				color: $color_prime_yellow;
-			}
-			@media ( max-width: 500px ) {
-				font-size: 2em;
-				line-height: 2;
-			}
+		height: 130px;
+		@media (max-width: 500px) {
+			height: 55px;
 		}
+		.pc-logo {
+			width: 380px;
+			margin-top: 1em;
+		}
+		// h1 {
+		// 	line-height: 2;
+		// 	font-size: 4em;
+		// 	.logo_word {
+		// 		cursor: pointer;
+		// 	}
+		// 	#four {
+		// 		color: $color_prime_orange;
+		// 	}
+		// 	#two {
+		// 		color: $color_prime_yellow;
+		// 	}
+		// 	@media ( max-width: 500px ) {
+		// 		font-size: 2em;
+		// 		line-height: 2;
+		// 	}
+		// }
 	}
 	.navbar {
 		position: relative;
@@ -352,7 +360,6 @@ export default {
 			&:hover {
 				text-decoration: underline wavy;
 				color: $color_prime_orange;
-				// background-color: $color_prime_yellow;
 			}
 		}
 		@media ( max-width: 500px ) {

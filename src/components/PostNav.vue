@@ -1,6 +1,6 @@
 <template>
 	<div class="navbar" :class="{ 'sticky': scrollPosition }" id="navbar">
-		<button id="back" @click="$router.back()">
+		<button id="back" @click="toBack">
 			<span class="material-icons">arrow_back</span>
 			뒤로가기
 		</button>
@@ -41,6 +41,10 @@ export default {
 					this.scrollPosition = false;
 				}
 			}
+		},
+		toBack() {
+			this.$store.dispatch('post/updateHeader', true);
+			this.$router.back();
 		},
 		toTop() {
 			document.documentElement.scrollTop = 0;

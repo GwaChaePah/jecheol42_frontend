@@ -1,10 +1,13 @@
 <template>
-	<div v-if="mobileWidth" class="navbar"
-		:class="{ 'sticky': scrollPosition, 'fix-index': mobileNav }" id="navbar">
+	<div v-if="mobileWidth" class="navbar" :class="{ 'sticky': scrollPosition }" id="navbar">
 		<div class="button-wrapper">
-			<button id="back" @click="$router.back()">
+			<button id="back" @click="toBack">
 				<span class="material-icons">arrow_back</span>
 				뒤로가기
+			</button>
+			<button id="board" @click="toBoard">
+				<span class="material-icons">list_alt</span>
+				게시판
 			</button>
 			<button id="write" @click="createPost">
 				<span class="material-icons">create</span>
@@ -27,7 +30,7 @@
 					<span class="text" @click="updatePost">글수정</span>
 					<span class="material-icons-outlined" title="수정">edit</span>
 				</div>
-				<div @click="deletePost">
+				<div @click="deleteThisPost">
 					<span class="text">글삭제</span>
 					<span class="material-icons-outlined" title="삭제">delete</span>
 				</div>
@@ -45,16 +48,16 @@
 			</div>
 			<div class="title__info">
 				<p id="writer"><span class="material-icons">account_circle</span>
-					<span class="write_name">{{ post.username }}</span>
+					<span>{{ post.username }}</span>
 				</p>
 				<p id="time"><span class="material-icons">schedule</span>
-					<span class="time_created">{{ post.created_at }}</span>
+					<span>{{ post.created_at }}</span>
 				</p>
 				<p id="count"><span class="material-icons">visibility</span>
-					<span class="view_count">{{ post.view_count }}</span>
+					<span>{{ post.view_count }}</span>
 				</p>
 				<p id="comments" @click="scrollBottom"><span class="material-icons-outlined">chat_bubble_outline</span>
-					<span class="comments_length">{{ comments.length }}</span>
+					<span>{{ comments.length }}</span>
 				</p>
 				<div class="post__price" v-if="(!mobileWidth && post.tag !== 1)">
 					<button>{{ post.price }}</button>
@@ -79,7 +82,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'PostContent',
@@ -105,8 +108,29 @@ export default {
 		]),
 	},
 	methods: {
+		...mapActions('post', [
+			'updateMobileNav',
+			'getBoard',
+			'updateTag',
+			'updateHeader',
+			'deletePost',
+		]),
+		...mapActions('product', [
+			'updateSearch',
+		]),
+		toBack() {
+			this.updateHeader(true);
+			this.$router.back();
+		},
 		toTop() {
 			document.documentElement.scrollTop = 0;
+		},
+		toBoard() {
+			this.updateTag(3);
+			this.updateSearch();
+			this.getBoard({payload: '', page: 1});
+			this.updateMobileNav(null);
+			this.$router.push('/board');
 		},
 		createPost() {
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -126,11 +150,11 @@ export default {
 			const height = container[0].clientHeight + 100;
 			window.scroll(0, height);
 		},
-		deletePost() {
+		deleteThisPost() {
 			const id = this.$route.params.id;
 			if (confirm("정말 지우시겠습니까?")) {
-				this.$store.dispatch('post/deletePost', id);
-				this.$store.dispatch('post/getBoard', {payload: ''});
+				this.deletePost(id);
+				this.getBoard({payload: '', header: false});
 				this.$router.push('/board');
 			}
 		},
@@ -170,18 +194,18 @@ export default {
 	position: fixed;
 	width: 100%;
 	top: 120px;
-	z-index: 90;
+	z-index: 80;
 	transition: z-index .6s;
 	.button-wrapper {
 		display: flex;
-		width: 90%;
+		width: 95%;
 		margin: 0 auto;
 		border-top: 1px dotted #ccc;
 		button {
 			font-family: 'Gowun Dodum', sans-serif;
 			display: inline-block;
-			width: 39px;
-			font-size: .5em;
+			width: 43px;
+			font-size: .7em;
 			border: none;
 			border-radius: .2em;
 			line-height: 1.6;
@@ -192,16 +216,12 @@ export default {
 				display: block;
 				font-size: 2.5em;
 			}
-			&:hover {
-				background-color: lighten($color_prime_green, 10%);
-			}
 		}
 		.post__price {
 			text-align: right;
-			width: 30%;
-			margin-left: auto;
-			padding-right: 1em;
+			width: 50%;
 			span {
+				font-family: 'Gowun Dodum', sans-serif;
 				font-size: 1.3em;
 				padding: .7em 1em;
 				border-radius: .2em;
@@ -217,10 +237,6 @@ export default {
 	position: fixed;
 	top: 100px;
 }
-.fix-index {
-	z-index: 80;
-	transition: z-index .6s;
-}
 .content-title-post {
 	position: relative;
 	padding: .8em;
@@ -235,7 +251,7 @@ export default {
 		border-bottom: 1px solid #ccc;
 		border-radius: 0;
 		clip-path: none;
-		margin: 10em .3em 0;
+		margin: 11em .3em 0;
 		padding: .3em .8em .8em;
 	}
 	.user-menu {
@@ -273,6 +289,7 @@ export default {
 			}
 			div {
 				display: inline-block;
+				font-family: 'Gowun Dodum', sans-serif;
 				margin: .5em 0 0 .3em;
 				width: 90px;
 				color: #696969;
@@ -331,24 +348,20 @@ export default {
 			}
 			@media (max-width: 500px) {
 				margin: .3em 0;
-				font-size: .6em;
+				font-size: .8em;
 			}
 		}
 		.title__title {
 			margin-top: .4em;
 			h1 {
+				line-height: 1.5;
 				font-size: 2.2em;
 				padding-left: .3em;
-			}
-			@media (max-width: 770px) {
-				h1 {
-					font-size: 1.8em;
-				}
 			}
 			@media (max-width: 500px) {
 				margin: .2em 0;
 				h1 {
-					font-size: 1em;
+					font-size: 1.5em;
 				}
 			}
 		}
@@ -369,23 +382,31 @@ export default {
 				&:first-child {
 					margin-left: 0;
 				}
-			}
-			#writer {
-				font-family: 'Gowun Dodum', sans-serif;
+				span:nth-child(2) {
+					font-family: 'Gowun Dodum', sans-serif;
+				}
 			}
 			#count {
 				color: $color_prime_orange;
 				font-size: .8em;
+				span {
+					color: $color_prime_orange;
+				}
 			}
 			#comments {
 				color: gray;
 				font-size: .8em;
 				cursor: pointer;
+				span {
+					color: gray;
+				}
 			}
 			#time {
-				font-family: 'Gowun Dodum', sans-serif;
 				color: rgb(114, 115, 114);
 				font-size: .8em;
+				span {
+					color: rgb(114, 115, 114);
+				}
 			}
 			.post__price {
 				margin-left: auto;
@@ -405,7 +426,7 @@ export default {
 			}
 			@media (max-width: 500px) {
 				padding: 0;
-				font-size: .7em;
+				font-size: 1em;
 				p:first-child {
 					margin-left: 0;
 				}
@@ -461,7 +482,7 @@ export default {
 			}
 			@media (max-width: 500px) {
 				margin: 0 1.5em .5em;
-				font-size: .6em;
+				font-size: .8em;
 			}
 		}
 	}

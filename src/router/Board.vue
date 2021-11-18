@@ -1,11 +1,11 @@
 <template>
 	<div class="l_main">
-		<div class="l_wrapper">
-			<div :class="{'content': (hasHeader && !fromSearch)}" >
-				<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
-				<BoardMenu />
-			</div>
-			<div v-if="!mobileWidth">
+		<div class="l_wrapper" :class="{'content': (hasHeader && !fromSearch)}" >
+			<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
+			<BoardMenu />
+		</div>
+		<div v-if="!mobileWidth">
+			<div class="l_wrapper">
 				<div class="l_row clearfix">
 					<div v-if="loading">
 						<div class="preload_content" v-for="n in 4" >
@@ -28,10 +28,11 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="mobileWidth">
+		<div v-else>
 			<div v-if="loading">
 				<div class="MWpreload_content" v-for="n in 4" >
 					<div class="MWcontent-anchor">
+						<div class="MWcontent-img"></div>
 					</div>
 				</div>
 			</div>
@@ -69,7 +70,8 @@ export default {
 			'boardView',
 			'mobileWidth',
 			'loading',
-			'boardTag'
+			'boardTag',
+			'header'
 		]),
 	},
 	data() {
@@ -79,12 +81,16 @@ export default {
 		}
 	},
 	created() {
-		if (this.fromSearch) {
+		if (!this.header) {
 			setTimeout(() => {
-				this.$store.dispatch('post/getBoard', {payload: this.postSearch});
+				if (this.fromSearch) {
+					this.$store.dispatch('post/getBoard', {payload: this.postSearch});
+				} else {
+					this.$store.dispatch('post/getBoard', {payload: ''});
+				}
 			}, 500);
 		} else {
-			this.$store.dispatch('post/getBoard', {payload: ''});
+			this.$store.dispatch('post/updateHeader', false);
 		}
 	},
 }
@@ -107,14 +113,8 @@ h3 {
 }
 .l_row.clearfix {
 	margin-bottom: 2em;
-	@media (max-width: 745px) {
-		text-align: center;
-	}
 	.preload_content {
 		display: inline-block;
-		@media (max-width: 500px) {
-			display: block;
-		}
 		.content-anchor {
 			display: block;
 			background-color: white;
@@ -124,38 +124,14 @@ h3 {
 			border-radius: .1em;
 			overflow: hidden;
 			position: relative;
-			@media (max-width: 500px) {
-				border: 1px solid #ddd;
-				width: 100%;
-				height: 170px;
-			}
 			.img-info {
 				height: 160px;
 				border-bottom: 1px dotted #ddd;
 				background: linear-gradient(221deg, rgba(239, 239, 239, 0.8) 0%, #fff 100%);
-				@media (max-width: 500px) {
-					position: absolute;
-					left: 0;
-					top: 0;
-					bottom: 0;
-					width: 50%;
-					height: 100%;
-					border-bottom: none;
-					border-right: 1px dotted #ddd;
-				}
 			}
 			.title-info {
 				height: 110px;
 				border-bottom: 1px solid #e8e8e8;
-				@media (max-width: 500px) {
-					position: absolute;
-					width: 52%;
-					left: 50%;
-					top: 0;
-					bottom: 0;
-					text-align: left;
-					border-bottom: none;
-				}
 			}
 			.content-info {
 				display: flex;
@@ -174,30 +150,31 @@ h3 {
 					&::after {
 						content: '원';
 					}
-					@media (max-width: 500px) {
-						position: absolute;
-						right: 8px;
-						bottom: 7px;
-						padding: .3em .8em;
-						font-size: .7em;
-					}
 				}
 			}
 		}
 	}
 }
-.l_row.clearfix {
-	// text-align: center;
-	.MWpreload_content {
+.MWpreload_content {
+	display: block;
+	.MWcontent-anchor {
 		display: block;
-		.MWcontent-anchor {
-			border: 1px solid #ddd;
-			background-color: white;
-			border-radius: .1em;
-			overflow: hidden;
-			position: relative;
-			// width: 100%;
-			height: 170px;
+		margin-bottom: .1em;
+		background-color: white;
+		width: 100%;
+		height: 140px;
+		border-bottom: 1px solid #eee;
+		border-top: 1px solid #eee;
+		position: relative;
+		.MWcontent-img {
+			position: absolute;
+			left: 8px;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 40%;
+			height: 90%;
+			border-radius: .2em;
+			background: linear-gradient(221deg, rgba(239, 239, 239, 0.8) 0%, #fff 100%);
 		}
 	}
 }
