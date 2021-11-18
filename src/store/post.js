@@ -44,6 +44,11 @@ export default {
 				boardTag: payload
 			});
 		},
+		updatePage({ commit }, payload) {
+			commit('UPDATE_STATE', {
+				page: payload
+			});
+		},
 		updateHeader({ commit }, payload) {
 			commit('UPDATE_STATE', {
 				header: payload

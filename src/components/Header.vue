@@ -3,8 +3,8 @@
 		<div class="l_wrapper">
 			<div class="logo" @click="toMain">
 				<img class="pc-logo" src="https://github.com/GwaChaePah/front/blob/134b0073e30fad9bc9c53865217cc51df4023b99/static/logo.png?raw=true" v-if="!mobileWidth"/>
-				<img class="mb-logo" src="" v-if="mobileWidth"/>
-				<img class="scroll-logo" src="" v-if="scrollPosition"/>
+				<img class="mb-logo" src="https://github.com/GwaChaePah/front/blob/main/static/%EC%A0%9C%EC%B2%A042_%EA%B8%80%EC%94%A8.png?raw=true" v-if="mobileWidth && !scrollPosition"/>
+				<img class="scroll-logo" src="https://github.com/GwaChaePah/front/blob/main/static/%ED%8C%8C%EB%B9%84%EC%BD%98.png?raw=true" v-if="mobileWidth && scrollPosition"/>
 					<!-- <span class="logo_word">제철</span>
 					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span> -->
 			</div>
@@ -206,29 +206,19 @@ export default {
 	.logo {
 		height: 130px;
 		@media (max-width: 500px) {
-			height: 55px;
+			height: 60px;
 		}
 		.pc-logo {
 			width: 380px;
 			margin-top: 1em;
 		}
-		// h1 {
-		// 	line-height: 2;
-		// 	font-size: 4em;
-		// 	.logo_word {
-		// 		cursor: pointer;
-		// 	}
-		// 	#four {
-		// 		color: $color_prime_orange;
-		// 	}
-		// 	#two {
-		// 		color: $color_prime_yellow;
-		// 	}
-		// 	@media ( max-width: 500px ) {
-		// 		font-size: 2em;
-		// 		line-height: 2;
-		// 	}
-		// }
+		.mb-logo {
+			width: 110px;
+		}
+		.scroll-logo {
+			width: 55px;
+			margin-top: 7px;
+		}
 	}
 	.navbar {
 		position: relative;
@@ -286,7 +276,7 @@ export default {
 			padding: .3em 1em;
 			width: 100%;
 			border-radius: .3em;
-			border: 1px solid darken($color_prime_green, 40%);
+			border: 1px solid darken($color_prime_dark_green, 10%);
 			&::placeholder {
 				letter-spacing: 1em;
 				color: rgba(#76862c, 0.76);
@@ -396,17 +386,11 @@ export default {
 		position: fixed;
 		top: 10px;
 		left: 20px;
-		h1 {
-			font-size: 2.5em;
-			@media ( max-width: 500px ) {
-			  font-size: 1.5em;
-				margin-top: 50%;
-				margin-left: -5px;
-			}
-			.logo_word {
-				display: block;
-				line-height: 1;
-			}
+		@media (max-width: 500px) {
+			left: 15px;
+		}
+		.pc-logo {
+			width: 155px;
 		}
 	}
 	.searchbar-wrapper {
@@ -414,16 +398,19 @@ export default {
 		.searchbar {
 			margin-left: 100px;
 			width: 80%;
-			transition: .4s all;
+			// transition: .2s all;
 			@media ( max-width: 500px ) {
 				width: 75%;
 				margin-left: 20px;
+				&::placeholder {
+					letter-spacing: .4em;
+				}
 			}
 		}
 		.material-icons {
 			margin-right: 140px;
 			@media ( max-width: 500px ) {
-				margin-right: 61px;
+				margin-right: 66px;
 			}
 		}
 	}

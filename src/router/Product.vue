@@ -41,6 +41,7 @@ export default {
 	},
 	created() {
 		this.$store.dispatch('product/initProduct');
+		this.$store.dispatch('post/updatePage', 1)
 	},
 	methods: {
 		apply(value) {
