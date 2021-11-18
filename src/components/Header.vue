@@ -3,7 +3,7 @@
 		<div class="l_wrapper">
 			<div class="logo">
 				<h1 @click="toMain">
-					<!-- <img src="/src/assets/logo.png" /> -->
+					<img src="/src/assets/logo.png" />
 					<span class="logo_word">제철</span>
 					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span>
 				</h1>

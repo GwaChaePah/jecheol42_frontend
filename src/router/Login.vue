@@ -99,9 +99,9 @@ export default {
 	display: inline-block;
 }
 
-.l_main {
-	height: 100vh;
-}
+// .l_main {
+// 	height: 100vh;
+// }
 .l_wrapper {
 	max-width: 1000px;
 	max-height: 1500px;
