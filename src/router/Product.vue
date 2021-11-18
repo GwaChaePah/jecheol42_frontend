@@ -89,6 +89,7 @@ export default {
 				.content-img {
 					width: 250px;
 					height: 100%;
+					border-radius: .2em;
 					object-fit: cover;
 					@media (max-width: 550px) {
 						width: 500px;

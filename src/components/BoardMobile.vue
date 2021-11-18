@@ -12,13 +12,13 @@
 				<div class="MWcontent-title">
 					<div class="MWtitle__title ellipsis line-clamp">{{ post.title }}</div>
 					<div class="MWtitle-info">
-						<div class="MWtitle__comments">
-							<span class="MW material-icons">chat_bubble_outline</span>
-							{{ post.comment_cnt }}
-						</div>
 						<div class="MWtitle__time">
 							<span class="MW material-icons">schedule</span>
 							<span class="MWtime__time">{{ calcDate() }}</span>
+						</div>
+						<div class="MWtitle__comments">
+							<span class="MW material-icons">chat_bubble_outline</span>
+							{{ post.comment_cnt }}
 						</div>
 					</div>
 				</div>
@@ -83,13 +83,12 @@ export default {
 	display: block;
 	.MWcontent-anchor {
 		display: block;
+		margin-bottom: .1em;
 		background-color: white;
 		width: 100%;
 		height: 140px;
-		border: 1px solid #ddd;
-		clip-path: inset(-5px 0 -5px 0);
-		border-radius: .1em;
-		overflow: hidden;
+		border-bottom: 1px solid #eee;
+		border-top: 1px solid #eee;
 		position: relative;
 		// .content-address {
 		// 	color: rgb(31, 31, 31);
@@ -98,7 +97,7 @@ export default {
 		// 	letter-spacing: .2em;
 		// }
 		.MWimg-wrapper {
-			height: 160px;
+			// height: 160px;
 			.MWcontent-img {
 				position: absolute;
 				left: 8px;
@@ -110,8 +109,7 @@ export default {
 			}
 		}
 		.MWcontent-title {
-			padding: .5em .5em .5em;
-			border-bottom: 1px solid #E8E8E8;
+			padding: .7em .5em .5em;
 			position: absolute;
 			width: 52%;
 			left: 45%;
@@ -132,7 +130,7 @@ export default {
 				line-height: 1.4;
 				font-weight: bold;
 				font-size: 1em;
-				height: 40%;
+				height: 39%;
 				padding-bottom: .2em;
 				margin-bottom: .5em;
 			}
@@ -160,13 +158,9 @@ export default {
 					}
 				}
 				.MWtitle__time {
-					color: rgb(114, 115, 114);
 					.MWtime__time {
 						font-size: .8em;
 						margin-left: .2em;
-					}
-					.MW.material-icons {
-						color: rgb(114, 115, 114);
 					}
 				}
 			}

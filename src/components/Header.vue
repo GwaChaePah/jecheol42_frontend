@@ -3,7 +3,6 @@
 		<div class="l_wrapper">
 			<div class="logo">
 				<h1 @click="toMain">
-					<img src="/src/assets/logo.png" />
 					<span class="logo_word">제철</span>
 					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span>
 				</h1>
@@ -274,13 +273,13 @@ export default {
 		.searchbar {
 			color: darken($color_prime_green, 35%);
 			font-size: 20px;
-			letter-spacing: 1em;
 			line-height: 1.5;
 			padding: .3em 1em;
 			width: 100%;
 			border-radius: .3em;
 			border: 1px solid darken($color_prime_green, 40%);
 			&::placeholder {
+				letter-spacing: 1em;
 				color: rgba(#76862c, 0.76);
 				text-align: center;
 			}
@@ -416,7 +415,7 @@ export default {
 		.material-icons {
 			margin-right: 140px;
 			@media ( max-width: 500px ) {
-				margin-right: 60px;
+				margin-right: 61px;
 			}
 		}
 	}
