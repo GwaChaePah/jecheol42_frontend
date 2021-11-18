@@ -55,7 +55,7 @@ export default {
 		])
 	},
 	created() {
-		this.$store.dispatch('post/initMobileNav', null);
+		this.$store.dispatch('post/updateMobileNav', null);
 	},
 }
 </script>

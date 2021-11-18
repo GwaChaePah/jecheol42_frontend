@@ -98,8 +98,6 @@ export default {
 					font-family: 'Gowun Dodum', sans-serif;
 					font-size: 2.5em;
 					position: absolute;
-					left: 20%;
-					right: 0;
 					z-index: 10;
 					bottom: 20%;
 					transition: translateY(-20%);
@@ -113,20 +111,21 @@ export default {
 						 0    1px 0 $color,
 						-1px  1px 0 $color,
 						-1px  0   0 $color;
+					@media (max-width: 500px) {
+						font-size: 1.8em;
+					}
 				}
 			}
 			@media (max-width: 550px) {
 				display: block;
-				&:nth-child(even) {
-					strong {
-						left: 65%;
-						right: 0;
-					}
-				}
 				&:nth-child(odd) {
 					strong {
 						left: 15%;
-						right: 0;
+					}
+				}
+				&:nth-child(even) {
+					strong {
+						right: 15%;
 					}
 				}
 			}

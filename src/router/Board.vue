@@ -5,26 +5,42 @@
 				<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
 				<BoardMenu />
 			</div>
-			<div class="l_row clearfix">
-				<div v-if="loading">
-					<div class="preload_content" v-for="n in 4" >
-						<div class="content-anchor">
-							<div class="img-info"></div>
-							<div class="title-info"></div>
-							<div class="content-info">
-								<div class="info__category"></div>
-								<button class="info__price">-&nbsp;</button>
+			<div v-if="!mobileWidth">
+				<div class="l_row clearfix">
+					<div v-if="loading">
+						<div class="preload_content" v-for="n in 4" >
+							<div class="content-anchor">
+								<div class="img-info"></div>
+								<div class="title-info"></div>
+								<div class="content-info">
+									<button class="info__price">-&nbsp;</button>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div v-else>
-					<BoardItem  v-if="search || boardView" v-for="item in boardView" :key="item.id" :post="item" />
-					<div v-if="(!boardView.length && !loading)" class="empty-content">
-						<h1>검색된 정보가 없습니다</h1>
+					<div v-else>
+						<BoardItem  v-if="(search || boardView)" v-for="item in boardView" :key="item.id" :post="item" />
+						<div v-if="(!boardView.length && !loading)" class="empty-content">
+							<h1>검색된 정보가 없습니다</h1>
+						</div>
+						<BoardPage v-else />
 					</div>
-					<BoardPage v-else />
 				</div>
+			</div>
+		</div>
+		<div v-if="mobileWidth">
+			<div v-if="loading">
+				<div class="MWpreload_content" v-for="n in 4" >
+					<div class="MWcontent-anchor">
+					</div>
+				</div>
+			</div>
+			<div else>
+				<BoardMobile  v-if="(search || boardView)" v-for="item in boardView" :key="item.id" :post="item" />
+				<div v-if="(!boardView.length && !loading)" class="empty-content">
+					<h1>검색된 정보가 없습니다</h1>
+				</div>
+				<BoardPage v-else />
 			</div>
 		</div>
 	</div>
@@ -33,6 +49,7 @@
 <script>
 import BoardMenu from '~/components/BoardMenu';
 import BoardItem from '~/components/BoardItem';
+import BoardMobile from '~/components/BoardMobile';
 import BoardPage from '~/components/BoardPage';
 import axios from 'axios';
 import { mapState } from 'vuex';
@@ -42,6 +59,7 @@ export default {
 	components: {
 		BoardMenu,
 		BoardItem,
+		BoardMobile,
 		BoardPage
 	},
 	props: ['fromSearch'],
@@ -49,6 +67,7 @@ export default {
 		...mapState('product', ['postSearch']),
 		...mapState('post', [
 			'boardView',
+			'mobileWidth',
 			'loading',
 			'boardTag'
 		]),
@@ -60,6 +79,7 @@ export default {
 		}
 	},
 	created() {
+		console.log('board.vue created', this.fromSearch)
 		if (this.fromSearch) {
 			setTimeout(() => {
 				this.$store.dispatch('post/getBoard', {payload: this.postSearch});
@@ -93,6 +113,9 @@ h3 {
 	}
 	.preload_content {
 		display: inline-block;
+		@media (max-width: 500px) {
+			display: block;
+		}
 		.content-anchor {
 			display: block;
 			background-color: white;
@@ -102,22 +125,16 @@ h3 {
 			border-radius: .1em;
 			overflow: hidden;
 			position: relative;
-			@media (max-width: 745px) {
-				width: 280px;
-				height: 370px;
-			}
-			@media (max-width: 400px) {
-				width: 320px;
-				height: 140px;
+			@media (max-width: 500px) {
+				border: 1px solid #ddd;
+				width: 100%;
+				height: 170px;
 			}
 			.img-info {
 				height: 160px;
 				border-bottom: 1px dotted #ddd;
 				background: linear-gradient(221deg, rgba(239, 239, 239, 0.8) 0%, #fff 100%);
-				@media (max-width: 745px) {
-					height: 190px;
-				}
-				@media (max-width: 400px) {
+				@media (max-width: 500px) {
 					position: absolute;
 					left: 0;
 					top: 0;
@@ -131,7 +148,7 @@ h3 {
 			.title-info {
 				height: 110px;
 				border-bottom: 1px solid #e8e8e8;
-				@media (max-width: 400px) {
+				@media (max-width: 500px) {
 					position: absolute;
 					width: 52%;
 					left: 50%;
@@ -154,10 +171,11 @@ h3 {
 					width: 50px;
 					font-size: .9em;
 					font-weight: bold;
+					font-family: 'Gowun Dodum', sans-serif;
 					&::after {
 						content: '원';
 					}
-					@media (max-width: 400px) {
+					@media (max-width: 500px) {
 						position: absolute;
 						right: 8px;
 						bottom: 7px;
@@ -168,21 +186,36 @@ h3 {
 			}
 		}
 	}
-	.empty-content{
-		max-width: 1000px;
-		width: 100%;
-		height: 320px;
-		margin: 10px auto;
-		padding: 60px;
-		text-align: center;
-		h1 {
-			margin-top: 2em;
-			font-size: 1.6em;
-			@media (max-width: 400px) {
-				white-space: nowrap;
-				margin-top: 1em;
-				font-size: 1.1em;
-			}
+}
+.l_row.clearfix {
+	// text-align: center;
+	.MWpreload_content {
+		display: block;
+		.MWcontent-anchor {
+			border: 1px solid #ddd;
+			background-color: white;
+			border-radius: .1em;
+			overflow: hidden;
+			position: relative;
+			// width: 100%;
+			height: 170px;
+		}
+	}
+}
+.empty-content{
+	max-width: 1000px;
+	width: 100%;
+	height: 320px;
+	margin: 10px auto;
+	padding: 60px;
+	text-align: center;
+	h1 {
+		margin-top: 2em;
+		font-size: 1.6em;
+		@media (max-width: 500px) {
+			white-space: nowrap;
+			margin-top: 1em;
+			font-size: 1.1em;
 		}
 	}
 }
