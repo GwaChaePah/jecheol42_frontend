@@ -10,34 +10,21 @@
 					onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"/>
 				</div>
 				<div class="MWcontent-title">
-					<button class="MWicon material-icons">arrow_right</button>
 					<div class="MWtitle__title ellipsis line-clamp">{{ post.title }}</div>
 					<div class="MWtitle-info">
-						<div class="MWtitle__writer ellipsis">
-							<span class="MW material-icons">account_circle</span>
-							<span class="MWwriter__username">{{ post.username }}</span>
+						<div class="MWtitle__comments">
+							<span class="MW material-icons">chat_bubble_outline</span>
+							{{ post.comment_cnt }}
 						</div>
 						<div class="MWtitle__time">
 							<span class="MW material-icons">schedule</span>
 							<span class="MWtime__time">{{ calcDate() }}</span>
 						</div>
-						<div class="MWcount_comment-wrapper">
-							<div class="MWtitle__count">
-								<span class="MW material-icons">visibility</span>
-								{{ post.view_count }}
-							</div>
-							<div class="MWtitle__comments">
-								<span class="MW material-icons">chat_bubble_outline</span>
-								{{ post.comment_cnt }}
-							</div>
-						</div>
 					</div>
 				</div>
-				<div class="MWcontent-info">
-					<button class="MWinfo__price" :class="{'price_sobun':  post.tag === 0, 'price_nanum':  post.tag === 1}">
-						{{ post.price }}
-					</button>
-				</div>
+				<button class="MWinfo__price" :class="{'price_sobun':  post.tag === 0, 'price_nanum':  post.tag === 1}">
+					{{ post.price }}
+				</button>
 			</div>
 		</RouterLink>
 	</div>
@@ -98,7 +85,7 @@ export default {
 		display: block;
 		background-color: white;
 		width: 100%;
-		height: 130px;
+		height: 140px;
 		border: 1px solid #ddd;
 		clip-path: inset(-5px 0 -5px 0);
 		border-radius: .1em;
@@ -114,19 +101,20 @@ export default {
 			height: 160px;
 			.MWcontent-img {
 				position: absolute;
-				left: 0;
-				top: 0;
-				bottom: 0;
-				width: 50%;
-				height: 100%;
+				left: 8px;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 40%;
+				height: 90%;
+				border-radius: .2em;
 			}
 		}
 		.MWcontent-title {
-			padding: .8em .5em .5em;
+			padding: .5em .5em .5em;
 			border-bottom: 1px solid #E8E8E8;
 			position: absolute;
 			width: 52%;
-			left: 50%;
+			left: 45%;
 			top: 0;
 			bottom: 0;
 			text-align: left;
@@ -144,8 +132,9 @@ export default {
 				line-height: 1.4;
 				font-weight: bold;
 				font-size: 1em;
-				height: 50%;
+				height: 40%;
 				padding-bottom: .2em;
+				margin-bottom: .5em;
 			}
 			.MWtitle__title.ellipsis {
 				white-space: normal;
@@ -157,17 +146,17 @@ export default {
 				display: block;
 				font-size: .9em;
 				line-height: 1.7;
-				margin-right: 1em;
+				margin: 1em 0;
 				.MW.material-icons {
 					font-size: 1em;
 					transform: translateY(3px);
 				}
-				.MWtitle__writer {
-					color: #383838;
-					width: 50%;
-					.MWwriter__username {
-						margin-left: .3em;
-						font-size: 1.1em;
+				.MWtitle__comments {
+					display: inline-block;
+					color: gray;
+					margin-right: .5em;
+					.MW.material-icons {
+						color: gray;
 					}
 				}
 				.MWtitle__time {
@@ -180,53 +169,29 @@ export default {
 						color: rgb(114, 115, 114);
 					}
 				}
-				.MWcount_comment-wrapper {
-					position: absolute;
-					top: 55%;
-					right: 1em;
-					font-size: .8em;
-					.MWtitle__count {
-						display: inline-block;
-						margin-right: .5em;
-						color: lighten($color_prime_orange, 10%);
-						.MW.material-icons {
-							color: lighten($color_prime_orange, 10%);
-						}
-					}
-					.MWtitle__comments {
-						display: inline-block;
-						color: gray;
-						margin-right: .5em;
-						.MW.material-icons {
-							color: gray;
-						}
-					}
-				}
 			}
 		}
-		.MWcontent-info {
-			.MWinfo__price {
-				cursor: pointer;
-				position: absolute;
-				right: 1em;
-				bottom: 1em;
-				padding: .3em .8em;
-				font-size: .7em;
-				display: inline-block;
-				border: none;
-				border-radius: .2em;
-				font-weight: bold;
-				font-family: 'Gowun Dodum', sans-serif;
-				&::after {
-					content: '원';
-				}
+		.MWinfo__price {
+			cursor: pointer;
+			position: absolute;
+			right: 1em;
+			bottom: 1em;
+			padding: .3em .8em;
+			font-size: .8em;
+			display: inline-block;
+			border: none;
+			border-radius: .2em;
+			font-weight: bold;
+			font-family: 'Gowun Dodum', sans-serif;
+			&::after {
+				content: '원';
 			}
-			.price_sobun {
-				background-color: $color_prime_green;
-			}
-			.price_nanum {
-				background-color: $color_prime_yellow;
-			}
+		}
+		.price_sobun {
+			background-color: $color_prime_green;
+		}
+		.price_nanum {
+			background-color: $color_prime_yellow;
 		}
 	}
 }

@@ -16,7 +16,7 @@
 						<li	v-for="item in product"	:key="item">
 							<a class="content-anchor" @click="apply(item.name)">
 								<img class="content-img" :src="`${item.image}`" :name="`${item.name}`"/>
-								<strong>{{ item.name }}</strong>
+								<strong :class="{'content-name': !mobileWidth, 'MWcontent-name': mobileWidth}">{{ item.name }}</strong>
 							</a>
 						</li>
 					</ul>
@@ -37,6 +37,7 @@ export default {
 			'theSearch',
 			'loading'
 		]),
+		...mapState('post', ['mobileWidth'])
 	},
 	created() {
 		this.$store.dispatch('product/initProduct');
@@ -116,15 +117,18 @@ export default {
 					}
 				}
 			}
+			.content-name {
+				left: 15%;
+			}
 			@media (max-width: 550px) {
 				display: block;
 				&:nth-child(odd) {
-					strong {
+					.MWcontent-name {
 						left: 15%;
 					}
 				}
 				&:nth-child(even) {
-					strong {
+					.MWcontent-name {
 						right: 15%;
 					}
 				}
