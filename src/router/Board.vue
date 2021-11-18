@@ -79,7 +79,6 @@ export default {
 		}
 	},
 	created() {
-		console.log('board.vue created', this.fromSearch)
 		if (this.fromSearch) {
 			setTimeout(() => {
 				this.$store.dispatch('post/getBoard', {payload: this.postSearch});
