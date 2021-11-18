@@ -3,6 +3,7 @@
 		<div class="l_wrapper">
 			<div class="logo">
 				<h1 @click="toMain">
+					<img src="https://github.com/GwaChaePah/front/blob/a8a334c3523cfd32400d852a462d302ad441395d/static/logo.png" />
 					<span class="logo_word">제철</span>
 					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span>
 				</h1>
