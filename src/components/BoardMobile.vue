@@ -1,43 +1,40 @@
 <template>
-	<div class="content-wrapper">
+	<div class="MWcontent-wrapper">
 		<RouterLink :to="{ name: 'Post', params: {id: `${post.id}`}}">
-			<div class="content-anchor">
-			<!-- <div class="content-address">
+			<div class="MWcontent-anchor">
+			<!-- <div class="MWcontent-address">
 				<p>{{ post.region }}</p>
 			</div> -->
-				<div class="img-wrapper">
-					<img class="content-img" :src="post.image1" :alt="`${post.user}_${post.title}`"
+				<div class="MWimg-wrapper">
+					<img class="MWcontent-img" :src="post.image1" :alt="`${post.user}_${post.title}`"
 					onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"/>
 				</div>
-				<div class="content-title">
-					<button class="PC icon material-icons">arrow_right</button>
-					<div class="title__title ellipsis">{{ post.title }}</div>
-					<div class="title-info">
-						<div class="title__writer ellipsis">
-							<span class="PC material-icons">account_circle</span>
-							<span class="writer__username">{{ post.username }}</span>
+				<div class="MWcontent-title">
+					<button class="MWicon material-icons">arrow_right</button>
+					<div class="MWtitle__title ellipsis line-clamp">{{ post.title }}</div>
+					<div class="MWtitle-info">
+						<div class="MWtitle__writer ellipsis">
+							<span class="MW material-icons">account_circle</span>
+							<span class="MWwriter__username">{{ post.username }}</span>
 						</div>
-							<div class="title__time">
-								<span class="PC material-icons">schedule</span>
-								<span class="time__time">{{ calcDate() }}</span>
-							</div>
-						<div class="count_comment-wrapper">
-							<div class="title__count">
-								<span class="PC material-icons">visibility</span>
+						<div class="MWtitle__time">
+							<span class="MW material-icons">schedule</span>
+							<span class="MWtime__time">{{ calcDate() }}</span>
+						</div>
+						<div class="MWcount_comment-wrapper">
+							<div class="MWtitle__count">
+								<span class="MW material-icons">visibility</span>
 								{{ post.view_count }}
 							</div>
-							<div class="title__comments">
-								<span class="PC material-icons">chat_bubble_outline</span>
+							<div class="MWtitle__comments">
+								<span class="MW material-icons">chat_bubble_outline</span>
 								{{ post.comment_cnt }}
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="content-info">
-					<div class="info__category" :class="{'cat_sobun':  post.tag === 0, 'cat_nanum':  post.tag === 1}">
-						{{ post.tag === 0 ? '소분' : post.tag === 1 ? '나눔' : '완료' }}
-					</div>
-					<button class="info__price" :class="{'price_sobun':  post.tag === 0, 'price_nanum':  post.tag === 1}">
+				<div class="MWcontent-info">
+					<button class="MWinfo__price" :class="{'price_sobun':  post.tag === 0, 'price_nanum':  post.tag === 1}">
 						{{ post.price }}
 					</button>
 				</div>
@@ -95,15 +92,15 @@ export default {
 @import '../scss/typography.scss';
 @import '~/scss/main.scss';
 
-.content-wrapper {
-	display: inline-block;
-	position: relative;
-	.content-anchor {
+.MWcontent-wrapper {
+	display: block;
+	.MWcontent-anchor {
 		display: block;
 		background-color: white;
-		width: 240px;
-		height: 320px;
+		width: 100%;
+		height: 130px;
 		border: 1px solid #ddd;
+		clip-path: inset(-5px 0 -5px 0);
 		border-radius: .1em;
 		overflow: hidden;
 		position: relative;
@@ -113,109 +110,115 @@ export default {
 		// 	padding: .3em 0;
 		// 	letter-spacing: .2em;
 		// }
-		.img-wrapper {
+		.MWimg-wrapper {
 			height: 160px;
-			.content-img {
-				width: 100%;
-				height: 160px;
+			.MWcontent-img {
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				width: 50%;
+				height: 100%;
 			}
 		}
-		.content-title {
+		.MWcontent-title {
 			padding: .8em .5em .5em;
 			border-bottom: 1px solid #E8E8E8;
-			.PC.icon.material-icons {
+			position: absolute;
+			width: 52%;
+			left: 50%;
+			top: 0;
+			bottom: 0;
+			text-align: left;
+			.MWicon.material-icons {
 				float: left;
-				margin: 2px 0 2px -7px;
+				margin: 2px 0 2px -13px;
 				background: none;
 				border: none;
 			}
-			.title__status-done {
+			.MWtitle__status-done {
 				background-color: #ccc;
 			}
-			.title__title {
+			.MWtitle__title {
 				text-align: left;
 				line-height: 1.4;
 				font-weight: bold;
-				font-size: 1.4em;
-				padding-bottom: .4em;
+				font-size: 1em;
+				height: 50%;
+				padding-bottom: .2em;
 			}
-			.title-info {
-				position: relative;
-				.PC.material-icons {
+			.MWtitle__title.ellipsis {
+				white-space: normal;
+			}
+			.line-clamp {
+				-webkit-line-clamp: 2;
+			}
+			.MWtitle-info {
+				display: block;
+				font-size: .9em;
+				line-height: 1.7;
+				margin-right: 1em;
+				.MW.material-icons {
 					font-size: 1em;
 					transform: translateY(3px);
 				}
-				.title__writer {
+				.MWtitle__writer {
 					color: #383838;
 					width: 50%;
-					.writer__username {
+					.MWwriter__username {
 						margin-left: .3em;
 						font-size: 1.1em;
 					}
 				}
-				.title__time {
+				.MWtitle__time {
 					color: rgb(114, 115, 114);
-					.time__time {
+					.MWtime__time {
 						font-size: .8em;
 						margin-left: .2em;
 					}
-					.PC.material-icons {
+					.MW.material-icons {
 						color: rgb(114, 115, 114);
 					}
 				}
-				.count_comment-wrapper {
+				.MWcount_comment-wrapper {
 					position: absolute;
-					top: 0;
-					right: 0;
-					.title__count {
+					top: 55%;
+					right: 1em;
+					font-size: .8em;
+					.MWtitle__count {
 						display: inline-block;
 						margin-right: .5em;
 						color: lighten($color_prime_orange, 10%);
-						.PC.material-icons {
+						.MW.material-icons {
 							color: lighten($color_prime_orange, 10%);
 						}
 					}
-					.title__comments {
+					.MWtitle__comments {
 						display: inline-block;
 						color: gray;
-						.PC.material-icons {
+						margin-right: .5em;
+						.MW.material-icons {
 							color: gray;
 						}
 					}
 				}
 			}
 		}
-		.content-info {
-			display: flex;
-			justify-content: space-between;
-			padding: .4em;
-			font-size: 1.1em;
-			.info__category {
-				display: inline-block;
-				font-weight: bold;
-				font-family: 'Gowun Dodum', sans-serif;
-				padding: .4em;
-			}
-			.cat_sobun {
-				color: darken($color_prime_green, 10%);
-			}
-			.cat_nanum {
-				color: darken($color_prime_yellow, 10%);
-			}
-			.info__price {
+		.MWcontent-info {
+			.MWinfo__price {
 				cursor: pointer;
+				position: absolute;
+				right: 1em;
+				bottom: 1em;
+				padding: .3em .8em;
+				font-size: .7em;
 				display: inline-block;
 				border: none;
 				border-radius: .2em;
-				padding: .5em .8em;
-				font-size: .9em;
 				font-weight: bold;
 				font-family: 'Gowun Dodum', sans-serif;
 				&::after {
 					content: '원';
-				}
-				&:hover {
-					filter: brightness(.90);
 				}
 			}
 			.price_sobun {

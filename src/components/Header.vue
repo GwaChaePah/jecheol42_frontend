@@ -41,8 +41,10 @@
 				</div>
 			</transition>
 			<div class="searchbar-wrapper" id="searchbar">
-				<input type="text" v-model="search" class="searchbar desktopInput" placeholder="제철 과채를 검색해보세요" @keyup.enter.prevent="apply"/>
-				<input type="text" v-model="search" class="searchbar mobileInput" placeholder="제철일까?" @keyup.enter.prevent="apply"/>
+				<input type="text" v-model="search" class="searchbar" v-if="!mobileWidth"
+					placeholder="제철 과채를 검색해보세요" @keyup.enter.prevent="apply"/>
+				<input type="text" v-model="search" class="searchbar" v-if="mobileWidth"
+					placeholder="제철일까?" @keyup.enter.prevent="apply"/>
 				<button class="material-icons" @click.prevent="apply">search</button>
 			</div>
 		</div>
@@ -286,20 +288,6 @@ export default {
 				outline: none;
 			}
 		}
-		.desktopInput {
-			display: block;
-		}
-		.mobileInput {
-			display: none;
-		}
-		@media ( max-width: 700px) {
-			.desktopInput {
-				display: none;
-			}
-			.mobileInput {
-				display: block;
-			}
-		}
 		.material-icons {
 			position: absolute;
 			right: 0;
@@ -421,8 +409,8 @@ export default {
 			width: 80%;
 			transition: .4s all;
 			@media ( max-width: 500px ) {
-				width: 78%;
-				margin-left: 42px;
+				width: 75%;
+				margin-left: 20px;
 			}
 		}
 		.material-icons {
