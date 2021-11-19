@@ -3,8 +3,6 @@
 		<div class="l_wrapper">
 			<div class="content">
 				<div class="background">
-					<!-- <p class="msgBox" v-if="!isLogin">로그인 완료</p>
-					<p class="msgBox" v-else-if="isLoginError">아이디와 비밀번호를 확인해주세요</p> -->
 					<div class="loginBox">		
 					<div class="loginMsg">
 						로그인</div>
@@ -47,7 +45,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- <p style="text-align: center">Password 입력값: {{ password }}</p> -->
 			</div>
 		</div>
 	</div>
@@ -99,19 +96,8 @@ export default {
 	display: inline-block;
 }
 
-// .l_main {
-// 	height: 100vh;
-// }
 .l_wrapper {
-	max-width: 1000px;
-	max-height: 1500px;
-	width: auto;
-	margin: 0 auto;
-	padding: 30px;
-	position: relative;
-		.content {
-		height: 100%;
-	}
+	padding: 20px;
 }
 .background{
 	height: 400px;
@@ -164,7 +150,7 @@ export default {
 				font-size: 17px;
 				width: 90%;
 				max-width: 300px;
-				height: 15%;
+				height: 12%;
 				padding: 8px;
 				border-radius: .3em;
 				border-color: rgba(187, 212, 68, 30%);

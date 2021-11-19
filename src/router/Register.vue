@@ -18,6 +18,7 @@
 						</div>
 						<div class="duplicateId" v-if="duplicateId">사용할 수 없는 아이디입니다</div>
 						<div class="useId" v-if="useId">사용할 수 있는 아이디입니다</div>
+						<div class="errorId" v-if="errorId">양식에 맞춰 입력해주세요</div>
 						<div class="passBox">
 							<input for="password"
 									type="password" 
@@ -31,7 +32,7 @@
 							<input for="passwordConfirmation"
 									type="password" 
 									class="passwordConfirmation"
-									placeholder="비밀번호"
+									placeholder="비밀번호 확인"
 									v-model="passwordConfirmation" 
 									@change="comparisonPW"
 									required>
@@ -39,11 +40,12 @@
 							<div v-if="notSamePw">비밀번호가 다릅니다</div>
 						<div class="regionBox">
 							<input for="region"
-									type="region" 
-									class="region"
-									placeholder="지역(토글로 바꿈)"
-									v-model="region" 
+									type="region"
+									class="region" 
+									v-model="region"
+									placeholder="우편번호"
 									required>
+							<button @click="testPopup()">우편번호</button>
 						</div>
 						<button 
 							type="submit"
@@ -81,6 +83,7 @@ export default {
 			region: '',
 			duplicateId: false,
 			useId: false,
+			errorId: false,
 			notSamePw: false
 		}
 	},
@@ -92,6 +95,13 @@ export default {
 		}
 	},
   	methods: {
+		testPopup() {
+			new window.daum.Postcode({
+			oncomplete: (data) => {
+				this.region = data.zonecode
+			}
+			}).open();
+		},
 		comparisonPW() {
 			if (this.password !== this.passwordConfirmation)
 				this.notSamePw = true
@@ -100,20 +110,26 @@ export default {
 		},
 		sameUser() {
 			let username = this.username
+			if (!this.validateId)
+				return this.errorId = true
 			if (!username)
 				return alert("아이디를 입력해 주세요")
-			axios.post("user/api/check/", {
-				username: username
-			})
-			.then(res => {
-				if (res.status === 202)
-					this.useId = true
-					this.duplicateId = false
-			})
-			.catch(err => {
+			else {
+				axios.post("user/api/check/", {
+					username: username
+				})
+				.then(res => {
+					if (res.status === 202)
+						this.useId = true
+						this.errorId = false
+						this.duplicateId = false
+				})
+				.catch(err => {
 					this.useId = false
+					this.errorId = false
 					this.duplicateId = true
-			})
+				})
+			}
 		},
 		validateId() {
 			let username = this.username
@@ -142,10 +158,10 @@ export default {
 				alert("대문자 영문은 입력할 수 없습니다.");
 				return false;
 			}
-			// else if(num < 0 || eng < 0){
-			// 	alert("영문, 숫자를 혼합하여 입력해주세요.");
-			// 	return false;
-			// }
+			else if(num < 0 || eng < 0){
+				alert("영문, 숫자를 혼합하여 입력해주세요.");
+				return false;
+			}
 		},
 		validatePw() {
 			let password = this.password
@@ -166,10 +182,10 @@ export default {
 				alert("한글은 입력할 수 없습니다.");
 				return false;
 			}
-			// else if(num < 0 || eng < 0 || spe < 0 ){
-			// 	alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
-			// 	return false;
-			// }
+			else if(num < 0 || eng < 0 || spe < 0 ){
+				alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
+				return false;
+			}
 		},
 		register(registerObj) {
 			if (!this.username || !this.password || !this.region)
@@ -188,13 +204,13 @@ export default {
 				}
 			})
 			.then(res => {
-				console.log("가입 완료")
 				this.$router.push("/")
 			})
 			.catch(err => {
-				console.log("가입 실패")
+				console.log("회원 가입에 실패했습니다. 관리자에게 문의 바랍니다.")
+				console.log(err)
 			})
-		}
+		},
 	}
 }
 </script>
@@ -221,15 +237,12 @@ export default {
 	display: inline-block;
 }
 
-// .l_main {
-// 	height: 100vh;
-// }
 .l_wrapper {
 	max-width: 1000px;
 	max-height: 1500px;
 	width: auto;
 	margin: 0 auto;
-	padding: 30px;
+	padding: 20px;
 	position: relative;
 	.content {
 	height: 100%;
@@ -272,6 +285,15 @@ export default {
 						border-color: transparent;
 					}
 				}
+				.duplicateId{
+					font-size: 13px;
+				}
+				.useId{
+					font-size: 13px;
+				}
+				.errorId{
+					font-size: 13px;
+				}
 				.passBox{
 					display: flex;
 					width: 70%;
@@ -290,7 +312,6 @@ export default {
 					max-width: 300px;
 					margin: auto;
 					border-bottom: 1px solid #ddd;
-					//border 하단에 쭈욱 선 그리기
 					input{
 						width: 100%;
 						margin: 10px;
@@ -304,10 +325,22 @@ export default {
 					margin: auto;
 					border-bottom: 1px solid #ddd;
 					input{
-						width: 100%;
+						width: 60%;
 						margin: 10px;
 						border-color: transparent;
 					}
+					button{
+						width: 40%;
+						margin: auto;
+						max-width: 70px;
+						border-radius: 3px;
+						color: white;
+						background: rgba(#76862c, 0.76);
+						border-color: transparent;
+					}
+				}
+				.postalCodeLink{
+					font-size: 13px;
 				}
 				.registerBtn{
 					margin-top: 22px;
@@ -315,8 +348,8 @@ export default {
 					font-size: 17px;
 					width: 70%;
 					max-width: 300px;
-					height: 15%;
-					padding: 8px;
+					height: 12%;
+					padding: 5px;
 					border-radius: .3em;
 					border-color: rgba(187, 212, 68, 30%);
 					box-shadow: 0 0 10px 0 $color_shadow_03;
