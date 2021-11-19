@@ -3,7 +3,7 @@
 		<div class="button-wrapper">
 			<button id="back" @click="toBack">
 				<span class="material-icons">arrow_back</span>
-				뒤로가기
+				<span :class="{'back_small': scrollPosition}">뒤로가기</span>
 			</button>
 			<button id="board" @click="toBoard">
 				<span class="material-icons">list_alt</span>
@@ -215,6 +215,14 @@ export default {
 			.material-icons {
 				display: block;
 				font-size: 2.5em;
+			}
+			.back_small {
+				@media (max-width: 400px) {
+					font-size: .9em;
+				}
+				@media (max-width: 350px) {
+					font-size: .8em;
+				}
 			}
 		}
 		.post__price {
