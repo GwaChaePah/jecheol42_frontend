@@ -410,7 +410,10 @@ export default {
 		.material-icons {
 			margin-right: 140px;
 			@media ( max-width: 500px ) {
-				margin-right: 66px;
+				margin-right: 70px;
+			}
+			@media ( max-width: 350px ) {
+				margin-right: 55px;
 			}
 		}
 	}
