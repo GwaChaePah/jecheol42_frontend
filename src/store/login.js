@@ -15,12 +15,10 @@ export default {
 			state.isLogin = true
 			state.isLoginError = false
 			state.username = payload
-			console.log("로그인")
 		},
 		logout(state) {
 			state.isLogin = false
 			state.isLoginError = false
-			console.log("로그아웃")
 		},
 		updateAccess (state, { access }) {
 			state.accessToken = access
