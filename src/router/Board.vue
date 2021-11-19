@@ -33,7 +33,12 @@
 				<div class="MWpreload_content" v-for="n in 4" >
 					<div class="MWcontent-anchor">
 						<div class="MWcontent-img"></div>
-						<button class="MWinfo__price">-&nbsp;</button>
+						<div class="MWcontent-title">
+							<div class="MWtitle__title"></div>
+							<div class="MWtitle-info">
+								<button class="MWinfo__price">-&nbsp;</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -174,20 +179,38 @@ h3 {
 			border-radius: .3em;
 			background: linear-gradient(221deg, rgba(239, 239, 239, 0.8) 0%, #fff 100%);
 		}
-		.MWinfo__price {
+		.MWcontent-title {
+			padding: .5em;
 			position: absolute;
-			right: 1em;
-			bottom: 1em;
-			padding: .3em .8em;
-			display: inline-block;
-			border: none;
-			border-radius: .2em;
-			font-family: 'Gowun Dodum', sans-serif;
-			font-weight: bold;
-			font-size: .8em;
-			color: gray;
-			&::after {
-				content: '원';
+			width: 52%;
+			left: 45%;
+			top: 0;
+			bottom: 0;
+			text-align: left;
+			.MWtitle__title {
+				color: gray;
+				line-height: 1.4;
+				font-size: 1em;
+				height: 58%;
+				padding-bottom: .2em;
+				margin-bottom: .2em;
+			}
+			.MWtitle-info {
+				font-size: .9em;
+				line-height: 1.7;
+				.MWinfo__price {
+					display: inline-block;
+					padding: .3em .8em;
+					border: none;
+					border-radius: .2em;
+					font-family: 'Gowun Dodum', sans-serif;
+					font-size: .9em;
+					font-weight: bold;
+					color: gray;
+					&::after {
+						content: '원';
+					}
+				}
 			}
 		}
 	}

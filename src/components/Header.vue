@@ -2,9 +2,9 @@
 	<div class="header" :class="{ 'scrolled-header': scrollPosition }">
 		<div class="l_wrapper">
 			<div class="logo" @click="toMain">
-				<img class="pc-logo" src="https://github.com/GwaChaePah/front/blob/134b0073e30fad9bc9c53865217cc51df4023b99/static/logo.png?raw=true" v-if="!mobileWidth"/>
-				<img class="mb-logo" src="https://github.com/GwaChaePah/front/blob/main/static/%EC%A0%9C%EC%B2%A042_%EA%B8%80%EC%94%A8.png?raw=true" v-if="mobileWidth && !scrollPosition"/>
-				<img class="scroll-logo" src="https://github.com/GwaChaePah/front/blob/main/static/%ED%8C%8C%EB%B9%84%EC%BD%98.png?raw=true" v-if="mobileWidth && scrollPosition"/>
+				<img class="pc-logo" src="https://raw.githubusercontent.com/GwaChaePah/front/c1b25666d7064836ea5c4fb528785e464f3d1152/static/%EC%A0%9C%EC%B2%A042_%EA%B0%80%EB%A1%9C.svg" v-if="!mobileWidth"/>
+				<img class="mb-logo" src="https://raw.githubusercontent.com/GwaChaePah/front/e543ebcc3d5680b42116261b29021815bdf54d49/static/%EC%A0%9C%EC%B2%A042_%EA%B8%80%EC%94%A8.svg" v-if="mobileWidth && !scrollPosition"/>
+				<img class="scroll-logo" src="https://raw.githubusercontent.com/GwaChaePah/front/e543ebcc3d5680b42116261b29021815bdf54d49/static/%EC%A0%9C%EC%B2%A042_%EA%B7%B8%EB%A6%BC.svg" v-if="mobileWidth && scrollPosition"/>
 					<!-- <span class="logo_word">제철</span>
 					<span class="logo_word"><span id="four">4</span><span id="two">2</span></span> -->
 			</div>
@@ -214,10 +214,11 @@ export default {
 		}
 		.mb-logo {
 			width: 110px;
+			margin-top: .8em;
 		}
 		.scroll-logo {
-			width: 55px;
-			margin-top: 7px;
+			width: 51px;
+			margin-top: 1.3em;
 		}
 	}
 	.navbar {
@@ -409,7 +410,10 @@ export default {
 		.material-icons {
 			margin-right: 140px;
 			@media ( max-width: 500px ) {
-				margin-right: 66px;
+				margin-right: 70px;
+			}
+			@media ( max-width: 350px ) {
+				margin-right: 55px;
 			}
 		}
 	}
