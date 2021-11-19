@@ -170,10 +170,10 @@ export default {
 @import '../scss/main.scss';
 
 .section-comment {
-	margin: 0 0.3em 0 3.5em;
+	margin: 0 .3em 0 3.5em;
 	box-sizing: border-box;
 	@media (max-width: 500px) {
-		margin: 0 .5em;
+		margin: 0 .3em;
 		font-size: .8em;
 	}
 	.comment-container {
@@ -364,7 +364,7 @@ export default {
 			@media (max-width: 500px) {
 				display: block;
 				height: 30px;
-				width: 95%;
+				width: 85%;
 				margin: 1em auto 0;
 				&::placeholder {
 					letter-spacing: 0;

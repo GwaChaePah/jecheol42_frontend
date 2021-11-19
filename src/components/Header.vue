@@ -42,10 +42,10 @@
 			</transition>
 			<div class="searchbar-wrapper" id="searchbar">
 				<input type="text" v-model="search" class="searchbar" v-if="!mobileWidth"
-					placeholder="제철 과채를 검색해보세요" @keyup.enter.prevent="apply"/>
+					placeholder="과채 가격을 검색해보세요" @keyup.enter.prevent="apply"/>
 				<input type="text" v-model="search" class="searchbar" v-if="mobileWidth"
-					placeholder="제철일까?" @keyup.enter.prevent="apply"/>
-				<button class="material-icons" @click.prevent="apply">search</button>
+					placeholder="얼마일까?" @keyup.enter.prevent="apply"/>
+				<!-- <button class="material-icons" @click.prevent="apply">search</button> -->
 			</div>
 		</div>
 	</div>
@@ -218,7 +218,7 @@ export default {
 		}
 		.scroll-logo {
 			width: 51px;
-			margin-top: 1.3em;
+			margin-top: 13px;
 		}
 	}
 	.navbar {
@@ -277,8 +277,9 @@ export default {
 			padding: .3em 1em;
 			width: 100%;
 			border-radius: .3em;
-			border: 1px solid darken($color_prime_dark_green, 10%);
+			border: 1px solid $color_prime_green;
 			&::placeholder {
+				font-family: 'Gowun Dodum', sans-serif;
 				letter-spacing: 1em;
 				color: rgba(#76862c, 0.76);
 				text-align: center;
@@ -297,10 +298,10 @@ export default {
 			font-size: 35px;
 			margin: auto 50px auto auto;
 		}
-		@media ( max-width: 635px ) {
+		@media ( max-width: 700px ) {
 			.searchbar {
 				&::placeholder {
-					letter-spacing: .4em;
+					letter-spacing: .6em;
 				}
 			}
 		}
@@ -318,10 +319,10 @@ export default {
 		.material-icons {
 			z-index: 99;
 			border: none;
-			margin-right: 20px;
 			background-color: transparent;
-			font-size: 50px;
+			font-size: 40px;
 			@media ( max-width: 500px ) {
+				margin-right: .7em;
 				font-size: 35px;
 			}
 		}
@@ -336,8 +337,10 @@ export default {
 		right: 20px;
 		height: 100px;
 		@media ( max-width: 500px ) {
-			right: -10px;
-			height: 90px;
+			height: 83px;
+		}
+		.material-icons {
+			margin: 0;
 		}
 	}
 	.dropdown-nav {
@@ -392,38 +395,53 @@ export default {
 	height: 100px;
 	z-index: 98;
 	transition: all .1s;
+	@media (max-width: 500px) {
+		height: 83px;
+	}
 	.logo {
 		position: fixed;
 		top: 10px;
 		left: 20px;
-		@media (max-width: 500px) {
-			left: 15px;
+		width: 13%;
+		height: 100px;
+		@media (max-width: 350px) {
+			top: 14px;
 		}
 		.pc-logo {
 			width: 155px;
+			margin-top: 23px;
+			@media ( max-width: 760px ) {
+				width: 68;
+				margin-top: 27px;
+			}
 		}
 	}
 	.searchbar-wrapper {
 		padding-top: 1.7em;
+		@media (max-width: 500px) {
+			padding: 0;
+		}
 		.searchbar {
-			margin-left: 100px;
-			width: 80%;
+			// margin-left: 100px;
+			width: 70%;
 			// transition: .2s all;
+			@media ( max-width: 760px ){
+				font-size: 18px;
+			}
 			@media ( max-width: 500px ) {
-				width: 75%;
-				margin-left: 20px;
-				&::placeholder {
-					letter-spacing: .4em;
-				}
+				margin: 26px 0 0 5%;
+				font-size: 15px;
 			}
 		}
 		.material-icons {
-			margin-right: 140px;
+			margin-right: 183px;
 			@media ( max-width: 500px ) {
-				margin-right: 70px;
+				margin-right: 80px;
+				font-size: 30px;
+				top: 48%;
 			}
 			@media ( max-width: 350px ) {
-				margin-right: 55px;
+				margin-right: 67px;
 			}
 		}
 	}

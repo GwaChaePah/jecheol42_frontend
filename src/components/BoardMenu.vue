@@ -138,16 +138,17 @@ export default {
 	}
 	.menu-bar__list {
 		padding: 0.5em 1em;
-		border: 1px solid #383838;
+		border: 1px solid darken($color_prime_brown, 25%);
+		color: darken($color_prime_brown, 35%);
 		background-color: white;
-		border-radius: .2em;
+		border-radius: .3em;
 		letter-spacing: 2px;
 		font-family: 'Gowun Dodum', sans-serif;
 		@media (max-width: 500px) {
 			font-size: .7em;
 		}
 		&:hover {
-			background-color: #383838;
+			background-color: darken($color_prime_brown, 25%);
 			color: white;
 		}
 	}
