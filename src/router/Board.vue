@@ -13,12 +13,13 @@
 								<div class="img-info"></div>
 								<div class="title-info"></div>
 								<div class="content-info">
+									<div class="info__category"></div>
 									<button class="info__price">-&nbsp;</button>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div v-else>
+					<div class="board-content" v-else>
 						<BoardItem  v-if="(search || boardView)" v-for="item in boardView" :key="item.id" :post="item" />
 						<div v-if="(!boardView.length && !loading)" class="empty-content">
 							<h1>검색된 정보가 없습니다</h1>
@@ -122,13 +123,12 @@ h3 {
 			background-color: white;
 			width: 240px;
 			height: 320px;
-			border: 1px solid #ddd;
-			border-radius: .1em;
+			border-radius: .4em;
+			margin: 1px;
 			overflow: hidden;
 			position: relative;
 			.img-info {
 				height: 160px;
-				border-bottom: 1px dotted #ddd;
 				background: linear-gradient(221deg, rgba(239, 239, 239, 0.8) 0%, #fff 100%);
 			}
 			.title-info {
@@ -140,14 +140,20 @@ h3 {
 				justify-content: space-between;
 				padding: .4em;
 				font-size: 1.1em;
+				background-color: #f8f8f8;
+				.info__category {
+					display: inline-block;
+					padding: .4em;
+					width: 40px;
+				}
 				.info__price {
 					color: gray;
 					display: inline-block;
 					border: none;
 					border-radius: .2em;
 					padding: .5em .8em;
-					width: 50px;
 					font-size: .9em;
+					width: 50px;
 					font-weight: bold;
 					font-family: 'Gowun Dodum', sans-serif;
 					&::after {
@@ -156,6 +162,9 @@ h3 {
 				}
 			}
 		}
+	}
+	.board-content {
+		text-align: center;
 	}
 }
 .MWpreload_content {

@@ -262,14 +262,14 @@ export default {
 				&:last-child {
 					border-right: none;
 				}
+				@media ( max-width: 635px ) {
+					padding: 0 1.5em;
+				}
 			}
 		}
 	}
 	.searchbar-wrapper {
 		padding-top: 2em;
-		@media ( max-width: 500px ) {
-			padding-top: 0;
-		}
 		.searchbar {
 			color: darken($color_prime_green, 35%);
 			font-size: 20px;
@@ -296,6 +296,16 @@ export default {
 			background-color: transparent;
 			font-size: 35px;
 			margin: auto 50px auto auto;
+		}
+		@media ( max-width: 635px ) {
+			.searchbar {
+				&::placeholder {
+					letter-spacing: .4em;
+				}
+			}
+		}
+		@media ( max-width: 500px ) {
+			padding-top: 0;
 		}
 	}
 	.menu-list {
