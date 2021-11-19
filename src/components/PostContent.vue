@@ -219,7 +219,7 @@ export default {
 		}
 		.post__price {
 			text-align: right;
-			width: 50%;
+			width: 45%;
 			span {
 				font-family: 'Gowun Dodum', sans-serif;
 				font-size: 1.3em;
