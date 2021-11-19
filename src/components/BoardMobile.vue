@@ -18,7 +18,7 @@
 						</div>
 						<div class="MWtitle__comments">
 							<span class="MW material-icons">chat_bubble_outline</span>
-							{{ post.comment_cnt }}
+							<span class="MWcomments__count">{{ post.comment_cnt }}</span>
 						</div>
 					</div>
 				</div>
@@ -151,14 +151,19 @@ export default {
 				}
 				.MWtitle__comments {
 					display: inline-block;
-					color: gray;
 					margin-right: .5em;
 					.MW.material-icons {
 						color: gray;
 					}
+					.MWcomments__count {
+						font-family: 'Gowun Dodum', sans-serif;
+						color: gray;
+						margin-left: .2em;
+					}
 				}
 				.MWtitle__time {
 					.MWtime__time {
+						font-family: 'Gowun Dodum', sans-serif;
 						font-size: .8em;
 						margin-left: .2em;
 					}

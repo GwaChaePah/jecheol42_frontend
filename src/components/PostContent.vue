@@ -128,7 +128,7 @@ export default {
 		toBoard() {
 			this.updateTag(3);
 			this.updateSearch();
-			this.getBoard({payload: '', page: 1});
+			this.getBoard({payload: '', page: 1, header: true});
 			this.updateMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -283,17 +283,17 @@ export default {
 			z-index: 1;
 			@media (max-width: 500px) {
 				font-size: .5em;
-				top: 27px;
-				right: 8px;
+				top: 40px;
+				right: 13px;
 				line-height: 2;
 			}
 			div {
 				display: inline-block;
-				font-family: 'Gowun Dodum', sans-serif;
 				margin: .5em 0 0 .3em;
 				width: 90px;
 				color: #696969;
 				.text {
+					font-family: 'Gowun Dodum', sans-serif;
 					vertical-align: super;
 					letter-spacing: 3px;
 					font-size: 1.1em;
@@ -308,9 +308,12 @@ export default {
 					color: $color_prime_orange;
 				}
 				@media (max-width: 500px) {
-					width: 56px;
+					width: 80px;
 					.material-icons-outlined {
 						display: none;
+					}
+					.text {
+						font-size: 1.6em;
 					}
 				}
 			}
@@ -439,25 +442,6 @@ export default {
 		@media (max-width: 500px) {
 			margin-top: .2em;
 		}
-		.post__price {
-			position: fixed;
-			button {
-				font-size:  1.2em;
-				// border: 1px solid black;
-				border: none;
-				background-color: $color_prime_green;
-				// background: none;
-				// box-shadow: 0 0 5px 0 $color_shadow_04;
-				border-radius: .2em;
-				padding: .8em 1em;
-				&:after {
-					content: '원';
-				}
-				@media (max-width: 500px) {
-					font-size: .5em;
-				}
-			}
-		}
 		.post__img {
 			max-width: 90%;
 			min-height: 300px;
@@ -482,7 +466,7 @@ export default {
 			}
 			@media (max-width: 500px) {
 				margin: 0 1.5em .5em;
-				font-size: .8em;
+				font-size: .9em;
 			}
 		}
 	}
