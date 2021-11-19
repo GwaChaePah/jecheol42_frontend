@@ -10,21 +10,20 @@
 					onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"/>
 				</div>
 				<div class="MWcontent-title">
+					<div class="MWtitle__time">
+						<span class="MWtime__time">{{ calcDate() }}</span>
+					</div>
 					<div class="MWtitle__title ellipsis line-clamp">{{ post.title }}</div>
 					<div class="MWtitle-info">
-						<div class="MWtitle__time">
-							<span class="MW material-icons">schedule</span>
-							<span class="MWtime__time">{{ calcDate() }}</span>
-						</div>
+						<button class="MWinfo__price" :class="{'price_sobun':  post.tag === 0, 'price_nanum':  post.tag === 1}">
+							{{ post.price }}
+						</button>
 						<div class="MWtitle__comments">
 							<span class="MW material-icons">chat_bubble_outline</span>
 							<span class="MWcomments__count">{{ post.comment_cnt }}</span>
 						</div>
 					</div>
 				</div>
-				<button class="MWinfo__price" :class="{'price_sobun':  post.tag === 0, 'price_nanum':  post.tag === 1}">
-					{{ post.price }}
-				</button>
 			</div>
 		</RouterLink>
 	</div>
@@ -48,24 +47,31 @@ export default {
 		calcDate() {
 			let ret;
 			const timestamp = this.post.created_at
+			const postYear = timestamp.slice(0, 4);
+			const postMon = timestamp.slice(5, 7)
 			const postDate = timestamp.slice(8, 10);
 			const postHour = timestamp.slice(12, 14);
 			const postMin = timestamp.slice(15, 17);
 			const current = new Date();
+			const year = current.getFullYear();
 			const month = (current.getMonth() + 1 < 10) ? '0' + current.getMonth() + 1
 									: current.getMonth() + 1;
 			const date = (current.getDate() < 10) ? '0' + current.getDate()
 									: current.getDate();
-			if (`${current.getFullYear()}.${month}.${date}` === timestamp.slice(0,10)) {
-				const hour = (current.getHours() < 10) ? '0' + current.getHours()
-										: current.getHours();
-				const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes()
-										: current.getMinutes();
- 				ret = (`${hour}${minute}` === `${postHour}${postMin}`) ? '방금 전'
-							: (hour == postHour) ? `${minute - postMin}분 전`
-							: `${hour - postHour}시간 전`;
+			const hour = (current.getHours() < 10) ? '0' + current.getHours()
+									: current.getHours();
+			const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes()
+									: current.getMinutes();
+			if (year == postYear) {
+				if (`${month}${date}` === `${postMon}${postDate}`) {
+					ret = (`${hour}${minute}` === `${postHour}${postMin}`) ? '방금 전'
+									: (hour == postHour) ? `${minute - postMin}분 전`
+									: `${hour - postHour}시간 전`;
+				} else {
+					ret = (month === postMon && date - postDate < 3) ? `${date - postDate}일 전` : `${postMon}월 ${postDate}일`;
+				}
 			} else {
-				ret = (date - postDate < 3) ? `${date - postDate}일 전` : timestamp;
+				ret = `${postYear}.${postMon}.${postDate}.`;
 			}
 			return ret;
 		},
@@ -108,8 +114,17 @@ export default {
 				border-radius: .3em;
 			}
 		}
+		.MWtitle__time {
+			.MWtime__time {
+				font-family: 'Gowun Dodum', sans-serif;
+				font-size: .6em;
+				margin-left: .2em;
+				line-height: 1.1;
+				color: gray;
+			}
+		}
 		.MWcontent-title {
-			padding: .7em .5em .5em;
+			padding: .5em;
 			position: absolute;
 			width: 52%;
 			left: 45%;
@@ -122,9 +137,6 @@ export default {
 				background: none;
 				border: none;
 			}
-			.MWtitle__status-done {
-				background-color: #ccc;
-			}
 			.MWtitle__title {
 				text-align: left;
 				line-height: 1.4;
@@ -132,7 +144,7 @@ export default {
 				font-size: 1em;
 				height: 39%;
 				padding-bottom: .2em;
-				margin-bottom: .5em;
+				margin-bottom: .2em;
 			}
 			.MWtitle__title.ellipsis {
 				white-space: normal;
@@ -140,20 +152,35 @@ export default {
 			.line-clamp {
 				-webkit-line-clamp: 2;
 			}
+			.price_sobun {
+				background-color: $color_prime_green;
+			}
+			.price_nanum {
+				background-color: $color_prime_yellow;
+			}
 			.MWtitle-info {
-				display: block;
 				font-size: .9em;
 				line-height: 1.7;
-				margin: 1em 0;
-				.MW.material-icons {
-					font-size: 1em;
-					transform: translateY(3px);
+				.MWinfo__price {
+					cursor: pointer;
+					display: inline-block;
+					padding: .3em .8em;
+					border: none;
+					border-radius: .2em;
+					font-family: 'Gowun Dodum', sans-serif;
+					font-size: .9em;
+					font-weight: bold;
+					&::after {
+						content: '원';
+					}
 				}
 				.MWtitle__comments {
-					display: inline-block;
+					display: block;
 					margin-right: .5em;
 					.MW.material-icons {
 						color: gray;
+						font-size: 1em;
+						transform: translateY(3px);
 					}
 					.MWcomments__count {
 						font-family: 'Gowun Dodum', sans-serif;
@@ -161,36 +188,7 @@ export default {
 						margin-left: .2em;
 					}
 				}
-				.MWtitle__time {
-					.MWtime__time {
-						font-family: 'Gowun Dodum', sans-serif;
-						font-size: .8em;
-						margin-left: .2em;
-					}
-				}
 			}
-		}
-		.MWinfo__price {
-			cursor: pointer;
-			display: inline-block;
-			position: absolute;
-			right: 1em;
-			bottom: 1em;
-			padding: .3em .8em;
-			border: none;
-			border-radius: .2em;
-			font-family: 'Gowun Dodum', sans-serif;
-			font-size: .9em;
-			font-weight: bold;
-			&::after {
-				content: '원';
-			}
-		}
-		.price_sobun {
-			background-color: $color_prime_green;
-		}
-		.price_nanum {
-			background-color: $color_prime_yellow;
 		}
 	}
 }
