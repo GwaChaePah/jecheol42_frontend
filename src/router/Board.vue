@@ -200,7 +200,7 @@ h3 {
 				color: gray;
 				line-height: 1.4;
 				font-size: 1em;
-				height: 58%;
+				height: 64%;
 				padding-bottom: .2em;
 				margin-bottom: .2em;
 			}
