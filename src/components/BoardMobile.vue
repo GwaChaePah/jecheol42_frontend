@@ -142,9 +142,9 @@ export default {
 				line-height: 1.4;
 				font-weight: bold;
 				font-size: 1em;
-				height: 39%;
+				height: 38%;
 				padding-bottom: .2em;
-				margin-bottom: .2em;
+				margin-bottom: 1em;
 			}
 			.MWtitle__title.ellipsis {
 				white-space: normal;
@@ -161,6 +161,9 @@ export default {
 			.MWtitle-info {
 				font-size: .9em;
 				line-height: 1.7;
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-end;
 				.MWinfo__price {
 					cursor: pointer;
 					display: inline-block;
@@ -177,6 +180,7 @@ export default {
 				.MWtitle__comments {
 					display: block;
 					margin-right: .5em;
+					text-align: right;
 					.MW.material-icons {
 						color: gray;
 						font-size: 1em;
