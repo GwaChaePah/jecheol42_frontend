@@ -12,7 +12,7 @@
 							<button class="material-icons-outlined" @click="delComment(comment)" title="삭제">clear</button>
 						</div>
 						<div class="id"><span class="material-icons">cruelty_free</span>{{ comment.username }}</div>
-						<div class="time">{{ comment.updated_at }}</div>
+						<div class="time">{{ calcDate(comment.updated_at) }}</div>
 						<div v-if="(editingId === comment.id)" class="textarea-wrapper">
 							<textarea class="textarea" rows="4"
 								v-model="editedComment" :id="`edit-comment-${comment.id}`" @keydown.enter="saveComment(comment)"/>
@@ -128,7 +128,38 @@ export default {
 			if (confirm("정말 지우시겠습니까?")) {
 				this.deleteComment(comment);
 			}
-		}
+		},
+		calcDate(e) {
+			let ret;
+			const timestamp = e;
+			const postYear = timestamp.slice(0, 4);
+			const postMon = timestamp.slice(5, 7)
+			const postDate = timestamp.slice(8, 10);
+			const postHour = timestamp.slice(12, 14);
+			const postMin = timestamp.slice(15, 17);
+			const current = new Date();
+			const year = current.getFullYear();
+			const month = (current.getMonth() + 1 < 10) ? '0' + current.getMonth() + 1
+									: current.getMonth() + 1;
+			const date = (current.getDate() < 10) ? '0' + current.getDate()
+									: current.getDate();
+			const hour = (current.getHours() < 10) ? '0' + current.getHours()
+									: current.getHours();
+			const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes()
+									: current.getMinutes();
+			if (year == postYear) {
+				if (`${month}${date}` === `${postMon}${postDate}`) {
+					ret = (`${hour}${minute}` === `${postHour}${postMin}`) ? '방금 전'
+									: (hour == postHour) ? `${minute - postMin}분 전`
+									: `${hour - postHour}시간 전`;
+				} else {
+					ret = (month === postMon && date - postDate < 3) ? `${date - postDate}일 전` : `${postMon}.${postDate}. ${postHour}:${postMin}`;
+				}
+			} else {
+				ret = `${postYear}.${postMon}.${postDate}.`;
+			}
+			return ret;
+		},
 	}
 }
 </script>
@@ -223,6 +254,7 @@ export default {
 			}
 			.time {
 				font-family: 'Gowun Dodum', sans-serif;
+				font-size: .9em;
 				position: absolute;
 				right: 1.5em;
 				padding: .3em;
