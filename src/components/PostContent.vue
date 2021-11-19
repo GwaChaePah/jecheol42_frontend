@@ -3,7 +3,7 @@
 		<div class="button-wrapper">
 			<button id="back" @click="toBack">
 				<span class="material-icons">arrow_back</span>
-				<span :class="{'back_small': scrollPosition}">뒤로가기</span>
+				뒤로
 			</button>
 			<button id="board" @click="toBoard">
 				<span class="material-icons">list_alt</span>
@@ -216,18 +216,10 @@ export default {
 				display: block;
 				font-size: 2.5em;
 			}
-			.back_small {
-				@media (max-width: 400px) {
-					font-size: .9em;
-				}
-				@media (max-width: 350px) {
-					font-size: .8em;
-				}
-			}
 		}
 		.post__price {
 			text-align: right;
-			width: 45%;
+			width: 50%;
 			span {
 				font-family: 'Gowun Dodum', sans-serif;
 				font-size: 1.3em;
@@ -243,7 +235,7 @@ export default {
 }
 .sticky {
 	position: fixed;
-	top: 100px;
+	top: 83px;
 }
 .content-title-post {
 	position: relative;
@@ -422,7 +414,7 @@ export default {
 			.post__price {
 				margin-left: auto;
 				button {
-					font-size:  .9em;
+					font-size: .9em;
 					border: none;
 					background-color: $color_prime_green;
 					border-radius: .2em;
@@ -473,7 +465,7 @@ export default {
 				font-size: 1.2em;
 			}
 			@media (max-width: 500px) {
-				margin: 0 1.5em .5em;
+				margin: 0 1em .5em;
 				font-size: .9em;
 			}
 		}
