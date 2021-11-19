@@ -143,7 +143,7 @@ export default {
 	box-sizing: border-box;
 	@media (max-width: 500px) {
 		margin: 0 .5em;
-		font-size: .7em;
+		font-size: .8em;
 	}
 	.comment-container {
 		width: 100%;

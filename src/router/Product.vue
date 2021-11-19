@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'Main',
@@ -40,11 +40,23 @@ export default {
 		...mapState('post', ['mobileWidth'])
 	},
 	created() {
-		this.$store.dispatch('product/initProduct');
+		this.initProduct();
+		this.updatePage(1);
+		this.updateTag(3);
 	},
 	methods: {
+		...mapActions('post', [
+			'updatePage',
+			'updateTag',
+			'getBoard'
+		]),
+		...mapActions('product', [
+			'initProduct',
+			'searchProduct'
+		]),
 		apply(value) {
-			this.$store.dispatch('product/searchProduct', value);
+			this.searchProduct(value);
+			this.getBoard({payload: value, page: 1});
 			this.$router.push('/search');
 		}
 	}

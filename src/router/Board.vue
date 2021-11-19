@@ -81,13 +81,10 @@ export default {
 		}
 	},
 	created() {
-		if (!this.header) {
+		console.log('board', this.header, 'search', this.search, 'fromSearch', this.fromSearch)
+		if (!this.header && !this.fromSearch) {
 			setTimeout(() => {
-				if (this.fromSearch) {
-					this.$store.dispatch('post/getBoard', {payload: this.postSearch});
-				} else {
-					this.$store.dispatch('post/getBoard', {payload: ''});
-				}
+				this.$store.dispatch('post/getBoard', {payload: ''});
 			}, 500);
 		} else {
 			this.$store.dispatch('post/updateHeader', false);
