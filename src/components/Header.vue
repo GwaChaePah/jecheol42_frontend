@@ -209,7 +209,7 @@ export default {
 			height: 60px;
 		}
 		.pc-logo {
-			width: 380px;
+			width: 345px;
 			margin-top: 1em;
 		}
 		.mb-logo {
