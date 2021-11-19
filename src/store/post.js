@@ -54,7 +54,7 @@ export default {
 				header: payload
 			});
 		},
-		async getBoard({ state, commit }, { payload, page, header }) {
+		async getBoard({ state, commit }, { payload, page, header = true }) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
 				boardView: [],
@@ -62,22 +62,29 @@ export default {
 				loading: true,
 				header: header,
 			});
-			let boardView;
-			let totalPage;
-			try {
-				const data = await _fetchBoard(payload, state.boardTag, state.page);
-				totalPage = calcTotalPage(data.count);
-				boardView = data.results;
-			} catch(e) {
-				console.log('getBoard> ', e);
-				boardView = [];
-				totalPage = 1;
-			} finally {
+			if (!header) {
 				commit('UPDATE_STATE', {
-					boardView: boardView,
-					totalPage: totalPage,
 					loading: false,
+					totalPage: 1
 				});
+			} else {
+				let boardView;
+				let totalPage;
+				try {
+					const data = await _fetchBoard(payload, state.boardTag, state.page);
+					totalPage = calcTotalPage(data.count);
+					boardView = data.results;
+				} catch(e) {
+					console.log('getBoard> ', e);
+					boardView = [];
+					totalPage = 1;
+				} finally {
+					commit('UPDATE_STATE', {
+						boardView: boardView,
+						totalPage: totalPage,
+						loading: false,
+					});
+				}
 			}
 		},
 		async searchPostWithId({ commit, state }, payload) {

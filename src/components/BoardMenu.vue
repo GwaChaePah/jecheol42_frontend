@@ -23,10 +23,11 @@
 <script>
 import seoulList from '~/json/seoul.json';
 import axios from 'axios';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'BoardMenu',
+	props: ['fromSearch'],
 	computed: {
 		...mapState('product', [
 			'postSearch',
@@ -74,17 +75,18 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions('post', [
+			'getBoard',
+			'updateTag'
+		]),
 		apply(e) {
 			this.search = this.postSearch;
-			const value = e.target.value === '소분' ? 0 :
+			this.tag = e.target.value === '소분' ? 0 :
 										e.target.value === '나눔' ? 1 :
 										e.target.value === '완료' ? 2 : 3;
-			this.tag = value;
-			if (this.search) {
-				this.$store.dispatch('post/getBoard', {	payload:this.search, page: 1 });
-			} else {
-				this.$store.dispatch('post/getBoard', {	payload:'', page: 1 });
-			}
+			const payload = this.search ? this.search : '';
+			const header = !this.search && this.fromSearch ? false : true;
+			this.getBoard({payload: payload, page: 1, header: header});
 		},
 		createPost() {
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));

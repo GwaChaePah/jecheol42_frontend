@@ -2,7 +2,7 @@
 	<div class="l_main">
 		<div class="l_wrapper" :class="{'content': (hasHeader && !fromSearch)}" >
 			<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
-			<BoardMenu />
+			<BoardMenu :fromSearch="fromSearch"/>
 		</div>
 		<div v-if="!mobileWidth">
 			<div class="l_wrapper">
@@ -81,7 +81,6 @@ export default {
 		}
 	},
 	created() {
-		console.log('board', this.header, 'search', this.search, 'fromSearch', this.fromSearch)
 		if (!this.header && !this.fromSearch) {
 			setTimeout(() => {
 				this.$store.dispatch('post/getBoard', {payload: ''});
