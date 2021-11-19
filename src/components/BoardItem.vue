@@ -63,24 +63,31 @@ export default {
 		calcDate() {
 			let ret;
 			const timestamp = this.post.created_at
+			const postYear = timestamp.slice(0, 4);
+			const postMon = timestamp.slice(5, 7)
 			const postDate = timestamp.slice(8, 10);
 			const postHour = timestamp.slice(12, 14);
 			const postMin = timestamp.slice(15, 17);
 			const current = new Date();
+			const year = current.getFullYear();
 			const month = (current.getMonth() + 1 < 10) ? '0' + current.getMonth() + 1
 									: current.getMonth() + 1;
 			const date = (current.getDate() < 10) ? '0' + current.getDate()
 									: current.getDate();
-			if (`${current.getFullYear()}.${month}.${date}` === timestamp.slice(0,10)) {
-				const hour = (current.getHours() < 10) ? '0' + current.getHours()
-										: current.getHours();
-				const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes()
-										: current.getMinutes();
- 				ret = (`${hour}${minute}` === `${postHour}${postMin}`) ? '방금 전'
-							: (hour == postHour) ? `${minute - postMin}분 전`
-							: `${hour - postHour}시간 전`;
+			const hour = (current.getHours() < 10) ? '0' + current.getHours()
+									: current.getHours();
+			const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes()
+									: current.getMinutes();
+			if (year == postYear) {
+				if (`${month}${date}` === `${postMon}${postDate}`) {
+					ret = (`${hour}${minute}` === `${postHour}${postMin}`) ? '방금 전'
+									: (hour == postHour) ? `${minute - postMin}분 전`
+									: `${hour - postHour}시간 전`;
+				} else {
+					ret = (month === postMon && date - postDate < 3) ? `${date - postDate}일 전` : `${postMon}월 ${postDate}일`;
+				}
 			} else {
-				ret = (date - postDate < 3) ? `${date - postDate}일 전` : timestamp;
+				ret = `${postYear}.${postMon}.${postDate}.`;
 			}
 			return ret;
 		},
