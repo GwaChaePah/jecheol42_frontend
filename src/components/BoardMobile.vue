@@ -83,12 +83,12 @@ export default {
 	display: block;
 	.MWcontent-anchor {
 		display: block;
-		margin-bottom: .1em;
+		margin-bottom: .5em;
 		background-color: white;
 		width: 100%;
 		height: 140px;
-		border-bottom: 1px solid #eee;
-		border-top: 1px solid #eee;
+		// border-bottom: 1px solid #eee;
+		// border-top: 1px solid #eee;
 		position: relative;
 		// .content-address {
 		// 	color: rgb(31, 31, 31);
@@ -105,7 +105,7 @@ export default {
 				transform: translateY(-50%);
 				width: 40%;
 				height: 90%;
-				border-radius: .2em;
+				border-radius: .3em;
 			}
 		}
 		.MWcontent-title {

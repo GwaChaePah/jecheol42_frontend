@@ -33,6 +33,7 @@
 				<div class="MWpreload_content" v-for="n in 4" >
 					<div class="MWcontent-anchor">
 						<div class="MWcontent-img"></div>
+						<button class="MWinfo__price">-&nbsp;</button>
 					</div>
 				</div>
 			</div>
@@ -135,6 +136,7 @@ h3 {
 				padding: .4em;
 				font-size: 1.1em;
 				.info__price {
+					color: gray;
 					display: inline-block;
 					border: none;
 					border-radius: .2em;
@@ -155,12 +157,12 @@ h3 {
 	display: block;
 	.MWcontent-anchor {
 		display: block;
-		margin-bottom: .1em;
+		margin-bottom: .5em;
 		background-color: white;
 		width: 100%;
 		height: 140px;
-		border-bottom: 1px solid #eee;
-		border-top: 1px solid #eee;
+		// border-bottom: 1px solid #eee;
+		// border-top: 1px solid #eee;
 		position: relative;
 		.MWcontent-img {
 			position: absolute;
@@ -169,8 +171,24 @@ h3 {
 			transform: translateY(-50%);
 			width: 40%;
 			height: 90%;
-			border-radius: .2em;
+			border-radius: .3em;
 			background: linear-gradient(221deg, rgba(239, 239, 239, 0.8) 0%, #fff 100%);
+		}
+		.MWinfo__price {
+			position: absolute;
+			right: 1em;
+			bottom: 1em;
+			padding: .3em .8em;
+			display: inline-block;
+			border: none;
+			border-radius: .2em;
+			font-family: 'Gowun Dodum', sans-serif;
+			font-weight: bold;
+			font-size: .8em;
+			color: gray;
+			&::after {
+				content: '원';
+			}
 		}
 	}
 }

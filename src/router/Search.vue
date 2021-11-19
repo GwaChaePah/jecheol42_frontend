@@ -71,27 +71,27 @@ export default {
 .content {
 	.searchResult {
 		// background-color: $color_prime_white;
-
 		text-align: center;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		width: 100%;
 		border-radius: .5em;
-		&:before,
-		&:after {
-			font-size: 7em;
-			color: lighten($color_prime_yellow, 10%);
-			@media ( max-width: 500px ) {
-				font-size: 5em;
-			}
-		}
-		&:before {
-			content: '{';
-		}
-		&:after {
-			content: '}';
-		}
+		padding: 1em;
+		// &:before,
+		// &:after {
+		// 	font-size: 7em;
+		// 	color: lighten($color_prime_yellow, 10%);
+		// 	@media ( max-width: 500px ) {
+		// 		font-size: 5em;
+		// 	}
+		// }
+		// &:before {
+		// 	content: '{';
+		// }
+		// &:after {
+		// 	content: '}';
+		// }
 		h1 {
 			font-size: 1.5em;
 			line-height: 1.8;

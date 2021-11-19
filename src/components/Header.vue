@@ -375,7 +375,6 @@ export default {
 }
 .user {
 	font-weight: bold;
-	font-size: 1.2em;
 	font-family: 'Gowun Dodum', sans-serif;
 }
 .scrolled-header {
