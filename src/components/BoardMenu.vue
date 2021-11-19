@@ -92,8 +92,8 @@ export default {
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			if (userInfo == null)
 			{
-				confirm("글 작성은 로그인 후 가능합니다.");
-				this.$router.push('/login');
+				if (confirm("글 작성은 로그인 후 가능합니다."))
+					this.$router.push('/login');
 			}
 			else {
 				this.$router.push({
