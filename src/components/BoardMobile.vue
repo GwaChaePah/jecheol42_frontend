@@ -172,16 +172,16 @@ export default {
 		}
 		.MWinfo__price {
 			cursor: pointer;
+			display: inline-block;
 			position: absolute;
 			right: 1em;
 			bottom: 1em;
 			padding: .3em .8em;
-			font-size: .8em;
-			display: inline-block;
 			border: none;
 			border-radius: .2em;
-			font-weight: bold;
 			font-family: 'Gowun Dodum', sans-serif;
+			font-size: .9em;
+			font-weight: bold;
 			&::after {
 				content: '원';
 			}
