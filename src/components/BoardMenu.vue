@@ -119,6 +119,8 @@ export default {
 
 
 .menu-bar {
+	display: flex;
+	justify-content: space-between;
 	margin-bottom: 1em;
 	width: 100%;
 	select {
@@ -134,25 +136,21 @@ export default {
 		color: black;
 		font-family: 'Gowun Dodum', sans-serif;
 	}
-	.dropdown {
-		margin: 0 20px 0 -15px;
+	.menu-bar__list {
+		padding: 0.5em 1em;
+		border: 1px solid #383838;
+		background-color: white;
+		border-radius: .2em;
+		letter-spacing: 2px;
+		font-family: 'Gowun Dodum', sans-serif;
+		@media (max-width: 500px) {
+			font-size: .7em;
+		}
+		&:hover {
+			background-color: #383838;
+			color: white;
+		}
 	}
 }
 
-.menu-bar__list {
-	float: right;
-	padding: 0.5em 1em;
-	border: 1px solid #383838;
-	background-color: white;
-	border-radius: .2em;
-	letter-spacing: 2px;
-	font-family: 'Gowun Dodum', sans-serif;
-	@media (max-width: 500px) {
-		font-size: .7em;
-	}
-	&:hover {
-		background-color: #383838;
-		color: white;
-	}
-}
 </style>

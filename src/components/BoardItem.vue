@@ -109,8 +109,8 @@ export default {
 		background-color: white;
 		width: 240px;
 		height: 320px;
-		border: 1px solid #ddd;
-		border-radius: .1em;
+		border-radius: .4em;
+		margin: 1px;
 		overflow: hidden;
 		position: relative;
 		// .content-address {
@@ -147,6 +147,7 @@ export default {
 			}
 			.title-info {
 				position: relative;
+				text-align: left;
 				.PC.material-icons {
 					font-size: 1em;
 					transform: translateY(3px);
@@ -196,6 +197,7 @@ export default {
 			justify-content: space-between;
 			padding: .4em;
 			font-size: 1.1em;
+			background-color: #f8f8f8;
 			.info__category {
 				display: inline-block;
 				font-weight: bold;
@@ -203,10 +205,10 @@ export default {
 				padding: .4em;
 			}
 			.cat_sobun {
-				color: darken($color_prime_green, 10%);
+				color: darken($color_prime_green, 25%);
 			}
 			.cat_nanum {
-				color: darken($color_prime_yellow, 10%);
+				color: darken($color_prime_yellow, 25%);
 			}
 			.info__price {
 				cursor: pointer;
