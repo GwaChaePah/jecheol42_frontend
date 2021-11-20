@@ -4,11 +4,9 @@
 			<div class="content">
 				<div class="background">
 					<form class="createPostArea">
-						<div class="createInfo">게시글 작성</div>
+						<div class="createInfo"></div>
 						<div class="postBox">
 							<div class="title">
-								<!-- <div class="key">제목</div>
-								<div class="stick"></div> -->
 								<input class="titlebox" v-model="form.title" type="string" placeholder="제목"/>
 							</div>
 							<div class="tagBox">
@@ -18,31 +16,26 @@
 										<option value=0>소분</option>
 										<option value=1>나눔</option>
 									</select>
-									<!-- <div class="key">분류</div>
-									<div class="stick"></div>
-									<input type="radio" id='sale' value=0 v-model="form.tag">
-									<label for="sale">소분</label>
-									<input type="radio" id='share' value=1 v-model="form.tag">
-									<label for="share">나눔</label> -->
 								</div>
 								<div class="price">
-									<!-- <div class="key">가격</div>
-									<div class="stick"></div> -->
 									<input v-if="form.tag !== '1'" v-model="form.price" type="number" placeholder="가격" min="0"/>
 									<div class="zero" v-else> {{form.price = 0}} </div>
 								</div>
 							</div>
 							<div class="textBox">
-								<!-- <div>{{form.user}}</div> -->
-								<!-- <div class="key">내용</div>
-								<div class="stick"></div> -->
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
+								<!-- <p style="white-space: pre-line">{{form.content}}</p> -->
+									<!-- {{}} -->
+									<img class="thumbnail" v-show="url1" :src="url1" />
+									<img class="thumbnail" v-show="url2" :src="url2" />
+									<img class="thumbnail" v-show="url3" :src="url3" />
 							</div>
 							<div class="fileSelect">
 								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
-								<input multiple @change="onInputImage()" ref="postImage" type="file" id="input-file" style="display: none"/>
+								<input multiple @change="onInputImage(event)" ref="postImage" type="file" id="input-file" style="display: none"/>
 								<p>이미지는 최대 3장까지</p>
 							</div>
+								<button class="previewBtn">등록 전 미리보기</button>
 							<div class="bntBox">
 								<div>
 									<button class="registerBtn" @click.prevent="checkForm()">작성</button>
@@ -79,10 +72,22 @@ export default {
 		}
 	},
 	methods: {
-		onInputImage() {
-			this.form.image1 = this.$refs.postImage.files[0];
+		onInputImage(e) {
+			let url1 = '';
+			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : this.form.image1;
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
 			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
+			this.previewURL();
+		},
+		previewURL() {
+			let url1 = '';
+			let url2 = '';
+			let url3 = '';
+		// 	// console.log(this.form.image1);
+			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
+			this.url2 = this.form.image2 ? URL.createObjectURL(this.form.image2) : '';
+			this.url3 = this.form.image3 ? URL.createObjectURL(this.form.image3) : '';
+			// this.checkForm();
 		},
 		checkForm(e){
 			if (!this.form.title)
@@ -91,7 +96,7 @@ export default {
 				confirm("카테고리를 설정해주세요.")
 			if (!this.form.content)
 				confirm("내용은 필수입니다.")
-			if (this.form.tag === "소분" && !this.form.price)
+			if (this.form.tag === "0" && !this.form.price)
 				confirm("가격을 입력해주세요.")
 			if (this.$refs.postImage.files[3])
 				confirm("사진은 3장까지 선택 가능합니다.")
@@ -109,6 +114,7 @@ export default {
 			let variable = this.form.image1;
 			let variable1 = this.form.image2;
 			let variable2 = this.form.image3;
+			// let newContent = this.form.content.replace(/(\n|\r\n)/g, "<br />");
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			let pk = userInfo.pk;
 			const index = this.$route.params.id;
@@ -126,7 +132,6 @@ export default {
 				image3: variable2,
 				view_count: 0
 			};
-			console.log(postObj.user_key);
 			let formData = new FormData();
 			for (let key in postObj) {
 				formData.append(key, postObj[key]);
@@ -140,7 +145,6 @@ export default {
         			'Content-Type' : 'multipart/form-data'
               }
 			})
-			console.log(res);
 			if (res.status == 201)
 			{
 				this.$store.dispatch('post/searchPostWithId', res.data.id);
@@ -184,7 +188,7 @@ export default {
 }
 @mixin price {
 	width: 90%;
-	color: rgba(#76862c, 0.76);
+	color: rgba(#202020, 0.76);
 	border-color: transparent;
 	font-size: 15px;
 }
@@ -192,7 +196,7 @@ export default {
 	width: $size;
 	padding: 8px;
 	margin: 10px 0px;
-	color: rgba(#76862c, 0.76);
+	color: rgba(#202020, 0.76);
 	border-color: transparent;
 }
 @mixin btnCss {
@@ -210,19 +214,22 @@ export default {
 .l_main {
 	height: 100vh;
 }
-.content {
+	.content {
 	.background{
-		height: 400px;
+		// height: 400px;
 		font-family: sans-serif;
 		margin-top: 50px;
 		@include center;
 		.createPostArea {
 			@include center;
-			.createInfo{
-				margin: 10px 0px;
-				font-size: 20px;
-				color: rgba(#76862c, 0.76);
+			@media screen and (min-width: 700px) {
+				padding: 0px 100px;
 			}
+			// .createInfo{
+			// 	margin: 10px 0px;
+			// 	font-size: 20px;
+			// 	color: rgba(#76862c, 0.76);
+			// }
 			.postBox {
 				width: 100%;
 				height: 100%;
@@ -260,9 +267,15 @@ export default {
 				}
 				.textBox{
 					@include boxCss;
+					white-space: pre-line;
 					.text{
+						white-space: pre-line;
 						@include input(95%);
-						min-height: 300px;
+						// min-height: 150px;
+					}
+					.thumbnail{
+						width: 80px;
+						height: 80px;
 					}
 				}
 				.fileSelect{
@@ -287,6 +300,16 @@ export default {
 						text-align: center;
 						font-size: 12px;
 					}
+				}
+				.previewBtn{
+					background-color: white;
+					// width: 60%;
+					padding: 8px;
+					margin: 0px 10px 0px 0px;
+					color: rgba(#76862c, 0.76);
+					border-radius: .3em;
+					border: 1px solid #ddd;
+					font-size: 12px;
 				}
 				.bntBox {
 					width: 100%;

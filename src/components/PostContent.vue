@@ -442,6 +442,7 @@ export default {
 	.content-post {
 		max-width: 100%;
 		margin-top: 1em;
+		white-space: pre-line;
 		@media (max-width: 500px) {
 			margin-top: .2em;
 		}
