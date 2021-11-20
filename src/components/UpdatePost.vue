@@ -32,8 +32,8 @@
 								<div class="stick"></div> -->
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
 								<img class="thumbnail" :src="form.image1 ? url1 : post.image1" />
-								<img class="thumbnail" :src="form.image2 ? url2 : post.image2" />
-								<img class="thumbnail" :src="form.image3 ? url3 : post.image3" />
+								<img class="thumbnail" :src="form.image2 ? url2 : post.image2" v-show="checkImg2"/>
+								<img class="thumbnail" :src="form.image3 ? url3 : post.image3" v-show="checkImg3"/>
 							</div>
 							<div class="fileSelect">
 								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
@@ -73,6 +73,9 @@ export default {
 				image3: '',
 				view_count: ''
 			},
+			count: 0,
+			checkImg2: false,
+			checkImg3: false,
 			url1: '',
 			url2: '',
 			url3: ''
@@ -91,7 +94,14 @@ export default {
 		this.form.content = this.post.content;
 		this.form.region = this.post.region;
 		this.form.view_count = this.post.view_count;
-		// console.log('beforeUpdate', this.form)
+		if (!this.count) {
+			this.checkImg2 = this.post.image2 ? true : false;
+			this.checkImg3 = this.post.image3 ? true : false;
+			this.count++;
+		} else {
+			this.checkImg2 = this.form.image2 ? true : false;
+			this.checkImg3 = this.form.image3 ? true : false;
+		}
 	},
 	methods: {
 		...mapActions('post', [
@@ -130,7 +140,7 @@ export default {
 			this.$router.push(`/post/${this.form.id}`);
 		},
 		cancel() {
-			this.$router.push('/board')
+			this.$router.push(`/post/${this.form.id}`);
 		}
 	}
 }
