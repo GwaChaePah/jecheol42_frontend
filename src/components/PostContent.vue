@@ -50,7 +50,7 @@
 				<p id="writer"><span class="material-icons">account_circle</span>
 					<span>{{ post.username }}</span>
 				</p>
-				<p id="time"><span class="material-icons">schedule</span>
+				<p id="time" v-if="!mobileWidth"><span class="material-icons">schedule</span>
 					<span>{{ post.created_at }}</span>
 				</p>
 				<p id="count"><span class="material-icons">visibility</span>
@@ -65,6 +65,9 @@
 			</div>
 		</div>
 		<div class="content-post">
+			<div id="time" v-if="mobileWidth"><span class="material-icons">schedule</span>
+				<span>{{ post.created_at }}</span>
+			</div>
 			<div class="post__img clearfix">
 				<img class="img-slides"
 					v-for="image in images"
@@ -154,7 +157,7 @@ export default {
 			const id = this.$route.params.id;
 			if (confirm("정말 지우시겠습니까?")) {
 				this.deletePost(id);
-				this.getBoard({payload: '', header: false});
+				this.getBoard({payload: '', header: true});
 				this.$router.push('/board');
 			}
 		},
@@ -441,6 +444,21 @@ export default {
 		margin-top: 1em;
 		@media (max-width: 500px) {
 			margin-top: .2em;
+		}
+		#time {
+			text-align: right;
+			font-size: .8em;
+			.material-icons {
+				color: rgb(114, 115, 114);
+				font-size: 1em;
+				margin: 0 3px;
+				transform: translateY(1px);
+			}
+			span {
+				color: rgb(114, 115, 114);
+				font-family: 'Gowun Dodum', sans-serif;
+				margin-right: 1em;
+			}
 		}
 		.post__img {
 			max-width: 90%;
