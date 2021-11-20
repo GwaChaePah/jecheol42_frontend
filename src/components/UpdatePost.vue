@@ -1,38 +1,57 @@
 <template>
-	<div class="background">
-		<form class="createPostArea">
-			<div class="createInfo">게시글 수정</div>
-				<div class="tag">
-					<select v-model="form.tag">
-						<option disabled value="">소분/나눔</option>
-  						<option value=0>소분</option>
-  						<option value=1>나눔</option>
-						<option value=2>완료</option>
-					</select>
+	<div class="l_main">
+		<div class="l_wrapper">
+			<div class="content">
+				<div class="background">
+					<form class="createPostArea">
+						<div class="createInfo">게시글 수정</div>
+						<div class="postBox">
+							<div class="title">
+								<!-- <div class="key">title</div>
+								<div class="stick"></div> -->
+								<input class="titlebox" v-model="form.title" type="string" placeholder="제목"/>
+							</div>
+							<div class="tagBox">
+								<div class="tag">
+									<select v-model="form.tag">
+										<option disabled value="">소분/나눔</option>
+										<option value=0>소분</option>
+										<option value=1>나눔</option>
+										<option value=2>완료</option>
+									</select>
+								</div>
+								<div class="price">
+									<!-- <div class="key">price</div>
+									<div class="stick"></div> -->
+									<input v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="가격" min="0"/>
+									<div class="zero" v-else> {{form.price = 0}} </div>
+								</div>
+							</div>
+							<div class="textBox">
+								<!-- <div>{{form.user}}</div> -->
+								<!-- <div class="key">내용</div>
+								<div class="stick"></div> -->
+								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
+									<img class="thumbnail" :src="this.form.image1 ? url1 : this.post.image1" />
+									<img class="thumbnail" :src="this.form.image2 ? url2 : this.post.image2" />
+									<img class="thumbnail" :src="this.form.image3 ? url3 : this.post.image3" />
+							</div>
+							<div class="fileSelect">
+								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
+								<input multiple @change="onInputImage()" ref="postImage" type="file" id="input-file" style="display: none"/>
+								<p>이미지는 최대 3장까지</p>
+							</div>
+						</div>
+						<div class="bntBox">
+							<div>
+								<button class="registerBtn" @click.prevent="update()">작성</button>
+								<button class="cancelBtn" @click="cancel()">취소</button>
+							</div>
+						</div>
+					</form>
 				</div>
-				<div class="title">
-					<div class="key">title</div>
-					<div class="stick"></div>
-					<input id="title" v-model="form.title" type="string" placeholder="제목이에용"/>
-				</div>
-				<div class="price">
-					<div class="key">price</div>
-					<div class="stick"></div>
-					<input v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="가격이에용" min="0"/>
-					<div v-else> {{form.price = 0}} </div>
-				</div>
-				<div class="content">
-					<div class="key">content</div>
-					<div class="stick"></div>
-					<!-- {{thePost.content}} -->
-					<textarea v-model="form.content" type="string" placeholder="내용이에용"/>
-				</div>
-				<div>
-					<input multiple @change='onInputImage()' ref="postImage" type="file">
-				</div>
-			<button class="registerBtn" @click="update()">수정</button>
-			<button class="cancelBtn" @click="cancel()">취소</button>	
-		</form>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -54,6 +73,9 @@ export default {
 				region: '',
 				content: '',
 				price: '',
+				image1: '',
+				image2: '',
+				image3: '',
 				view_count: ''
 			}
 		}
@@ -75,6 +97,20 @@ export default {
 			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : undefined;
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
 			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
+			this.previewURL();
+		},
+		previewURL(e) {
+			let url1 = '';
+			let url2 = '';
+			let url3 = '';
+			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
+			this.url2 = this.form.image2 ? URL.createObjectURL(this.form.image2) : '';
+			this.url3 = this.form.image3 ? URL.createObjectURL(this.form.image3) : '';
+			
+			console.log(this.url1);
+			console.log(this.url2);
+			console.log(this.url3);
+			// this.checkForm();
 		},
 		async update() {
 			let variable = this.form.image1;
@@ -97,7 +133,8 @@ export default {
 				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
 			this.$store.dispatch('post/updatePost', formData);
-			console.log(index);
+			this.$store.dispatch('post/searchPostWithId', index);
+			// console.log(index);
 			this.$router.push(`/post/${index}`);
 		},
 		cancel() {
@@ -117,91 +154,142 @@ export default {
 	margin: auto;
 	text-align: center;
 }
-@mixin input {
-	width: 15vh;
-	height: 3vh;
-	padding-left: 8px;
+@mixin boxCss {
+	width: 100%;
+	max-width: 900px;
+	margin: auto;
+	border-bottom: 1px solid #ddd;
+}
+@mixin price {
+	width: 90%;
+	color: rgba(#76862c, 0.76);
+	border-color: transparent;
 	font-size: 15px;
 }
-@mixin block($size){
+@mixin input($size) {
 	width: $size;
-	display: inline-block;
+	padding: 8px;
+	margin: 10px 0px;
+	color: rgba(#76862c, 0.76);
+	border-color: transparent;
 }
-.background{
-	padding: 300px 70px 70px 70px;
-	@include center;
-	.createPostArea {
+@mixin btnCss {
+	font-size: 17px;
+	width: 10%;
+	min-width: 80px;
+	height: 15%;
+	padding: 8px;
+	border-radius: .3em;
+	border-color: rgba(187, 212, 68, 30%);
+	box-shadow: 0 0 10px 0 $color_shadow_03;
+	border: 20px;
+}
+
+.l_main {
+	height: 100vh;
+}
+.content {
+	.background{
+		height: 400px;
+		font-family: sans-serif;
+		margin-top: 50px;
 		@include center;
-		border-radius: .3em;
-		box-shadow: 0 0 10px 0 $color_shadow_03;
-		min-width: 200px;
-		min-height: 250px;
-		width: 100vh;
-		height: 50vh;
-		border: 20px;
-		padding: 30px;
-		.createInfo{
-			margin: 0px 0px;
-			font-size: 20px;
-			color: rgba(#76862c, 0.76);
-		}
-		.title {
-			padding: 10px;
-			margin: auto;
-			display: block;
-			.key {			
-				@include block(20%);
-				border: solid black;
-				border-width: 0px 1px 0px 0px;
-			}		
-			.stick {
-				@include block(10%);
-			}
-			input {
-				@include block(70%);
-				@include input;
+		.createPostArea {
+			@include center;
+			.createInfo{
+				margin: 10px 0px;
+				font-size: 20px;
 				color: rgba(#76862c, 0.76);
 			}
-		}
-		.content {
-			padding: 10px;
-			margin: auto;
-			display: block;
-			.key {			
-				@include block(20%);
-				border: solid black;
-				border-width: 0px 1px 0px 0px;
-			}		
-			.stick {
-				@include block(10%);
+			.postBox {
+				width: 100%;
+				height: 100%;
+				margin: auto;
+				display: block;
+				.title {
+					@include boxCss;
+					.titlebox{
+						@include input(95%);
+					}
+				}
+				.tagBox {
+					@include boxCss;
+					display: flex;
+					.tag{
+						@include input(100%);
+						select{
+							width: 90%;
+							text-align: center;
+							color: rgba(#76862c, 0.76);
+							border-color: transparent;
+						}
+					}
+					.price{
+						@include input(100%);
+						input{
+							@include price;
+							text-align: center;
+						}
+						.zero{
+							@include price;
+							margin: auto;
+						}
+					}
+				}
+				.textBox{
+					@include boxCss;
+					.text{
+						@include input(95%);
+						// min-height: 300px;
+					}
+					.thumbnail{
+						width: 80px;
+						height: 80px;
+					}
+				}
+				.fileSelect{
+					width: 100%;
+					padding: 8px;
+					margin: 10px 0px;
+					display: flex;
+					.input-file-btn{
+						width: 50%;
+						padding: 8px;
+						margin: 0px 10px 0px 0px;
+						color: rgba(#76862c, 0.76);
+						border-radius: .3em;
+						border: 1px solid #ddd;
+						font-size: 15px;
+					}
+					p{
+						width: 50%;
+						margin: auto;
+						color: rgba(#76862c, 0.76);
+						border-color: transparent;
+						text-align: center;
+						font-size: 12px;
+					}
+				}
 			}
-			input {
-				@include block(70%);
-				@include input;
-				color: rgba(#76862c, 0.76);
+			.bntBox {
+				width: 100%;
+				padding: 8px;
+				display: flex;
+				div{
+					width: 100%;
+					margin: auto;
+					.registerBtn{
+						@include btnCss;
+						background-color: rgba(#76862c, 0.76);
+						color: white;
+					}
+					.cancelBtn{
+						@include btnCss;
+						margin: 10px 0px 10px 10px;
+						color: rgba(#76862c, 0.76);
+					}
+				}
 			}
-		}
-		.registerBtn {
-			margin: 40px;
-			font-size: 17px;
-			width: 10vh;
-			height: 3vh;
-			border-radius: .3em;
-			border-color: rgba(187, 212, 68, 30%);
-			box-shadow: 0 0 10px 0 $color_shadow_03;
-			background-color: rgba(#76862c, 0.76);
-			color: white;
-		}
-		.cancelBtn {
-			margin: 40px;
-			font-size: 17px;
-			width: 10vh;
-			height: 3vh;
-			border-radius: .3em;
-			border-color: rgba(187, 212, 68, 30%);
-			box-shadow: 0 0 10px 0 $color_shadow_03;
-			background-color: white;
-			color: rgba(#76862c, 0.76);
 		}
 	}
 }
