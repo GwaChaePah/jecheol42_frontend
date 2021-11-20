@@ -50,6 +50,7 @@ export default {
 		...mapActions('post', [
 			'updatePage',
 			'updateTag',
+			'updateMobileNav',
 			'getBoard'
 		]),
 		...mapActions('product', [
@@ -77,7 +78,7 @@ export default {
 .content {
 	display: flex;
 	justify-content: center;
-	flex-direction: column;
+	// flex-direction: column;
 	.content-list {
 		margin: 0 auto 2em;
 		@media ( max-width: 500px ) {
