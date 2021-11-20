@@ -126,10 +126,7 @@ export default {
 			let formData = new FormData();
 			
 			for (let key in postObj) {
-				if (!_.isNil(postObj[key])){
-					formData.append(key, postObj[key]);
-					console.log(postObj[key]);
-				}
+				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
 			this.$store.dispatch('post/updatePost', formData);
 			setTimeout(() => {
