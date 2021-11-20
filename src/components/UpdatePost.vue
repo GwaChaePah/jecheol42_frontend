@@ -1,5 +1,4 @@
 <template>
-	<div class="l_main">
 		<div class="l_wrapper">
 			<div class="content">
 				<div class="background">
@@ -52,7 +51,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 </template>
 
 <script>
@@ -73,9 +71,7 @@ export default {
 				region: '',
 				content: '',
 				price: '',
-				image1: '',
-				image2: '',
-				image3: '',
+				image: [],
 				view_count: ''
 			}
 		}
@@ -89,6 +85,10 @@ export default {
 			this.form.tag = this.post.tag;
 			this.form.price = this.post.price;
 			this.form.content = this.post.content;
+			this.form.user = this.post.user;
+			this.form.image1 = this.post.image;
+			this.form.region = this.post.region;
+			this.form.view_count = this.post.view_count;
 		}, 100);
 	},
 	methods: {
@@ -106,11 +106,6 @@ export default {
 			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
 			this.url2 = this.form.image2 ? URL.createObjectURL(this.form.image2) : '';
 			this.url3 = this.form.image3 ? URL.createObjectURL(this.form.image3) : '';
-			
-			console.log(this.url1);
-			console.log(this.url2);
-			console.log(this.url3);
-			// this.checkForm();
 		},
 		async update() {
 			let variable = this.form.image1;
@@ -127,15 +122,21 @@ export default {
 				image2: variable1,
 				image3: variable2
 			};
+			// console.log(this.form.tag);
 			let formData = new FormData();
 			
 			for (let key in postObj) {
-				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
+				if (!_.isNil(postObj[key])){
+					formData.append(key, postObj[key]);
+					console.log(postObj[key]);
+				}
 			}
 			this.$store.dispatch('post/updatePost', formData);
-			this.$store.dispatch('post/searchPostWithId', index);
-			// console.log(index);
-			this.$router.push(`/post/${index}`);
+			setTimeout(() => {
+				this.$store.dispatch('post/searchPostWithId', index);
+				// this.$router.push('/board');
+				this.$router.push(`/post/${index}`);
+			}, 8000);
 		},
 		cancel() {
 			this.$router.push('/board')
@@ -144,10 +145,10 @@ export default {
 }
 </script>
 
+
 <style lang="scss" scoped>
 @import '../scss/main.scss';
 @import '../scss/commons.scss';
-
 @mixin center {
 	justify-content: center;
 	align-items: center;
@@ -183,10 +184,6 @@ export default {
 	border-color: rgba(187, 212, 68, 30%);
 	box-shadow: 0 0 10px 0 $color_shadow_03;
 	border: 20px;
-}
-
-.l_main {
-	height: 100vh;
 }
 .content {
 	.background{

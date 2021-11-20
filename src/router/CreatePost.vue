@@ -73,8 +73,8 @@ export default {
 	},
 	methods: {
 		onInputImage(e) {
-			let url1 = '';
-			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : this.form.image1;
+			// let url1 = '';
+			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : undefined;
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
 			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
 			this.previewURL();
