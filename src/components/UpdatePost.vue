@@ -31,9 +31,9 @@
 								<!-- <div class="key">내용</div>
 								<div class="stick"></div> -->
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
-									<img class="thumbnail" :src="this.form.image1 ? url1 : this.post.image1" />
-									<img class="thumbnail" :src="this.form.image2 ? url2 : this.post.image2" />
-									<img class="thumbnail" :src="this.form.image3 ? url3 : this.post.image3" />
+								<img class="thumbnail" :src="form.image1 ? url1 : post.image1" />
+								<img class="thumbnail" :src="form.image2 ? url2 : post.image2" />
+								<img class="thumbnail" :src="form.image3 ? url3 : post.image3" />
 							</div>
 							<div class="fileSelect">
 								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
@@ -43,7 +43,7 @@
 						</div>
 						<div class="bntBox">
 							<div>
-								<button class="registerBtn" @click.prevent="update()">작성</button>
+								<button class="registerBtn" @click="update()">작성</button>
 								<button class="cancelBtn" @click="cancel()">취소</button>
 							</div>
 						</div>
@@ -60,39 +60,44 @@ import _ from 'lodash';
 export default {
 	name: 'UpdatePost',
 	data() {
-		const index = this.$route.params.id;
 		return {
 			form: {
-				id: index,
+				id: this.$route.params.id,
 				title: '',
 				tag: '',
-				created_at: '',
-				user: '',
 				region: '',
 				content: '',
 				price: '',
-				image: [],
+				image1: '',
+				image2: '',
+				image3: '',
 				view_count: ''
-			}
+			},
+			url1: '',
+			url2: '',
+			url3: ''
 		}
 	},
 	computed: {
 		...mapState('post', ['post'])
 	},
 	created : function() {
-		setTimeout(() => { 
-			this.form.title = this.post.title;
-			this.form.tag = this.post.tag;
-			this.form.price = this.post.price;
-			this.form.content = this.post.content;
-			this.form.user = this.post.user;
-			this.form.image1 = this.post.image;
-			this.form.region = this.post.region;
-			this.form.view_count = this.post.view_count;
-		}, 100);
+		this.searchPostWithId(this.form.id);
+	},
+	beforeUpdate() {
+		this.form.title = this.post.title;
+		this.form.tag = this.post.tag;
+		this.form.price = this.post.price;
+		this.form.content = this.post.content;
+		this.form.region = this.post.region;
+		this.form.view_count = this.post.view_count;
+		// console.log('beforeUpdate', this.form)
 	},
 	methods: {
-		...mapActions('post', ['updatePost']),
+		...mapActions('post', [
+			'updatePost',
+			'searchPostWithId',
+		]),
 		onInputImage() {
 			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : undefined;
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
@@ -100,40 +105,29 @@ export default {
 			this.previewURL();
 		},
 		previewURL(e) {
-			let url1 = '';
-			let url2 = '';
-			let url3 = '';
 			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
 			this.url2 = this.form.image2 ? URL.createObjectURL(this.form.image2) : '';
 			this.url3 = this.form.image3 ? URL.createObjectURL(this.form.image3) : '';
 		},
 		async update() {
-			let variable = this.form.image1;
-			let variable1 = this.form.image2;
-			let variable2 = this.form.image3;
-			const index = this.$route.params.id;
 			const postObj = {
-				id: index,
+				id: this.form.id,
 				title: this.form.title,
 				tag: this.form.tag,
 				content: this.form.content,
 				price: this.form.price,
-				image1: variable,
-				image2: variable1,
-				image3: variable2
+				image1: this.form.image1,
+				image2: this.form.image2,
+				image3: this.form.image3
 			};
-			// console.log(this.form.tag);
 			let formData = new FormData();
-			
+
 			for (let key in postObj) {
 				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
-			this.$store.dispatch('post/updatePost', formData);
-			setTimeout(() => {
-				this.$store.dispatch('post/searchPostWithId', index);
-				// this.$router.push('/board');
-				this.$router.push(`/post/${index}`);
-			}, 8000);
+			this.updatePost(formData);
+			this.searchPostWithId(this.form.id);
+			this.$router.push(`/post/${this.form.id}`);
 		},
 		cancel() {
 			this.$router.push('/board')

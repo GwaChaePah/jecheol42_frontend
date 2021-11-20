@@ -61,48 +61,44 @@ export default {
 				id:'',
 				title: '',
 				tag: '',
-				created_at: '',
 				user_key: '',
 				content: '',
 				price: '',
 				image1: '',
 				image2: '',
 				image3: ''
-			}
+			},
+			url1: '',
+			url2: '',
+			url3: '',
 		}
 	},
 	methods: {
 		onInputImage(e) {
-			// let url1 = '';
 			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : undefined;
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
 			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
 			this.previewURL();
 		},
 		previewURL() {
-			let url1 = '';
-			let url2 = '';
-			let url3 = '';
-		// 	// console.log(this.form.image1);
 			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
 			this.url2 = this.form.image2 ? URL.createObjectURL(this.form.image2) : '';
 			this.url3 = this.form.image3 ? URL.createObjectURL(this.form.image3) : '';
-			// this.checkForm();
 		},
 		checkForm(e){
 			if (!this.form.title)
 				confirm("제목은 필수입니다.")
-			if (!this.form.tag)
+			else if (!this.form.tag)
 				confirm("카테고리를 설정해주세요.")
-			if (!this.form.content)
+			else if (!this.form.content)
 				confirm("내용은 필수입니다.")
-			if (this.form.tag === "0" && !this.form.price)
+			else if (this.form.tag === "0" && !this.form.price)
 				confirm("가격을 입력해주세요.")
-			if (this.$refs.postImage.files[3])
+			else if (this.$refs.postImage.files[3])
 				confirm("사진은 3장까지 선택 가능합니다.")
-			if (!this.$refs.postImage.files[0])
+			else if (!this.$refs.postImage.files[0])
 				confirm("최소 하나의 사진은 필수입니다.")
-			if (this.form.title && this.form.tag && this.form.content) {
+			else if (this.form.title && this.form.tag && this.form.content) {
 				if ((this.form.tag === '0' && this.form.price) ||
 					((this.form.tag === '1' || this.form.tag === '2') && !this.form.price)) {
 						if (!this.$refs.postImage.files[3] && this.$refs.postImage.files[0])
@@ -111,33 +107,26 @@ export default {
 				}
 		},
 		async register() {
-			let variable = this.form.image1;
-			let variable1 = this.form.image2;
-			let variable2 = this.form.image3;
 			// let newContent = this.form.content.replace(/(\n|\r\n)/g, "<br />");
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-			let pk = userInfo.pk;
-			const index = this.$route.params.id;
 			const postObj =
 			{
-				id: index,
+				id: this.$route.params.id,
 				tag: this.form.tag,
 				title: this.form.title,
-				user_key: pk,
+				user_key: userInfo.pk,
 				content: this.form.content,
 				price: this.form.price,
-				created_at: this.currentDate(),
-				image1: variable,
-				image2: variable1,
-				image3: variable2,
+				image1: this.form.image1,
+				image2: this.form.image2,
+				image3: this.form.image3,
 				view_count: 0
 			};
 			let formData = new FormData();
 			for (let key in postObj) {
 				formData.append(key, postObj[key]);
 			}
-			let res;
-			res = await axios({
+			const res = await axios({
 				url: 'post/api/',
 				method: 'post',
 				data: formData,
@@ -153,15 +142,6 @@ export default {
 			}
 			else
 				console.log(res);
-		},
-		currentDate() {
-			const current = new Date();
-			const month = (current.getMonth() + 1 < 10) ? '0' + current.getMonth() + 1 : current.getMonth() + 1;
-			const date = (current.getDate() < 10) ? '0' + current.getDate() : current.getDate();
-			const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes() : current.getMinutes();
-			const hour = (current.getHours() < 10) ? '0' + current.getHours() : current.getHours();
-			const fullDate = `${current.getFullYear()}.${month}.${date} ${hour}:${minute}`
-			return fullDate;
 		},
 		cancel() {
 			this.$router.push('/board')
