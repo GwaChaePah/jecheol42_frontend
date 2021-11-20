@@ -2,25 +2,27 @@
 	<div class="l_main">
 		<div class="l_wrapper">
 			<div class="content">
-				<!-- <h1 class="content-month">{{ getMonth() }}월의 제철은?</h1> -->
-				<div v-if="loading">
-					<ul class="content-list">
-						<li	v-for="n in 4">
-							<div class="content-anchor">
-								<div class="content-img-wrapper"></div>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div v-else>
-					<ul class="content-list">
-						<li	v-for="item in product"	:key="item">
-							<a class="content-anchor" @click="apply(item.name)">
-								<img class="content-img" :src="`${item.image}`" :name="`${item.name}`"/>
-								<strong :class="{'content-name': !mobileWidth, 'MWcontent-name': mobileWidth}">{{ item.name }}</strong>
-							</a>
-						</li>
-					</ul>
+				<h1 class="content-month">이달의 <span>제철</span>은?</h1>
+				<div class="product-wrapper">
+					<div v-if="loading">
+						<ul class="content-list">
+							<li	v-for="n in 4">
+								<div class="content-anchor">
+									<div class="content-img-wrapper"></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div v-else>
+						<ul class="content-list">
+							<li	v-for="item in product"	:key="item">
+								<a class="content-anchor" @click="apply(item.name)">
+									<img class="content-img" :src="`${item.image}`" :name="`${item.name}`"/>
+									<strong :class="{'content-name': !mobileWidth, 'MWcontent-name': mobileWidth}">{{ item.name }}</strong>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -77,85 +79,108 @@ export default {
 
 .content {
 	display: flex;
-	justify-content: center;
-	// flex-direction: column;
-	.content-list {
-		margin: 0 auto 2em;
-		@media ( max-width: 500px ) {
-			margin: 0 auto;
+	flex-direction: column;
+	.content-month {
+		font-size: 2em;
+		margin-left: .5em;
+		white-space: nowrap;
+		span {
+			font-family: 'Gowun Dodum', sans-serif;
+			color: $color_prime_orange;
+			font-weight: bold;
+			font-size: 1.2em;
 		}
-		li {
-			display: table-cell;
-			.content-anchor {
-				height: 65vh;
-				display: block;
-				margin: 1em .3em;
-				position: relative;
-				margin-bottom: 10px;
-				@media ( max-width: 500px ) {
-					width: 360px;
-					height: 135px;
-					margin: 1px;
-				}
-				.content-img-wrapper {
-					width: 250px;
-					height: 100%;
-					// background-color: #f8f8f8;
-					background: linear-gradient(221deg, rgba(239, 239, 239, 0.8) 0%, #fff 100%);
-					@media (max-width: 550px) {
-						width: 500px;
+		@media ( max-width: 500px ) {
+			font-size: 1.5em;
+			margin-right: 55%;
+			margin-bottom: .5em;
+			text-align: right;
+		}
+		@media ( max-width: 400px ) {
+			margin: 0 0 .5em -.5em;
+			text-align: left;
+		}
+	}
+	.product-wrapper {
+		display: flex;
+		justify-content: center;
+		.content-list {
+			margin: 0 auto 2em;
+			@media ( max-width: 500px ) {
+				margin: 0 auto;
+			}
+			li {
+				display: table-cell;
+				.content-anchor {
+					height: 65vh;
+					display: block;
+					margin: 1em .3em;
+					position: relative;
+					margin-bottom: 10px;
+					@media ( max-width: 500px ) {
+						width: 360px;
+						height: 135px;
+						margin: 1px;
 					}
-				}
-				.content-img {
-					width: 250px;
-					height: 100%;
-					border-radius: .2em;
-					object-fit: cover;
-					@media (max-width: 550px) {
-						width: 500px;
+					.content-img-wrapper {
+						width: 250px;
+						height: 100%;
+						// background-color: #f8f8f8;
+						background: linear-gradient(221deg, rgba(239, 239, 239, 0.8) 0%, #fff 100%);
+						@media (max-width: 550px) {
+							width: 500px;
+						}
 					}
-				}
-				strong {
-					color: white;
-					font-family: 'Gowun Dodum', sans-serif;
-					font-size: 2.5em;
-					position: absolute;
-					z-index: 10;
-					bottom: 20%;
-					transition: translateY(-20%);
-					$color: darken($color_prime_green, 30%);
-					text-shadow:
+					.content-img {
+						width: 250px;
+						height: 100%;
+						border-radius: .2em;
+						object-fit: cover;
+						@media (max-width: 550px) {
+							width: 500px;
+						}
+					}
+					strong {
+						color: white;
+						font-family: 'Gowun Dodum', sans-serif;
+						font-size: 2.5em;
+						position: absolute;
+						z-index: 10;
+						bottom: 20%;
+						transition: translateY(-20%);
+						$color: darken($color_prime_green, 30%);
+						text-shadow:
 						-1px -1px 0 $color,
-						 0   -1px 0 $color,
-						 1px -1px 0 $color,
-						 1px  0   0 $color,
-						 1px  1px 0 $color,
-						 0    1px 0 $color,
+						0   -1px 0 $color,
+						1px -1px 0 $color,
+						1px  0   0 $color,
+						1px  1px 0 $color,
+						0    1px 0 $color,
 						-1px  1px 0 $color,
 						-1px  0   0 $color;
-					@media (max-width: 500px) {
-						font-size: 1.8em;
+						@media (max-width: 500px) {
+							font-size: 1.8em;
+						}
 					}
 				}
-			}
-			.content-name {
-				left: 15%;
-			}
-			@media (max-width: 550px) {
-				display: block;
-				&:nth-child(odd) {
-					.MWcontent-name {
-						left: 15%;
-					}
+				.content-name {
+					left: 15%;
 				}
-				&:nth-child(even) {
-					.MWcontent-name {
-						right: 15%;
+				@media (max-width: 550px) {
+					display: block;
+					&:nth-child(odd) {
+						.MWcontent-name {
+							left: 15%;
+						}
+					}
+					&:nth-child(even) {
+						.MWcontent-name {
+							right: 15%;
+						}
 					}
 				}
 			}
 		}
 	}
 }
-
 </style>

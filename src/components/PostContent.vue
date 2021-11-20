@@ -74,8 +74,8 @@
 					v-show="image.src"
 					:key="image.name"
 					:src="image.src"
-					:alt="`${post.user}_${post.title}_${image.name}`"
-					onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';" />
+					:alt="`${post.user}_${post.title}_${image.name}`" />
+					<!-- onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"  -->
 			</div>
 			<div class="post__paragraph">
 				<p>{{ post.content }}</p>
@@ -157,7 +157,7 @@ export default {
 			const id = this.$route.params.id;
 			if (confirm("정말 지우시겠습니까?")) {
 				this.deletePost(id);
-				this.getBoard({payload: '', header: true});
+				this.getBoard({payload: '', header: false});
 				this.$router.push('/board');
 			}
 		},
@@ -295,20 +295,12 @@ export default {
 				margin: .5em 0 0 .3em;
 				width: 90px;
 				color: #696969;
+				cursor: pointer;
 				.text {
 					font-family: 'Gowun Dodum', sans-serif;
 					vertical-align: super;
 					letter-spacing: 3px;
 					font-size: 1.1em;
-				}
-				.material-icons-outlined {
-					cursor: pointer;
-					&:hover {
-						color: $color_prime_orange;
-					}
-				}
-				&:hover {
-					color: $color_prime_orange;
 				}
 				@media (max-width: 500px) {
 					width: 80px;
@@ -491,6 +483,9 @@ export default {
 			}
 		}
 	}
+}
+.material-icons {
+	font-family: 'Material Icons';
 }
 
 </style>
