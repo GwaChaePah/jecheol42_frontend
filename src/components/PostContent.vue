@@ -442,6 +442,7 @@ export default {
 			text-align: right;
 			font-size: .8em;
 			.material-icons {
+				font-family: 'Material Icons';
 				color: rgb(114, 115, 114);
 				font-size: 1em;
 				margin: 0 3px;
@@ -483,9 +484,6 @@ export default {
 			}
 		}
 	}
-}
-.material-icons {
-	font-family: 'Material Icons';
 }
 
 </style>

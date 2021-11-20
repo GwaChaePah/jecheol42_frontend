@@ -43,7 +43,7 @@ export default {
 			try {
 				res = await _fetchProduct();
 			} catch(e) {
-				console.log('ERROR> ', e);
+				console.log('initProduct> ', e);
 				res = [];
 			} finally {
 				commit('UPDATE_STATE', {
