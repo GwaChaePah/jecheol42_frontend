@@ -2,6 +2,7 @@
 	<div class="l_main">
 		<div class="l_wrapper">
 			<div class="content">
+				<!-- <h1 class="content-month">{{ getMonth() }}월의 제철은?</h1> -->
 				<div v-if="loading">
 					<ul class="content-list">
 						<li	v-for="n in 4">
@@ -43,6 +44,7 @@ export default {
 		this.initProduct();
 		this.updatePage(1);
 		this.updateTag(3);
+		this.updateMobileNav(false);
 	},
 	methods: {
 		...mapActions('post', [
@@ -58,6 +60,10 @@ export default {
 			this.searchProduct(value);
 			this.getBoard({payload: value, page: 1});
 			this.$router.push('/search');
+		},
+		getMonth() {
+			const current = new Date().getMonth() + 1;
+			return current;
 		}
 	}
 }
@@ -71,6 +77,7 @@ export default {
 .content {
 	display: flex;
 	justify-content: center;
+	flex-direction: column;
 	.content-list {
 		margin: 0 auto 2em;
 		@media ( max-width: 500px ) {

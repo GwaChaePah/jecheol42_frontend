@@ -383,6 +383,7 @@ export default {
 				margin: 0.4em .3em;
 				letter-spacing: .5em;
 				padding: .5em .3em .5em .9em;
+				width: 55px;
 				cursor: pointer;
 				&:hover {
 					background-color: rgb(254, 135, 25);
@@ -403,6 +404,7 @@ export default {
 					font-size: 1em;
 					letter-spacing: 1em;
 					padding: .5em .8em .5em 1.7em;
+					width: 90px;
 				}
 			}
 		}
