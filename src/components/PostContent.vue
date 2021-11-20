@@ -463,6 +463,8 @@ export default {
 				padding: .3em 0;
 				line-height: 1.5;
 				font-size: 1.2em;
+				white-space: pre-wrap;
+				word-wrap: break-word;
 			}
 			@media (max-width: 500px) {
 				margin: 0 1em .5em;

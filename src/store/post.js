@@ -211,22 +211,34 @@ async function _fetchBoard(payload, tag, page) {
 	return data;
 }
 async function _fetchPost(payload) {
-	const res = await axios.get(`post/api/${payload}/`)
-		.then(response => response.data);
-	const date = res.created_at.slice(0, 10).replaceAll('-', '.');
-	const time = res.created_at.slice(11, 16);
-	const created_at = date.concat('. '.concat(...time));
-	res.created_at = created_at;
+	let res;
+	try {
+		res = await axios.get(`post/api/${payload}/`)
+			.then(response => response.data);
+		const date = res.created_at.slice(0, 10).replaceAll('-', '.');
+		const time = res.created_at.slice(11, 16);
+		const created_at = date.concat('. '.concat(...time));
+		res.created_at = created_at;
+	} catch(e) {
+		console.log('_fetchPost> ', e);
+		res = '';
+	}
 	return res;
 }
 async function _fetchComment(payload) {
-	const res = await axios.get(`comment/api/list/${payload}/`)
-		.then(response => response.data);
-	for (let i = 0; i < res.length; i++) {
-		const date = res[i].updated_at.slice(0, 10).replaceAll('-', '.');
-		const time = res[i].updated_at.slice(11, 16);
-		const updated_at = date.concat('. '.concat(...time));
-		res[i].updated_at = updated_at;
+	let res;
+	try {
+		res = await axios.get(`comment/api/list/${payload}/`)
+			.then(response => response.data);
+		for (let i = 0; i < res.length; i++) {
+			const date = res[i].updated_at.slice(0, 10).replaceAll('-', '.');
+			const time = res[i].updated_at.slice(11, 16);
+			const updated_at = date.concat('. '.concat(...time));
+			res[i].updated_at = updated_at;
+		}
+	} catch(e) {
+		console.log('_fetchComment> ', e);
+		res = '';
 	}
 	return res;
 }
