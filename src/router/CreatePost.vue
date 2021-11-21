@@ -1,5 +1,5 @@
 <template>
-	<div class="l_main">
+	<!-- <div class="l_main"> -->
 		<div class="l_wrapper">
 			<div class="content">
 				<div class="background">
@@ -18,7 +18,8 @@
 									</select>
 								</div>
 								<div class="price">
-									<input v-if="form.tag !== '1'" v-model="form.price" type="number" placeholder="가격" min="0"/>
+									<label for="form-price">원</label>
+									<input id="form-price" v-if="form.tag !== '1'" v-model="form.price" type="number" placeholder="-" min="0"/>
 									<div class="zero" v-else> {{form.price = 0}} </div>
 								</div>
 							</div>
@@ -47,7 +48,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	<!-- </div> -->
 </template>
 
 <script>
@@ -98,9 +99,9 @@ export default {
 				confirm("사진은 3장까지 선택 가능합니다.")
 			else if (!this.$refs.postImage.files[0])
 				confirm("최소 하나의 사진은 필수입니다.")
-			else if (this.form.title && this.form.tag && this.form.content) {
+			else {
 				if ((this.form.tag === '0' && this.form.price) ||
-					((this.form.tag === '1' || this.form.tag === '2') && !this.form.price)) {
+					(this.form.tag === '1' && !this.form.price)) {
 						if (!this.$refs.postImage.files[3] && this.$refs.postImage.files[0])
 							this.register();
 					}
@@ -180,6 +181,7 @@ export default {
 	border-color: transparent;
 }
 @mixin btnCss {
+	font-family: 'Gowun Dodum', sans-serif;
 	font-size: 17px;
 	width: 10%;
 	min-width: 80px;
@@ -191,16 +193,12 @@ export default {
 	border: 20px;
 }
 
-.l_main {
-	height: 100vh;
-}
-	.content {
+.content {
 	.background{
-		// height: 400px;
-		font-family: sans-serif;
 		margin-top: 50px;
 		@include center;
 		.createPostArea {
+			margin: 1em 0 2em;
 			@include center;
 			@media screen and (min-width: 700px) {
 				padding: 0px 100px;
@@ -228,16 +226,27 @@ export default {
 						@include input(100%);
 						select{
 							width: 90%;
-							text-align: center;
+							// text-align: center;
 							color: rgba(#76862c, 0.76);
 							border-color: transparent;
 						}
 					}
 					.price{
 						@include input(100%);
+						position: relative;
+						label {
+							position: absolute;
+							right: 1.5em;
+							top: 28%;
+							color: gray;
+							font-size: .8em;
+						}
 						input{
 							@include price;
 							text-align: center;
+							&:focus::placeholder {
+  							color: transparent;
+							}
 						}
 						.zero{
 							@include price;
@@ -247,11 +256,12 @@ export default {
 				}
 				.textBox{
 					@include boxCss;
-					white-space: pre-line;
+					// white-space: pre-line;
 					.text{
 						white-space: pre-line;
 						@include input(95%);
-						// min-height: 150px;
+						resize: none;
+						height: 200px;
 					}
 					.thumbnail{
 						width: 80px;
@@ -264,6 +274,7 @@ export default {
 					margin: 10px 0px;
 					display: flex;
 					.input-file-btn{
+						font-family: 'Gowun Dodum', sans-serif;
 						width: 50%;
 						padding: 8px;
 						margin: 0px 10px 0px 0px;

@@ -22,7 +22,8 @@
 								<div class="price">
 									<!-- <div class="key">price</div>
 									<div class="stick"></div> -->
-									<input v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="가격" min="0"/>
+									<label for="form-price">원</label>
+									<input id="form-price" v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="-" min="0"/>
 									<div class="zero" v-else> {{form.price = 0}} </div>
 								</div>
 							</div>
@@ -176,6 +177,7 @@ export default {
 	border-color: transparent;
 }
 @mixin btnCss {
+	font-family: 'Gowun Dodum', sans-serif;
 	font-size: 17px;
 	width: 10%;
 	min-width: 80px;
@@ -188,12 +190,10 @@ export default {
 }
 .content {
 	.background{
-		height: 400px;
-		font-family: sans-serif;
-		margin-top: 50px;
 		@include center;
 		.createPostArea {
 			@include center;
+			margin: 1em 0 2em;
 			.createInfo{
 				margin: 10px 0px;
 				font-size: 20px;
@@ -224,9 +224,20 @@ export default {
 					}
 					.price{
 						@include input(100%);
+						position: relative;
+						label {
+							position: absolute;
+							right: 1.5em;
+							top: 28%;
+							color: gray;
+							font-size: .8em;
+						}
 						input{
 							@include price;
 							text-align: center;
+							&:focus::placeholder {
+  							color: transparent;
+							}
 						}
 						.zero{
 							@include price;
@@ -238,6 +249,8 @@ export default {
 					@include boxCss;
 					.text{
 						@include input(95%);
+						resize: none;
+						height: 200px;
 						// min-height: 300px;
 					}
 					.thumbnail{
@@ -251,6 +264,7 @@ export default {
 					margin: 10px 0px;
 					display: flex;
 					.input-file-btn{
+						font-family: 'Gowun Dodum', sans-serif;
 						width: 50%;
 						padding: 8px;
 						margin: 0px 10px 0px 0px;
