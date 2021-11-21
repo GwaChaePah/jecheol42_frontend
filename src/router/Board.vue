@@ -116,6 +116,7 @@ h3 {
 }
 .l_row.clearfix {
 	margin-bottom: 2em;
+	text-align: center;
 	.preload_content {
 		display: inline-block;
 		.content-anchor {
@@ -162,9 +163,6 @@ h3 {
 				}
 			}
 		}
-	}
-	.board-content {
-		text-align: center;
 	}
 }
 .MWpreload_content {
