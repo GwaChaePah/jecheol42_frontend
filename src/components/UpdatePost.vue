@@ -1,5 +1,4 @@
 <template>
-	<div class="l_main">
 		<div class="l_wrapper">
 			<div class="content">
 				<div class="background">
@@ -23,7 +22,8 @@
 								<div class="price">
 									<!-- <div class="key">price</div>
 									<div class="stick"></div> -->
-									<input v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="가격" min="0"/>
+									<label for="form-price">원</label>
+									<input id="form-price" v-if="form.tag !== '1' && form.tag !== '2'" v-model="form.price" type="number" placeholder="-" min="0"/>
 									<div class="zero" v-else> {{form.price = 0}} </div>
 								</div>
 							</div>
@@ -32,9 +32,9 @@
 								<!-- <div class="key">내용</div>
 								<div class="stick"></div> -->
 								<textarea class="text" v-model="form.content" type="string" placeholder="내용"/>
-									<img class="thumbnail" :src="this.form.image1 ? url1 : this.post.image1" />
-									<img class="thumbnail" :src="this.form.image2 ? url2 : this.post.image2" />
-									<img class="thumbnail" :src="this.form.image3 ? url3 : this.post.image3" />
+								<img class="thumbnail" :src="form.image1 ? url1 : post.image1" />
+								<img class="thumbnail" :src="form.image2 ? url2 : post.image2" v-show="checkImg2"/>
+								<img class="thumbnail" :src="form.image3 ? url3 : post.image3" v-show="checkImg3"/>
 							</div>
 							<div class="fileSelect">
 								<label class="input-file-btn" for="input-file">사진 첨부하기</label>
@@ -44,7 +44,7 @@
 						</div>
 						<div class="bntBox">
 							<div>
-								<button class="registerBtn" @click.prevent="update()">작성</button>
+								<button class="registerBtn" @click="update()">작성</button>
 								<button class="cancelBtn" @click="cancel()">취소</button>
 							</div>
 						</div>
@@ -52,7 +52,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 </template>
 
 <script>
@@ -62,14 +61,11 @@ import _ from 'lodash';
 export default {
 	name: 'UpdatePost',
 	data() {
-		const index = this.$route.params.id;
 		return {
 			form: {
-				id: index,
+				id: this.$route.params.id,
 				title: '',
 				tag: '',
-				created_at: '',
-				user: '',
 				region: '',
 				content: '',
 				price: '',
@@ -77,22 +73,42 @@ export default {
 				image2: '',
 				image3: '',
 				view_count: ''
-			}
+			},
+			count: 0,
+			checkImg2: false,
+			checkImg3: false,
+			url1: '',
+			url2: '',
+			url3: ''
 		}
 	},
 	computed: {
 		...mapState('post', ['post'])
 	},
 	created : function() {
-		setTimeout(() => { 
-			this.form.title = this.post.title;
-			this.form.tag = this.post.tag;
-			this.form.price = this.post.price;
-			this.form.content = this.post.content;
-		}, 100);
+		this.searchPostWithId(this.form.id);
+	},
+	beforeUpdate() {
+		this.form.title = this.post.title;
+		this.form.tag = this.post.tag;
+		this.form.price = this.post.price;
+		this.form.content = this.post.content;
+		this.form.region = this.post.region;
+		this.form.view_count = this.post.view_count;
+		if (!this.count) {
+			this.checkImg2 = this.post.image2 ? true : false;
+			this.checkImg3 = this.post.image3 ? true : false;
+			this.count++;
+		} else {
+			this.checkImg2 = this.form.image2 ? true : false;
+			this.checkImg3 = this.form.image3 ? true : false;
+		}
 	},
 	methods: {
-		...mapActions('post', ['updatePost']),
+		...mapActions('post', [
+			'updatePost',
+			'searchPostWithId',
+		]),
 		onInputImage() {
 			this.form.image1 = this.$refs.postImage.files[0] ? this.$refs.postImage.files[0] : undefined;
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
@@ -100,54 +116,41 @@ export default {
 			this.previewURL();
 		},
 		previewURL(e) {
-			let url1 = '';
-			let url2 = '';
-			let url3 = '';
 			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
 			this.url2 = this.form.image2 ? URL.createObjectURL(this.form.image2) : '';
 			this.url3 = this.form.image3 ? URL.createObjectURL(this.form.image3) : '';
-			
-			console.log(this.url1);
-			console.log(this.url2);
-			console.log(this.url3);
-			// this.checkForm();
 		},
 		async update() {
-			let variable = this.form.image1;
-			let variable1 = this.form.image2;
-			let variable2 = this.form.image3;
-			const index = this.$route.params.id;
 			const postObj = {
-				id: index,
+				id: this.form.id,
 				title: this.form.title,
 				tag: this.form.tag,
 				content: this.form.content,
 				price: this.form.price,
-				image1: variable,
-				image2: variable1,
-				image3: variable2
+				image1: this.form.image1,
+				image2: this.form.image2,
+				image3: this.form.image3
 			};
 			let formData = new FormData();
-			
+
 			for (let key in postObj) {
 				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
 			}
-			this.$store.dispatch('post/updatePost', formData);
-			this.$store.dispatch('post/searchPostWithId', index);
-			// console.log(index);
-			this.$router.push(`/post/${index}`);
+			this.updatePost(formData);
+			this.searchPostWithId(this.form.id);
+			this.$router.push(`/post/${this.form.id}`);
 		},
 		cancel() {
-			this.$router.push('/board')
+			this.$router.push(`/post/${this.form.id}`);
 		}
 	}
 }
 </script>
 
+
 <style lang="scss" scoped>
 @import '../scss/main.scss';
 @import '../scss/commons.scss';
-
 @mixin center {
 	justify-content: center;
 	align-items: center;
@@ -174,6 +177,7 @@ export default {
 	border-color: transparent;
 }
 @mixin btnCss {
+	font-family: 'Gowun Dodum', sans-serif;
 	font-size: 17px;
 	width: 10%;
 	min-width: 80px;
@@ -184,18 +188,12 @@ export default {
 	box-shadow: 0 0 10px 0 $color_shadow_03;
 	border: 20px;
 }
-
-.l_main {
-	height: 100vh;
-}
 .content {
 	.background{
-		height: 400px;
-		font-family: sans-serif;
-		margin-top: 50px;
 		@include center;
 		.createPostArea {
 			@include center;
+			margin: 1em 0 2em;
 			.createInfo{
 				margin: 10px 0px;
 				font-size: 20px;
@@ -226,9 +224,20 @@ export default {
 					}
 					.price{
 						@include input(100%);
+						position: relative;
+						label {
+							position: absolute;
+							right: 1.5em;
+							top: 28%;
+							color: gray;
+							font-size: .8em;
+						}
 						input{
 							@include price;
 							text-align: center;
+							&:focus::placeholder {
+  							color: transparent;
+							}
 						}
 						.zero{
 							@include price;
@@ -240,6 +249,8 @@ export default {
 					@include boxCss;
 					.text{
 						@include input(95%);
+						resize: none;
+						height: 200px;
 						// min-height: 300px;
 					}
 					.thumbnail{
@@ -253,6 +264,7 @@ export default {
 					margin: 10px 0px;
 					display: flex;
 					.input-file-btn{
+						font-family: 'Gowun Dodum', sans-serif;
 						width: 50%;
 						padding: 8px;
 						margin: 0px 10px 0px 0px;

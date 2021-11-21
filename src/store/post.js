@@ -90,7 +90,7 @@ export default {
 		async searchPostWithId({ commit, state }, payload) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
-				post: {},
+				// post: {},
 				comments: [],
 				loading: true
 			});

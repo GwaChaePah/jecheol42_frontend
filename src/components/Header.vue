@@ -109,6 +109,10 @@ export default {
 		window.addEventListener("scroll", this.updateScroll);
 	},
 	created() {
+		if (window.location.protocol !== 'https:') {
+			console.log('remember to turn RELOCATION URL on')
+			// window.location.href = 'https://jecheol42.herokuapp.com';
+		}
 		window.addEventListener("resize", this.checkScreen);
 		this.checkScreen();
 	},
