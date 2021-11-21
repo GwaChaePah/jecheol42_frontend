@@ -85,7 +85,6 @@ export default {
 		...mapState('post', ['post'])
 	},
 	created : function() {
-		console.log('post',this.post)
 		this.form.title = this.post.title;
 		this.form.tag = this.post.tag;
 		this.form.price = this.post.price;
@@ -110,6 +109,8 @@ export default {
 			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
 			this.url2 = this.form.image2 ? URL.createObjectURL(this.form.image2) : '';
 			this.url3 = this.form.image3 ? URL.createObjectURL(this.form.image3) : '';
+			this.checkImg2 = this.form.image2 ? true : false;
+			this.checkImg3 = this.form.image3 ? true : false;
 		},
 		async update() {
 			const postObj = {
