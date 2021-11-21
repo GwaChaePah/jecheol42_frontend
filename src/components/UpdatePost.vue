@@ -87,15 +87,16 @@ export default {
 	},
 	created : function() {
 		this.searchPostWithId(this.form.id);
+		console.log('this.form', this.post)
 	},
 	beforeUpdate() {
-		this.form.title = this.post.title;
-		this.form.tag = this.post.tag;
-		this.form.price = this.post.price;
-		this.form.content = this.post.content;
-		this.form.region = this.post.region;
-		this.form.view_count = this.post.view_count;
 		if (!this.count) {
+			this.form.title = this.post.title;
+			this.form.tag = this.post.tag;
+			this.form.price = this.post.price;
+			this.form.content = this.post.content;
+			this.form.region = this.post.region;
+			this.form.view_count = this.post.view_count;
 			this.checkImg2 = this.post.image2 ? true : false;
 			this.checkImg3 = this.post.image3 ? true : false;
 			this.count++;
@@ -159,7 +160,7 @@ export default {
 }
 @mixin boxCss {
 	width: 100%;
-	max-width: 900px;
+	// max-width: 900px;
 	margin: auto;
 	border-bottom: 1px solid #ddd;
 }
