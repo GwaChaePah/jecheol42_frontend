@@ -36,7 +36,6 @@
 								<input multiple @change="onInputImage(event)" ref="postImage" type="file" id="input-file" style="display: none"/>
 								<p>이미지는 최대 3장까지</p>
 							</div>
-								<button class="previewBtn">등록 전 미리보기</button>
 							<div class="bntBox">
 								<div>
 									<button class="registerBtn" @click.prevent="checkForm()">작성</button>
@@ -138,7 +137,6 @@ export default {
 			if (res.status == 201)
 			{
 				this.$store.dispatch('post/searchPostWithId', res.data.id);
-				// this.$store.dispatch('post/getBoard', {	payload:'' });
 				this.$router.push(`/post/${res.data.id}`);
 			}
 			else
@@ -194,15 +192,18 @@ export default {
 }
 
 .content {
+	margin-bottom: 1em;
 	.background{
-		margin-top: 50px;
 		@include center;
+		@media (min-width: 1000px) {
+			width: 700px;
+		}
+		width: 70vw;
+		@media (max-width: 500px) {
+			width: 100%;
+		}
 		.createPostArea {
-			margin: 1em 0 2em;
 			@include center;
-			@media screen and (min-width: 700px) {
-				padding: 0px 100px;
-			}
 			// .createInfo{
 			// 	margin: 10px 0px;
 			// 	font-size: 20px;
@@ -226,7 +227,7 @@ export default {
 						@include input(100%);
 						select{
 							width: 90%;
-							// text-align: center;
+							text-align: center;
 							color: rgba(#76862c, 0.76);
 							border-color: transparent;
 						}
@@ -236,7 +237,7 @@ export default {
 						position: relative;
 						label {
 							position: absolute;
-							right: 1.5em;
+							right: 3em;
 							top: 28%;
 							color: gray;
 							font-size: .8em;
