@@ -4,8 +4,10 @@
 			<div class="not_found">
 				<div class="material-icons-outlined">contact_support</div>
 				<h1>404</h1>
-				<p>해당 페이지는 존재하지 않습니다. 여기까지 와주신 것에 대해</p>
-				<p>말랑콩떡큐티깜찍키세스고양이 순돌이가 대신 감사의 인사를 드립니다.</p>
+				<p>해당 페이지는 존재하지 않습니다.</p>
+				<p>여기까지 와주신 것에 대해</p>
+				<p>말랑콩떡큐티깜찍키세스고양이 순돌이가</p>
+				<p>대신 감사의 인사를 드립니다.</p>
 			</div>
 		</div>
 	</div>
@@ -31,7 +33,7 @@ export default {
 	.not_found {
 		width: 100%;
 		text-align: center;
-		margin-top: 13em;
+		margin-top: 12em;
 		// color: darken($color_prime_orange, 20%);
 		.material-icons-outlined {
 			font-size: 4em;
