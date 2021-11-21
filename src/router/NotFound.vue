@@ -23,7 +23,7 @@ export default {
 @import '../scss/main.scss';
 
 .l_main {
-	background: url('https://cdn.discordapp.com/attachments/772716600188076033/911667335104983070/404.png');
+	background: url('https://cdn.discordapp.com/attachments/772716600188076033/911824578949574666/404.png');
 	background-position: bottom;
 	background-size: contain;
 	background-repeat: no-repeat;

@@ -158,10 +158,10 @@ export default {
 				alert("대문자 영문은 입력할 수 없습니다.");
 				return false;
 			}
-			else if(num < 0 || eng < 0){
-				alert("영문, 숫자를 혼합하여 입력해주세요.");
-				return false;
-			}
+			// else if(num < 0 || eng < 0){
+			// 	alert("영문, 숫자를 혼합하여 입력해주세요.");
+			// 	return false;
+			// }
 		},
 		validatePw() {
 			let password = this.password
@@ -182,10 +182,10 @@ export default {
 				alert("한글은 입력할 수 없습니다.");
 				return false;
 			}
-			else if(num < 0 || eng < 0 || spe < 0 ){
-				alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
-				return false;
-			}
+			// else if(num < 0 || eng < 0 || spe < 0 ){
+			// 	alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
+			// 	return false;
+			// }
 		},
 		register(registerObj) {
 			if (!this.username || !this.password || !this.region)
