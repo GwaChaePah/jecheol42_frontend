@@ -87,7 +87,6 @@ export default {
 	},
 	created : function() {
 		this.searchPostWithId(this.form.id);
-		console.log('this.form', this.post)
 	},
 	beforeUpdate() {
 		if (!this.count) {
@@ -190,11 +189,18 @@ export default {
 	border: 20px;
 }
 .content {
+	margin-bottom: 1em;
 	.background{
 		@include center;
+		@media (min-width: 1000px) {
+			width: 700px;
+		}
+		width: 70vw;
+		@media (max-width: 500px) {
+			width: 100%;
+		}
 		.createPostArea {
 			@include center;
-			margin: 1em 0 2em;
 			.createInfo{
 				margin: 10px 0px;
 				font-size: 20px;
@@ -209,6 +215,7 @@ export default {
 					@include boxCss;
 					.titlebox{
 						@include input(95%);
+						font-size: 1.1em;
 					}
 				}
 				.tagBox {
@@ -228,7 +235,7 @@ export default {
 						position: relative;
 						label {
 							position: absolute;
-							right: 1.5em;
+							right: 3em;
 							top: 28%;
 							color: gray;
 							font-size: .8em;
@@ -252,6 +259,7 @@ export default {
 						@include input(95%);
 						resize: none;
 						height: 200px;
+						font-size: .9em;
 						// min-height: 300px;
 					}
 					.thumbnail{
