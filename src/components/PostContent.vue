@@ -26,9 +26,11 @@
 		<div class="user-menu" v-if="checkUser()">
 			<button class="material-icons" @click="showMenu">more_vert</button>
 			<div class="dropdown" v-show="click">
-				<div @click="updatePost">
-					<span class="text" @click="updatePost">글수정</span>
-					<span class="material-icons-outlined" title="수정">edit</span>
+				<div>
+					<RouterLink :to="{ name: 'UpdatePost', params: {id: `${post.id}`}}">
+						<span class="text">글수정</span>
+						<span class="material-icons-outlined" title="수정">edit</span>
+					</RouterLink>
 				</div>
 				<div @click="deleteThisPost">
 					<span class="text">글삭제</span>

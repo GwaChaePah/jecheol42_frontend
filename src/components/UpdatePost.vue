@@ -69,12 +69,11 @@ export default {
 				region: '',
 				content: '',
 				price: '',
-				image1: '',
-				image2: '',
-				image3: '',
+				image1: undefined,
+				image2: undefined,
+				image3: undefined,
 				view_count: ''
 			},
-			count: 0,
 			checkImg2: false,
 			checkImg3: false,
 			url1: '',
@@ -86,23 +85,15 @@ export default {
 		...mapState('post', ['post'])
 	},
 	created : function() {
-		this.searchPostWithId(this.form.id);
-	},
-	beforeUpdate() {
-		if (!this.count) {
-			this.form.title = this.post.title;
-			this.form.tag = this.post.tag;
-			this.form.price = this.post.price;
-			this.form.content = this.post.content;
-			this.form.region = this.post.region;
-			this.form.view_count = this.post.view_count;
-			this.checkImg2 = this.post.image2 ? true : false;
-			this.checkImg3 = this.post.image3 ? true : false;
-			this.count++;
-		} else {
-			this.checkImg2 = this.form.image2 ? true : false;
-			this.checkImg3 = this.form.image3 ? true : false;
-		}
+		console.log('post',this.post)
+		this.form.title = this.post.title;
+		this.form.tag = this.post.tag;
+		this.form.price = this.post.price;
+		this.form.content = this.post.content;
+		this.form.region = this.post.region;
+		this.form.view_count = this.post.view_count;
+		this.checkImg2 = this.post.image2 ? true : false;
+		this.checkImg3 = this.post.image3 ? true : false;
 	},
 	methods: {
 		...mapActions('post', [
@@ -134,7 +125,7 @@ export default {
 			let formData = new FormData();
 
 			for (let key in postObj) {
-				!_.isNil(postObj[key]) && formData.append(key, postObj[key]);
+				!_.isNil(postObj[key]) &&	formData.append(key, postObj[key]);
 			}
 			this.updatePost(formData);
 			this.searchPostWithId(this.form.id);
