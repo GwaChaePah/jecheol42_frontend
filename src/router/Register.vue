@@ -11,10 +11,10 @@
 									class="username" 
 									v-model="username"
 									placeholder="아이디"
-									@change="validateId"
 									@input="useId = false"
 									required>
-							<button @click="sameUser" @change="useId = false">검사</button>
+							<button @click="validateId" 
+									@change="useId = false">검사</button>
 						</div>
 						<div class="duplicateId" v-if="duplicateId">사용할 수 없는 아이디입니다</div>
 						<div class="useId" v-if="useId">사용할 수 있는 아이디입니다</div>
@@ -39,13 +39,20 @@
 						</div>
 							<div v-if="notSamePw">비밀번호가 다릅니다</div>
 						<div class="regionBox">
-							<input for="region"
-									type="region"
-									class="region" 
-									v-model="region"
-									placeholder="우편번호"
+							<input for="address"
+									type="address"
+									class="address" 
+									v-model="address"
+									placeholder="동 입력 (ex: 개포, 신사)"
 									required>
-							<button @click="testPopup()">우편번호</button>
+							<button @click="findRegion">검색</button>
+						</div>
+						<div class="adressBox">
+							<div v-for="address in findRegion" :key="address.state">
+								<button @click="selectRegion(address)">
+									{{address.state}}&nbsp;{{address.city}}&nbsp;{{address.address}}
+								</button>
+							</div>
 						</div>
 						<button 
 							type="submit"
@@ -81,10 +88,12 @@ export default {
 			password : '',
 			passwordConfirmation : '',
 			region: '',
+			address: '',
 			duplicateId: false,
 			useId: false,
 			errorId: false,
-			notSamePw: false
+			notSamePw: false,
+			findRegion: '',
 		}
 	},
 	mounted() {
@@ -95,41 +104,25 @@ export default {
 		}
 	},
   	methods: {
-		testPopup() {
-			new window.daum.Postcode({
-			oncomplete: (data) => {
-				this.region = data.zonecode
-			}
-			}).open();
+		findRegion() {
+			axios.get(`user/api/region/?search=${this.address}`)
+			.then(res => {
+				this.findRegion = res.data
+				fine = true
+			})
+			.catch(err => {
+				console.log(err)
+			})	
+		},
+		selectRegion(payload){
+			this.address = payload.city + ' ' + payload.address
+			this.region = payload.code
 		},
 		comparisonPW() {
 			if (this.password !== this.passwordConfirmation)
 				this.notSamePw = true
 			else
 				this.notSamePw = false
-		},
-		sameUser() {
-			let username = this.username
-			if (!this.validateId)
-				return this.errorId = true
-			if (!username)
-				return alert("아이디를 입력해 주세요")
-			else {
-				axios.post("user/api/check/", {
-					username: username
-				})
-				.then(res => {
-					if (res.status === 202)
-						this.useId = true
-						this.errorId = false
-						this.duplicateId = false
-				})
-				.catch(err => {
-					this.useId = false
-					this.errorId = false
-					this.duplicateId = true
-				})
-			}
 		},
 		validateId() {
 			let username = this.username
@@ -152,16 +145,35 @@ export default {
 			}
 			else if(!(kor < 0)){
 				alert("한글은 입력할 수 없습니다.");
-				return false;
+				return false
 			}
 			else if(!(engB < 0)){
 				alert("대문자 영문은 입력할 수 없습니다.");
-				return false;
+				return false
 			}
-			// else if(num < 0 || eng < 0){
-			// 	alert("영문, 숫자를 혼합하여 입력해주세요.");
-			// 	return false;
-			// }
+			else {
+				let username = this.username
+				if (!this.validateId)
+					return this.errorId = true
+				if (!username)
+					return alert("아이디를 입력해 주세요")
+				else {
+					axios.post("user/api/check/", {
+						username: username
+					})
+					.then(res => {
+						if (res.status === 202)
+							this.useId = true
+							this.errorId = false
+							this.duplicateId = false
+					})
+					.catch(err => {
+						this.useId = false
+						this.errorId = false
+						this.duplicateId = true
+					})	
+				}
+			}
 		},
 		validatePw() {
 			let password = this.password
@@ -190,6 +202,8 @@ export default {
 		register(registerObj) {
 			if (!this.username || !this.password || !this.region)
 				return alert("모든 데이터를 입력해주세요.")
+			else if (!this.useId)
+				return alert("아이디 중복 검사를 해")
 			else if (this.notSamePw)
 				return alert("비밀번호를 확인해주세요.")
 			else if (this.username == this.password)
@@ -237,17 +251,31 @@ export default {
 	display: inline-block;
 }
 
+.adressBox{
+	overflow: auto;
+	margin: 10px auto;
+	height: 10%;
+	max-height: 150px;
+	button{
+		width: 70%;
+		margin: 3px auto;
+		max-width: 200px;
+		border-radius: 3px;
+		background: white;
+		color: rgba(#76862c, 0.76);
+		border-color: transparent;
+	}
+}
+
 .l_wrapper {
 	max-width: 1000px;
-	max-height: 1500px;
 	width: auto;
 	margin: 0 auto;
-	padding: 20px;
+	padding: 15px;
 	position: relative;
 	.content {
 	height: 100%;
 		.background{
-			height: 400px;
 			font-family: sans-serif;
 			margin-top: 50px;
 			@include center;
@@ -258,9 +286,6 @@ export default {
 					color: rgba(#76862c, 0.76);
 				}
 				@include center;
-				// border-radius: .3em;
-				// box-shadow: 0 0 10px 0 $color_shadow_03;
-				// border: 20px;
 				width: 100%;
 				height: 98%;
 				padding: 20px;
@@ -325,12 +350,12 @@ export default {
 					margin: auto;
 					border-bottom: 1px solid #ddd;
 					input{
-						width: 60%;
+						width: 70%;
 						margin: 10px;
 						border-color: transparent;
 					}
 					button{
-						width: 40%;
+						width: 30%;
 						margin: auto;
 						max-width: 70px;
 						border-radius: 3px;
