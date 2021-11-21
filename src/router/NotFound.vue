@@ -4,7 +4,10 @@
 			<div class="not_found">
 				<div class="material-icons-outlined">contact_support</div>
 				<h1>404</h1>
-				<p>페이지 업서오...</p>
+				<p>해당 페이지는 존재하지 않습니다.</p>
+				<p>여기까지 와주신 것에 대해</p>
+				<p>말랑콩떡큐티깜찍키세스고양이 순돌이가</p>
+				<p>대신 감사의 인사를 드립니다.</p>
 			</div>
 		</div>
 	</div>
@@ -22,14 +25,15 @@ export default {
 @import '../scss/main.scss';
 
 .l_main {
-	background: url('https://cdn.pixabay.com/photo/2013/11/25/17/28/pumpkin-218237_960_720.jpg');
+	background: url('https://cdn.discordapp.com/attachments/772716600188076033/911829698139541514/404.png');
 	background-position: bottom;
 	background-size: contain;
+	background-repeat: no-repeat;
 	height: 100vh;
 	.not_found {
 		width: 100%;
 		text-align: center;
-		margin-top: 13em;
+		margin-top: 12em;
 		// color: darken($color_prime_orange, 20%);
 		.material-icons-outlined {
 			font-size: 4em;

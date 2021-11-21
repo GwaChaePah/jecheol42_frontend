@@ -97,7 +97,7 @@ export default {
 }
 
 .l_wrapper {
-	padding: 20px;
+	padding: 15px;
 }
 .background{
 	height: 400px;
