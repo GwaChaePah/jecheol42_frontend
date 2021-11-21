@@ -1,22 +1,21 @@
 <template>
 	<div class="menu-bar">
-		<!-- <div> -->
+		<div class="dropdown-wrapper">
+			<div class="region-wrapper" v-if="region">
+				<h1>지역 : </h1>
+				<select class="dropdown" @change="setRegion($event)">
+					<option	value=1>전체</option>
+					<option value=2 selected>내 지역만</option>
+				</select>
+			</div>
+			<h1>구분 : </h1>
 			<select class="dropdown" v-model="tag" @change="apply($event)">
-				<option	v-for="item in filters[1].items" :key="item" :value="item">
+				<option	v-for="item in items" :key="item" :value="item">
 					{{ item }}
 				</option>
 			</select>
-			<button class="menu-bar__list" type="button" @click="createPost">글쓰기</button>
-			<!-- </div> -->
-			<!-- <div>
-			<select class="dropdown" v-for="filter in filters" v-model="$data[filter.name]" 	:key="filter.name" @change="apply($event)">
-			<option v-if="filter.name === 'region'" selected="" disabled>지역</option>
-			<option v-for="item in filter.items" :key="item">
-				{{ item }}
-			</option>
-		</select>
-		<button class="menu-bar__list" type="button">글쓰기</button>
-	</div> -->
+		</div>
+		<button class="menu-bar__list" type="button" @click="createPost">글쓰기</button>
 	</div>
 </template>
 
@@ -34,7 +33,10 @@ export default {
 			'theSearch',
 			'loading'
 		]),
-		...mapState('post', ['boardTag']),
+		...mapState('post', [
+			'boardTag',
+			'region'
+		]),
 		tag: {
 			get() {
 				const tag = this.boardTag === 3 ? '전체' :
@@ -53,25 +55,7 @@ export default {
 		return {
 			seoulList,
 			search: this.theSearch,
-			region: '지역',
-			tags: '분류',
-			filters: [
-				{
-					name: 'region',
-					items: (() => {
-						const seouls = seoulList.seoul;
-						const seoul = [];
-						for (let i=0;i<seouls.length;i++) {
-							seoul.push(seouls[i].시군구);
-						}
-						return seoul;
-					})()
-				},
-				{
-					name: 'tags',
-					items: ['전체', '소분', '나눔', '완료']
-				}
-			]
+			items: ['전체', '소분', '나눔', '완료']
 		}
 	},
 	methods: {
@@ -79,6 +63,13 @@ export default {
 			'getBoard',
 			'updateTag'
 		]),
+		setRegion(e) {
+			this.search = this.postSearch;
+			const payload = this.search ? this.search : '';
+			const header = !this.search && this.fromSearch ? false : true;
+			const allRegion = e.target.value === '1' ? true : false;
+			this.getBoard({payload: payload, page: 1, header: header, allRegion: allRegion});
+		},
 		apply(e) {
 			this.search = this.postSearch;
 			this.tag = e.target.value === '소분' ? 0 :
@@ -117,22 +108,29 @@ export default {
 @import '../scss/typography.scss';
 @import '../scss/main.scss';
 
-
 .menu-bar {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 1em;
 	width: 100%;
+	.region-wrapper {
+		display: inline-block;
+	}
+	h1 {
+		font-family: 'Gowun Dodum', sans-serif;
+		display: inline-block;
+		margin: 0 .5em;
+	}
 	select {
 		font-family: 'Gowun Dodum', sans-serif;
 		margin: 0 .1em;
-		padding: .4em 0.2em;
+		padding: .2em;
 		letter-spacing: 2px;
 		@media (max-width: 500px) {
 			font-size: .7em;
 		}
 	}
-  option {
+	option {
 		color: black;
 		font-family: 'Gowun Dodum', sans-serif;
 	}

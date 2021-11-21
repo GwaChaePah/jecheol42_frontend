@@ -16,10 +16,6 @@
 							<span class="PC material-icons">account_circle</span>
 							<span class="writer__username">{{ post.username }}</span>
 						</div>
-							<div class="title__time">
-								<span class="PC material-icons">schedule</span>
-								<span class="time__time">{{ calcDate() }}</span>
-							</div>
 						<div class="count_comment-wrapper">
 							<div class="title__count">
 								<span class="PC material-icons">visibility</span>
@@ -29,6 +25,17 @@
 								<span class="PC material-icons">chat_bubble_outline</span>
 								{{ post.comment_cnt }}
 							</div>
+						</div>
+					</div>
+					<div class="title-info">
+						<div class="title__time">
+							<span class="PC material-icons">schedule</span>
+							<span class="time__time">{{ calcDate() }}</span>
+						</div>
+						<div class="title__region">
+							<span class="">{{ post.city }}</span>
+							&#183;
+							<span class="">{{ post.address }}</span>
 						</div>
 					</div>
 				</div>
@@ -146,8 +153,11 @@ export default {
 				padding-bottom: .4em;
 			}
 			.title-info {
-				position: relative;
-				text-align: left;
+				// position: relative;
+				// text-align: left;
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-end;
 				.PC.material-icons {
 					font-size: 1em;
 					transform: translateY(3px);
@@ -155,25 +165,16 @@ export default {
 				.title__writer {
 					color: #383838;
 					width: 50%;
+					text-align: left;
 					.writer__username {
 						margin-left: .3em;
 						font-size: 1.1em;
 					}
 				}
-				.title__time {
-					color: rgb(114, 115, 114);
-					.time__time {
-						font-size: .8em;
-						margin-left: .2em;
-					}
-					.PC.material-icons {
-						color: rgb(114, 115, 114);
-					}
-				}
 				.count_comment-wrapper {
-					position: absolute;
-					top: 0;
-					right: 0;
+					// position: absolute;
+					// top: 0;
+					// right: 0;
 					.title__count {
 						display: inline-block;
 						margin-right: .5em;
@@ -189,6 +190,19 @@ export default {
 							color: gray;
 						}
 					}
+				}
+				.title__time {
+					color: rgb(114, 115, 114);
+					.time__time {
+						font-size: .8em;
+						margin-left: .2em;
+					}
+					.PC.material-icons {
+						color: rgb(114, 115, 114);
+					}
+				}
+				.title__region {
+					font-size: .8em;
 				}
 			}
 		}

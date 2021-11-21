@@ -85,6 +85,7 @@ export default {
 		return {
 			hasHeader: true,
 			search: this.postSearch,
+			region: '',
 		}
 	},
 	created() {

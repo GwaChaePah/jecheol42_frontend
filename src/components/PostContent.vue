@@ -44,6 +44,7 @@
 				<!-- <span id="region">{{ post.region }}</span>
 				/ -->
 				<span>	{{ post.tag === 0 ? '소분' : post.tag === 1 ? '나눔' : '완료' }} </span>
+				<!-- <span> {{ post.city }}&#183;{{ post.address }}</span> -->
 			</div>
 			<div class="title__title">
 				<h1>{{ post.title }}</h1>
@@ -71,13 +72,8 @@
 				<span>{{ post.created_at }}</span>
 			</div>
 			<div class="post__img clearfix">
-				<img class="img-slides"
-					v-for="image in images"
-					v-show="image.src"
-					:key="image.name"
-					:src="image.src"
-					:alt="`${post.user}_${post.title}_${image.name}`" />
-					<!-- onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"  -->
+				<img class="img-slides" v-for="image in images"	v-show="image.src" :key="image.name"
+					:src="image.src" :alt="`${post.user}_${post.title}_${image.name}`" />
 			</div>
 			<div class="post__paragraph">
 				<p>{{ post.content }}</p>

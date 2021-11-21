@@ -116,6 +116,9 @@ export default {
 		window.addEventListener("resize", this.checkScreen);
 		this.checkScreen();
 	},
+	beforeUpdate() {
+		this.checkUser();
+	},
 	unmounted() {
 		window.removeEventListener("resize", this.checkScreen);
 		window.removeEventListener("scroll", this.updateScroll);
@@ -126,7 +129,8 @@ export default {
 			'updateMobileWidth',
 			'updateScrollPosition',
 			'getBoard',
-			'updateTag'
+			'updateTag',
+			'updateRegion'
 		]),
 		...mapActions('product', [
 			'updateSearch',
@@ -185,7 +189,12 @@ export default {
 			} else if (window.pageYOffset <= 50){
 				this.updateScrollPosition(false);
 			}
-		}
+		},
+		checkUser() {
+			const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+			const region = userInfo ? userInfo.region : '';
+			this.updateRegion(region);
+		},
 	}
 }
 </script>

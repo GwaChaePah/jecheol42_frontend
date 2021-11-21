@@ -15,6 +15,7 @@ export default {
 		mobileNav: false,
 		scrollPosition: false,
 		header: false,
+		region: ''
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
@@ -24,6 +25,11 @@ export default {
 		},
 	},
 	actions: {
+		updateRegion({ commit }, payload) {
+			commit('UPDATE_STATE', {
+				region: payload
+			});
+		},
 		updateMobileNav({ commit }, payload) {
 			commit('UPDATE_STATE', {
 				mobileNav: payload
@@ -54,7 +60,7 @@ export default {
 				header: payload
 			});
 		},
-		async getBoard({ state, commit }, { payload, page, header = true }) {
+		async getBoard({ state, commit }, { payload, page, header = true, allRegion }) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
 				boardView: [],
@@ -71,7 +77,8 @@ export default {
 				let boardView;
 				let totalPage;
 				try {
-					const data = await _fetchBoard(payload, state.boardTag, state.page);
+					const regionTemp = allRegion ? 0 : state.region;
+					const data = await _fetchBoard(payload, state.boardTag, state.page, regionTemp);
 					totalPage = calcTotalPage(data.count);
 					boardView = data.results;
 				} catch(e) {
@@ -192,15 +199,25 @@ export default {
 		},
 	},
 }
-async function _fetchBoard(payload, tag, page) {
+async function _fetchBoard(payload, tag, page, region) {
 	const search = payload ? encodeURI(payload) : '';
 	let data;
 	if (tag !== '' && tag !== 3) {
-		data = await axios.get(`board/api?search=${search}&tag=${tag}&page=${page}`)
-			.then(res => res.data);
+		if (region) {
+			data = await axios.get(`board/api?search=${search}&tag=${tag}&page=${page}&region=${region}`)
+				.then(res => res.data);
+		} else {
+			data = await axios.get(`board/api?search=${search}&tag=${tag}&page=${page}`)
+				.then(res => res.data);
+		}
 	} else {
-		data = await axios.get(`board/api?search=${search}&page=${page}`)
-			.then(res => res.data);
+		if (region) {
+			data = await axios.get(`board/api?search=${search}&page=${page}&region=${region}`)
+				.then(res => res.data);
+		} else {
+			data = await axios.get(`board/api?search=${search}&page=${page}`)
+				.then(res => res.data);
+		}
 	}
 	for (let i = 0; i < data.results.length; i++) {
 		const date = data.results[i].created_at.slice(0, 10).replaceAll('-', '.');
