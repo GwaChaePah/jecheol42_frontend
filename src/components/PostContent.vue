@@ -26,9 +26,11 @@
 		<div class="user-menu" v-if="checkUser()">
 			<button class="material-icons" @click="showMenu">more_vert</button>
 			<div class="dropdown" v-show="click">
-				<div @click="updatePost">
-					<span class="text" @click="updatePost">글수정</span>
-					<span class="material-icons-outlined" title="수정">edit</span>
+				<div>
+					<RouterLink :to="{ name: 'UpdatePost', params: {id: `${post.id}`}}">
+						<span class="text">글수정</span>
+						<span class="material-icons-outlined" title="수정">edit</span>
+					</RouterLink>
 				</div>
 				<div @click="deleteThisPost">
 					<span class="text">글삭제</span>
@@ -139,8 +141,8 @@ export default {
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 			if (userInfo == null)
 			{
-				confirm("글 작성은 로그인 후 가능합니다.");
-				this.$router.push('/login');
+				if (confirm("글 작성은 로그인 후 가능합니다."))
+					this.$router.push('/login');
 			}
 			else {
 				this.$router.push({

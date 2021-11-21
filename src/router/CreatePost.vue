@@ -79,6 +79,8 @@ export default {
 			this.form.image2 = this.$refs.postImage.files[1] ? this.$refs.postImage.files[1] : '';
 			this.form.image3 = this.$refs.postImage.files[2] ? this.$refs.postImage.files[2] : '';
 			this.previewURL();
+			console.log(this.form.image1);
+			console.log(this.form.image2);
 		},
 		previewURL() {
 			this.url1 = this.form.image1 ? URL.createObjectURL(this.form.image1) : '';
