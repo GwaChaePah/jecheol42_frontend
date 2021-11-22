@@ -3,8 +3,8 @@
 		<div class="dropdown-wrapper">
 			<div class="region-wrapper" v-if="region">
 				<select class="dropdown" id="selectRegion" @change="setRegion($event)">
-					<option value=1 selected>내 지역</option>
 					<option	value=0>전 지역</option>
+					<option value=1 selected>내 지역</option>
 				</select>
 			</div>
 			<select class="dropdown" v-model="tag" @change="apply($event)">
@@ -71,12 +71,12 @@ export default {
 			const payload = this.search ? this.search : '';
 			const header = !this.search && this.fromSearch ? false : true;
 			let allRegion;
-			if (!this.headerReset) {
+			// if (!this.headerReset) {
 				allRegion = e.target.value == 0 ? true : false;
-			} else {
-				allRegion = false;
-			}
-			this.headerReset = false;
+			// } else {
+				// allRegion = false;
+			// }
+			// this.headerReset = false;
 			this.isAllRegion = allRegion;
 			this.getBoard({payload, page: 1, header, allRegion});
 		},
@@ -87,8 +87,8 @@ export default {
 										e.target.value === '완료' ? 2 : 3;
 			const payload = this.search ? this.search : '';
 			const header = !this.search && this.fromSearch ? false : true;
-			this.isAllRegion = this.headerReset ? false : this.isAllRegion;
-			this.headerReset = false;
+			// this.isAllRegion = this.headerReset ? false : this.isAllRegion;
+			// this.headerReset = false;
 			this.getBoard({payload, page: 1, header, allRegion: this.isAllRegion});
 		},
 		createPost() {
@@ -112,15 +112,15 @@ export default {
 			this.tag = 3;
 		}
 	},
-	watch: {
-		board(value) {
-			if (value) {
-				document.getElementById('selectRegion').value = 1;
-				this.headerReset = true;
-			}
-			this.updateBoard(false);
-		}
-	}
+	// watch: {
+	// 	board(value) {
+	// 		if (value) {
+	// 			document.getElementById('selectRegion').value = 1;
+	// 			this.headerReset = true;
+	// 		}
+	// 		this.updateBoard(false);
+	// 	}
+	// }
 }
 </script>
 
