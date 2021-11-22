@@ -1,7 +1,7 @@
 <template>
 	<div class="menu-bar">
 		<div class="dropdown-wrapper">
-			<div class="region-wrapper" v-if="region">
+			<div class="region-wrapper" v-if="loggedIn">
 				<select class="dropdown" id="selectRegion" @change="setRegion($event)">
 					<option value=1 selected>내 지역</option>
 					<option	value=0>전 지역</option>
@@ -24,7 +24,7 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'BoardMenu',
-	props: ['fromSearch'],
+	props: ['fromSearch', 'loggedIn'],
 	computed: {
 		...mapState('product', [
 			'postSearch',
@@ -33,9 +33,9 @@ export default {
 		]),
 		...mapState('post', [
 			'boardTag',
-			'region',
 			'boardView',
-			'board'
+			'board',
+			'header'
 		]),
 		tag: {
 			get() {

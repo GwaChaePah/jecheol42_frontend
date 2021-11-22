@@ -117,7 +117,6 @@ export default {
 		}
 		window.addEventListener("resize", this.checkScreen);
 		this.checkScreen();
-		this.checkUser();
 	},
 	unmounted() {
 		window.removeEventListener("resize", this.checkScreen);
@@ -156,7 +155,7 @@ export default {
 			this.updateTag(3);
 			this.updateSearch();
 			this.updateBoard(true);
-			this.getBoard({payload: '', page: 1, header: true, allRegion: this.region? false : true});
+			this.getBoard({payload: '', page: 1, header: true, allRegion: this.isLogin? false : true});
 			this.updateMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -191,11 +190,6 @@ export default {
 			} else if (window.pageYOffset <= 50){
 				this.updateScrollPosition(false);
 			}
-		},
-		checkUser() {
-			const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-			const region = userInfo ? userInfo.region : '';
-			this.updateRegion(region);
 		},
 	}
 }
