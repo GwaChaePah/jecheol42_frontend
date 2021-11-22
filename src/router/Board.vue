@@ -2,7 +2,7 @@
 	<div class="l_main">
 		<div class="l_wrapper" :class="{'content': (hasHeader && !fromSearch)}" >
 			<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
-			<BoardMenu :fromSearch="fromSearch"/>
+			<BoardMenu :fromSearch="fromSearch" :fromHeader="header"/>
 		</div>
 		<div v-if="!mobileWidth">
 			<div class="l_wrapper">
@@ -93,7 +93,8 @@ export default {
 			setTimeout(() => {
 				this.$store.dispatch('post/getBoard', {payload: '', allRegion: this.region ? false : true});
 			}, 500);
-		} else {
+		}
+		 else {
 			this.$store.dispatch('post/updateHeader', false);
 		}
 	},

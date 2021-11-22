@@ -16,6 +16,7 @@ export default {
 		scrollPosition: false,
 		header: false,
 		region: '',
+		board: false
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
@@ -28,6 +29,11 @@ export default {
 		updateRegion({ commit }, payload) {
 			commit('UPDATE_STATE', {
 				region: payload
+			});
+		},
+		updateBoard({ commit }, payload) {
+			commit('UPDATE_STATE', {
+				board: payload
 			});
 		},
 		updateMobileNav({ commit }, payload) {

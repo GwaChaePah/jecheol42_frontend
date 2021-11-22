@@ -129,7 +129,8 @@ export default {
 			'updateScrollPosition',
 			'getBoard',
 			'updateTag',
-			'updateRegion'
+			'updateRegion',
+			'updateBoard'
 		]),
 		...mapActions('product', [
 			'updateSearch',
@@ -153,6 +154,7 @@ export default {
 		toBoard() {
 			this.updateTag(3);
 			this.updateSearch();
+			this.updateBoard(true);
 			this.getBoard({payload: '', page: 1, header: true, allRegion: this.region? false : true});
 			this.updateMobileNav(null);
 			this.$router.push('/board');
