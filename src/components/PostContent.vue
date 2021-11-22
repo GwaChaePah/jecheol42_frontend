@@ -55,7 +55,7 @@
 					<span>{{ post.username }}</span>
 				</p>
 				<p id="time" v-if="!mobileWidth"><span class="material-icons">schedule</span>
-					<span>{{ post.created_at }}</span>
+					<span>{{ createdTime() }}</span>
 				</p>
 				<p id="count"><span class="material-icons">visibility</span>
 					<span>{{ post.view_count }}</span>
@@ -88,7 +88,7 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'PostContent',
-	props: ['post'],
+	props: ['post', 'notFetching'],
 	data() {
 		return {
 			name: '',
@@ -133,6 +133,15 @@ export default {
 			this.getBoard({payload: '', page: 1, header: true});
 			this.updateMobileNav(null);
 			this.$router.push('/board');
+		},
+		createdTime() {
+			if (this.notFetching) {
+				const date = this.post.created_at.slice(0, 10).replaceAll('-', '.');
+				const time = this.post.created_at.slice(11, 16);
+				return date.concat('. '.concat(...time));
+			} else {
+				return this.post.created_at;
+			}
 		},
 		createPost() {
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
