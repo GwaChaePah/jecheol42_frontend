@@ -2,13 +2,11 @@
 	<div class="menu-bar">
 		<div class="dropdown-wrapper">
 			<div class="region-wrapper" v-if="region">
-				<!-- <h1>지역 : </h1> -->
-				<select class="dropdown" @change="setRegion($event)">
+				<select class="dropdown" id="selectRegion" @change="setRegion($event)">
 					<option	value=0>전 지역</option>
 					<option value=1 selected>내 지역</option>
 				</select>
 			</div>
-			<!-- <h1>구분 : </h1> -->
 			<select class="dropdown" v-model="tag" @change="apply($event)">
 				<option	v-for="item in items" :key="item" :value="item">
 					{{ item }}
@@ -26,7 +24,7 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'BoardMenu',
-	props: ['fromSearch'],
+	props: ['fromSearch', 'fromHeader'],
 	computed: {
 		...mapState('product', [
 			'postSearch',
@@ -36,7 +34,8 @@ export default {
 		...mapState('post', [
 			'boardTag',
 			'region',
-			'boardView'
+			'boardView',
+			'board'
 		]),
 		tag: {
 			get() {
@@ -57,19 +56,27 @@ export default {
 			seoulList,
 			search: this.theSearch,
 			isAllRegion: '',
+			headerReset: false,
 			items: ['전체', '소분', '나눔', '완료']
 		}
 	},
 	methods: {
 		...mapActions('post', [
 			'getBoard',
-			'updateTag'
+			'updateTag',
+			'updateBoard'
 		]),
 		setRegion(e) {
 			this.search = this.postSearch;
 			const payload = this.search ? this.search : '';
 			const header = !this.search && this.fromSearch ? false : true;
-			const allRegion = e.target.value == 0 ? true : false;
+			let allRegion;
+			if (!this.headerReset) {
+				allRegion = e.target.value == 0 ? true : false;
+			} else {
+				allRegion = false;
+			}
+			this.headerReset = false;
 			this.isAllRegion = allRegion;
 			this.getBoard({payload, page: 1, header, allRegion});
 		},
@@ -80,6 +87,8 @@ export default {
 										e.target.value === '완료' ? 2 : 3;
 			const payload = this.search ? this.search : '';
 			const header = !this.search && this.fromSearch ? false : true;
+			this.isAllRegion = this.headerReset ? false : this.isAllRegion;
+			this.headerReset = false;
 			this.getBoard({payload, page: 1, header, allRegion: this.isAllRegion});
 		},
 		createPost() {
@@ -96,6 +105,22 @@ export default {
 			}
 		}
 	},
+	created() {
+		if (this.boardTag !== '') {
+			this.tag = this.boardTag;
+		} else {
+			this.tag = 3;
+		}
+	},
+	watch: {
+		board(value) {
+			if (value) {
+				document.getElementById('selectRegion').value = 1;
+				this.headerReset = true;
+			}
+			this.updateBoard(false);
+		}
+	}
 }
 </script>
 
