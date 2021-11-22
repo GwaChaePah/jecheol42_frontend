@@ -128,9 +128,16 @@ export default {
 			for (let key in postObj) {
 				!_.isNil(postObj[key]) &&	formData.append(key, postObj[key]);
 			}
-			this.updatePost(formData);
-			this.searchPostWithId(this.form.id);
-			this.$router.push(`/post/${this.form.id}`);
+			await this.updatePost(formData);
+      await this.$router.push({
+        name: 'Post',
+        params: {
+          id: this.form.id,
+        },
+        query: {
+          notFetching: '1',
+        },
+      });
 		},
 		cancel() {
 			this.$router.push(`/post/${this.form.id}`);

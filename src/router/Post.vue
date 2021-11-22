@@ -55,7 +55,10 @@ export default {
 		])
 	},
 	created() {
-		this.$store.dispatch('post/searchPostWithId', this.$route.params.id);
+    const notFetching = this.$route.query.notFetching
+    if(!notFetching) {
+      this.$store.dispatch('post/searchPostWithId', this.$route.params.id);
+    }
 		this.$store.dispatch('post/updateMobileNav', null);
 	},
 	beforeUpdate(){
