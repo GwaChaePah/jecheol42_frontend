@@ -49,6 +49,7 @@ export default {
 				sessionStorage.setItem("refresh_token", refresh)
 				sessionStorage.setItem("userInfo", JSON.stringify(userInfo))
 				dispatch("loggedIn")
+				router.go(0)
 				router.go(-1)
 			})		
 			.catch(error => {
