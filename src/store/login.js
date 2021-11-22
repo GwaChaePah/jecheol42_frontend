@@ -50,6 +50,7 @@ export default {
 				sessionStorage.setItem("userInfo", JSON.stringify(userInfo))
 				dispatch("loggedIn")
 				dispatch("post/updateHeader", false, { root: true })
+				dispatch("post/updatePage", 1, { root: true })
 				router.go(0)
 				router.go(-1)
 			})

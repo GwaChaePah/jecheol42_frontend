@@ -66,7 +66,7 @@ export default {
 				header: payload
 			});
 		},
-		async getBoard({ state, commit }, { payload, page, header = true, allRegion }) {
+		async getBoard({ state, commit }, { payload, page, header = true, allRegion = true }) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
 				boardView: [],
