@@ -27,7 +27,7 @@
 			</div>
 			<div v-else>
 				<PostNav v-if="!mobileWidth"/>
-				<PostContent :post="post" />
+				<PostContent :post="post" :notFetching="notFetching"/>
 				<Comments :postId="post.id"/>
 			</div>
 		</div>
@@ -54,9 +54,14 @@ export default {
 			'mobileWidth'
 		])
 	},
+	data() {
+		return {
+			notFetching: 0
+		}
+	},
 	created() {
-    const notFetching = this.$route.query.notFetching
-    if(!notFetching) {
+    this.notFetching = this.$route.query.notFetching;
+    if(!this.notFetching) {
       this.$store.dispatch('post/searchPostWithId', this.$route.params.id);
     }
 		this.$store.dispatch('post/updateMobileNav', null);
