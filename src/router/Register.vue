@@ -351,13 +351,13 @@ export default {
 					border-bottom: 1px solid #ddd;
 					input{
 						width: 70%;
-						margin: 10px;
+						margin: 10px 0px 10px 10px;
 						border-color: transparent;
 					}
 					button{
 						width: 30%;
 						margin: auto;
-						max-width: 70px;
+						max-width: 50px;
 						border-radius: 3px;
 						color: white;
 						background: rgba(#76862c, 0.76);
