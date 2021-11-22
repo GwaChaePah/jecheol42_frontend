@@ -181,9 +181,9 @@ export default {
 				.fromPairs()
 				.value()
 			*/
-			let data
+			let post
 			try {
-				data = await axios({
+				const { data } = await axios({
 					url: `post/api/${payload.get('id')}/`,
 					method: 'patch',
 					data: payload,
@@ -191,11 +191,12 @@ export default {
 						"Content-Type": "multipart/form-data"
 					}
 				})
+				post = data
 			} catch(e) {
 				console.log('updatePost> ', e);
-				return
+				return;
 			}
-			commit('UPDATE_STATE', { post: data })
+			commit('UPDATE_STATE', { post })
 		},
 	},
 }
