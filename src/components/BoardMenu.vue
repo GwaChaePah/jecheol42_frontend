@@ -24,7 +24,7 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'BoardMenu',
-	props: ['fromSearch', 'fromHeader'],
+	props: ['fromSearch'],
 	computed: {
 		...mapState('product', [
 			'postSearch',
@@ -71,12 +71,13 @@ export default {
 			const payload = this.search ? this.search : '';
 			const header = !this.search && this.fromSearch ? false : true;
 			let allRegion;
-			// if (!this.headerReset) {
+			if (!this.headerReset) {
 				allRegion = e.target.value == 0 ? true : false;
-			// } else {
-				// allRegion = false;
-			// }
-			// this.headerReset = false;
+			} else {
+				allRegion = false;
+			}
+			this.headerReset = false;
+			this.updateBoard(false);
 			this.isAllRegion = allRegion;
 			this.getBoard({payload, page: 1, header, allRegion});
 		},
@@ -87,8 +88,9 @@ export default {
 										e.target.value === '완료' ? 2 : 3;
 			const payload = this.search ? this.search : '';
 			const header = !this.search && this.fromSearch ? false : true;
-			// this.isAllRegion = this.headerReset ? false : this.isAllRegion;
-			// this.headerReset = false;
+			this.isAllRegion = this.headerReset ? false : this.isAllRegion;
+			this.headerReset = false;
+			this.updateBoard(false);
 			this.getBoard({payload, page: 1, header, allRegion: this.isAllRegion});
 		},
 		createPost() {
@@ -112,15 +114,15 @@ export default {
 			this.tag = 3;
 		}
 	},
-	// watch: {
-	// 	board(value) {
-	// 		if (value) {
-	// 			document.getElementById('selectRegion').value = 1;
-	// 			this.headerReset = true;
-	// 		}
-	// 		this.updateBoard(false);
-	// 	}
-	// }
+	watch: {
+		board(value) {
+			if (value) {
+				document.getElementById('selectRegion').value = 1;
+				this.headerReset = true;
+			}
+			this.updateBoard(false);
+		}
+	}
 }
 </script>
 
@@ -144,11 +146,6 @@ export default {
 		.region-wrapper {
 			display: inline-block;
 		}
-		// h1 {
-		// 	font-family: 'Gowun Dodum', sans-serif;
-		// 	display: inline-block;
-		// 	margin: 0 .5em;
-		// }
 		select {
 			font-family: 'Gowun Dodum', sans-serif;
 			font-size: .9em;
