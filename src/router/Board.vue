@@ -2,7 +2,7 @@
 	<div class="l_main">
 		<div class="l_wrapper" :class="{'content': (hasHeader && !fromSearch)}" >
 			<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
-			<BoardMenu :fromSearch="fromSearch" :fromHeader="header"/>
+			<BoardMenu :fromSearch="fromSearch"/>
 		</div>
 		<div v-if="!mobileWidth">
 			<div class="l_wrapper">
