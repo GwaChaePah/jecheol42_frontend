@@ -49,9 +49,10 @@ export default {
 				sessionStorage.setItem("refresh_token", refresh)
 				sessionStorage.setItem("userInfo", JSON.stringify(userInfo))
 				dispatch("loggedIn")
+				dispatch("post/updateHeader", false, { root: true })
 				router.go(0)
 				router.go(-1)
-			})		
+			})
 			.catch(error => {
 				console.log(error)
 				alert("아이디와 비밀번호를 확인하세요")

@@ -2,7 +2,7 @@
 	<div class="l_main">
 		<div class="l_wrapper" :class="{'content': (hasHeader && !fromSearch)}" >
 			<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
-			<BoardMenu :fromSearch="fromSearch"/>
+			<BoardMenu :fromSearch="fromSearch" :loggedIn="loggedIn"/>
 		</div>
 		<div v-if="!mobileWidth">
 			<div class="l_wrapper">
@@ -86,17 +86,25 @@ export default {
 		return {
 			hasHeader: true,
 			search: this.postSearch,
+			loggedIn: false
 		}
 	},
 	created() {
-		if (!this.header && !this.fromSearch) {
-			setTimeout(() => {
-				this.$store.dispatch('post/getBoard', {payload: '', allRegion: this.region ? false : true});
-			}, 500);
-		}
-		 else {
-			this.$store.dispatch('post/updateHeader', false);
-		}
+		setTimeout(() => {
+			const ret = this.$store.state.login.isLogin;
+			let userInfo = '';
+			if (ret) {
+				userInfo = JSON.parse(sessionStorage.getItem("userInfo")).region;
+				this.$store.dispatch('post/updateRegion', userInfo);
+				this.loggedIn = true;
+			}
+			if (!this.header && !this.fromSearch) {
+				this.$store.dispatch('post/getBoard', {payload: '', allRegion: userInfo ? false : true});
+			}
+			else {
+				this.$store.dispatch('post/updateHeader', false);
+			}
+		}, 400);
 	},
 }
 </script>
