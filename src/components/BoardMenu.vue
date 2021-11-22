@@ -3,8 +3,8 @@
 		<div class="dropdown-wrapper">
 			<div class="region-wrapper" v-if="region">
 				<select class="dropdown" id="selectRegion" @change="setRegion($event)">
-					<option	value=0>전 지역</option>
 					<option value=1 selected>내 지역</option>
+					<option	value=0>전 지역</option>
 				</select>
 			</div>
 			<select class="dropdown" v-model="tag" @change="apply($event)">
