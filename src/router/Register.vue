@@ -48,7 +48,7 @@
 							<button @click="findRegion">검색</button>
 						</div>
 						<div class="adressBox">
-							<div v-for="address in findRegion" :key="address.state">
+							<div v-for="address in findData" :key="address.state">
 								<button @click="selectRegion(address)">
 									{{address.state}}&nbsp;{{address.city}}&nbsp;{{address.address}}
 								</button>
@@ -93,7 +93,7 @@ export default {
 			useId: false,
 			errorId: false,
 			notSamePw: false,
-			findRegion: '',
+			findData: '',
 		}
 	},
 	mounted() {
@@ -107,8 +107,7 @@ export default {
 		findRegion() {
 			axios.get(`user/api/region/?search=${this.address}`)
 			.then(res => {
-				this.findRegion = res.data
-				fine = true
+				this.findData = res.data
 			})
 			.catch(err => {
 				console.log(err)
