@@ -97,7 +97,8 @@ export default {
 			'mobileWidth',
 			'mobileNav',
 			'scrollPosition',
-			'loading'
+			'loading',
+			'region',
 		]),
 		...mapState('login', [
 			'isLogin',
@@ -115,8 +116,6 @@ export default {
 		}
 		window.addEventListener("resize", this.checkScreen);
 		this.checkScreen();
-	},
-	beforeUpdate() {
 		this.checkUser();
 	},
 	unmounted() {
@@ -154,7 +153,7 @@ export default {
 		toBoard() {
 			this.updateTag(3);
 			this.updateSearch();
-			this.getBoard({payload: '', page: 1, header: true});
+			this.getBoard({payload: '', page: 1, header: true, allRegion: this.region? false : true});
 			this.updateMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -170,7 +169,7 @@ export default {
 				this.updateTag(3);
 				this.updateSearch(this.search);
 				this.searchProduct(this.search);
-				this.getBoard({payload:this.search, page: 1, header: true});
+				this.getBoard({payload:this.search, page: 1, header: true, allRegion: this.region? false : true});
 				this.search = '';
 				this.$router.push('/search');
 			}

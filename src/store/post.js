@@ -4,18 +4,18 @@ import axios from 'axios';
 export default {
 	namespaced: true,
 	state: () => ({
-		boardView: [],
+		boardView: '',
 		boardTag: '',
 		page: 1,
 		totalPage: 1,
-		post: {},
-		comments: [],
+		post: '',
+		comments: '',
 		loading: false,
 		mobileWidth: false,
 		mobileNav: false,
 		scrollPosition: false,
 		header: false,
-		region: ''
+		region: '',
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {

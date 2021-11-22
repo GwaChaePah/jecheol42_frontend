@@ -2,9 +2,6 @@
 	<div class="content-wrapper">
 		<RouterLink :to="{ name: 'Post', params: {id: `${post.id}`}}">
 			<div class="content-anchor">
-			<!-- <div class="content-address">
-				<p>{{ post.region }}</p>
-			</div> -->
 				<div class="img-wrapper">
 					<img class="content-img" :src="post.image1" :alt="`${post.user}_${post.title}`"
 					onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"/>
@@ -64,7 +61,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState('post', ['mobileWidth'])
+		...mapState('post', ['mobileWidth', 'b'])
 	},
 	methods: {
 		calcDate() {

@@ -2,13 +2,13 @@
 	<div class="menu-bar">
 		<div class="dropdown-wrapper">
 			<div class="region-wrapper" v-if="region">
-				<h1>지역 : </h1>
+				<!-- <h1>지역 : </h1> -->
 				<select class="dropdown" @change="setRegion($event)">
-					<option	value=1>전체</option>
-					<option value=2 selected>내 지역만</option>
+					<option	value=0>전 지역</option>
+					<option value=1 selected>내 지역</option>
 				</select>
 			</div>
-			<h1>구분 : </h1>
+			<!-- <h1>구분 : </h1> -->
 			<select class="dropdown" v-model="tag" @change="apply($event)">
 				<option	v-for="item in items" :key="item" :value="item">
 					{{ item }}
@@ -35,7 +35,8 @@ export default {
 		]),
 		...mapState('post', [
 			'boardTag',
-			'region'
+			'region',
+			'boardView'
 		]),
 		tag: {
 			get() {
@@ -49,12 +50,13 @@ export default {
 			set (value) {
 				this.$store.dispatch('post/updateTag', value);
 			}
-		}
+		},
 	},
 	data() {
 		return {
 			seoulList,
 			search: this.theSearch,
+			isAllRegion: '',
 			items: ['전체', '소분', '나눔', '완료']
 		}
 	},
@@ -67,8 +69,9 @@ export default {
 			this.search = this.postSearch;
 			const payload = this.search ? this.search : '';
 			const header = !this.search && this.fromSearch ? false : true;
-			const allRegion = e.target.value === '1' ? true : false;
-			this.getBoard({payload: payload, page: 1, header: header, allRegion: allRegion});
+			const allRegion = e.target.value == 0 ? true : false;
+			this.isAllRegion = allRegion;
+			this.getBoard({payload, page: 1, header, allRegion});
 		},
 		apply(e) {
 			this.search = this.postSearch;
@@ -77,7 +80,7 @@ export default {
 										e.target.value === '완료' ? 2 : 3;
 			const payload = this.search ? this.search : '';
 			const header = !this.search && this.fromSearch ? false : true;
-			this.getBoard({payload: payload, page: 1, header: header});
+			this.getBoard({payload, page: 1, header, allRegion: this.isAllRegion});
 		},
 		createPost() {
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -93,13 +96,6 @@ export default {
 			}
 		}
 	},
-	mounted() {
-		if (this.boardTag !== '') {
-			this.tag = this.boardTag;
-		} else {
-			this.tag = 3;
-		}
-	}
 }
 </script>
 
@@ -113,26 +109,36 @@ export default {
 	justify-content: space-between;
 	margin-bottom: 1em;
 	width: 100%;
-	.region-wrapper {
-		display: inline-block;
+	@media (max-width: 500px) {
+		font-size: .5em;
 	}
-	h1 {
-		font-family: 'Gowun Dodum', sans-serif;
-		display: inline-block;
-		margin: 0 .5em;
-	}
-	select {
-		font-family: 'Gowun Dodum', sans-serif;
-		margin: 0 .1em;
-		padding: .2em;
-		letter-spacing: 2px;
+	.dropdown-wrapper {
 		@media (max-width: 500px) {
-			font-size: .7em;
+			margin-left: -2em;
 		}
-	}
-	option {
-		color: black;
-		font-family: 'Gowun Dodum', sans-serif;
+		.region-wrapper {
+			display: inline-block;
+		}
+		// h1 {
+		// 	font-family: 'Gowun Dodum', sans-serif;
+		// 	display: inline-block;
+		// 	margin: 0 .5em;
+		// }
+		select {
+			font-family: 'Gowun Dodum', sans-serif;
+			font-size: .9em;
+			margin: 0 .2em;
+			padding: .2em;
+			letter-spacing: 2px;
+			border-radius: .3em;
+			@media (max-width: 500px) {
+				font-size: 1.5em;
+			}
+		}
+		option {
+			color: black;
+			font-family: 'Gowun Dodum', sans-serif;
+		}
 	}
 	.menu-bar__list {
 		padding: 0.5em 1em;
@@ -143,7 +149,7 @@ export default {
 		letter-spacing: 2px;
 		font-family: 'Gowun Dodum', sans-serif;
 		@media (max-width: 500px) {
-			font-size: .7em;
+			font-size: 1.5em;
 		}
 		&:hover {
 			background-color: darken($color_prime_brown, 25%);

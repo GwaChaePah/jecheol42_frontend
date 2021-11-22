@@ -2,16 +2,14 @@
 	<div class="MWcontent-wrapper">
 		<RouterLink :to="{ name: 'Post', params: {id: `${post.id}`}}">
 			<div class="MWcontent-anchor">
-			<!-- <div class="MWcontent-address">
-				<p>{{ post.region }}</p>
-			</div> -->
 				<div class="MWimg-wrapper">
 					<img class="MWcontent-img" :src="post.image1" :alt="`${post.user}_${post.title}`"
 					onerror="this.onerror=null;this.src='./src/assets/no_image.jpg';"/>
 				</div>
 				<div class="MWcontent-title">
-					<div class="MWtitle__time">
+					<div class="MWtitle-time_address">
 						<span class="MWtime__time">{{ calcDate() }}</span>
+						<span>{{ post.city }} &#183; {{ post.address }}</span>
 					</div>
 					<div class="MWtitle__title ellipsis line-clamp">{{ post.title }}</div>
 					<div class="MWtitle-info">
@@ -62,15 +60,16 @@ export default {
 			const minute = (current.getMinutes() < 10) ? '0' + current.getMinutes()
 									: current.getMinutes();
 			if (year == postYear) {
-				if (`${month}${date}` === `${postMon}${postDate}`) {
-					ret = (`${hour}${minute}` === `${postHour}${postMin}`) ? '방금 전'
+				if (`${month}${date}` == `${postMon}${postDate}`) {
+					ret = (`${hour}${minute}` == `${postHour}${postMin}`) ? '방금 전'
 									: (hour == postHour) ? `${minute - postMin}분 전`
 									: `${hour - postHour}시간 전`;
 				} else {
-					ret = (month === postMon && date - postDate < 3) ? `${date - postDate}일 전` : `${postMon}월 ${postDate}일`;
+					ret = (month == postMon) ? `${date - postDate}일 전`
+																		: `${month - postMon}달 전`;
 				}
 			} else {
-				ret = `${postYear}.${postMon}.${postDate}.`;
+				ret = `${year - postYear}년 전`;
 			}
 			return ret;
 		},
@@ -92,17 +91,8 @@ export default {
 		background-color: white;
 		width: 100%;
 		height: 140px;
-		// border-bottom: 1px solid #eee;
-		// border-top: 1px solid #eee;
 		position: relative;
-		// .content-address {
-		// 	color: rgb(31, 31, 31);
-		// 	text-align: center;
-		// 	padding: .3em 0;
-		// 	letter-spacing: .2em;
-		// }
 		.MWimg-wrapper {
-			// height: 160px;
 			.MWcontent-img {
 				position: absolute;
 				left: 8px;
@@ -113,13 +103,17 @@ export default {
 				border-radius: .3em;
 			}
 		}
-		.MWtitle__time {
-			.MWtime__time {
+		.MWtitle-time_address {
+			span {
 				font-family: 'Gowun Dodum', sans-serif;
 				font-size: .6em;
 				margin-left: .2em;
 				line-height: 1.1;
 				color: gray;
+				&:last-child {
+					color: black;
+					margin-left: 1em;
+				}
 			}
 		}
 		.MWcontent-title {

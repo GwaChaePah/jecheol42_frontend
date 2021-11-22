@@ -78,20 +78,20 @@ export default {
 			'mobileWidth',
 			'loading',
 			'boardTag',
-			'header'
+			'header',
+			'region',
 		]),
 	},
 	data() {
 		return {
 			hasHeader: true,
 			search: this.postSearch,
-			region: '',
 		}
 	},
 	created() {
 		if (!this.header && !this.fromSearch) {
 			setTimeout(() => {
-				this.$store.dispatch('post/getBoard', {payload: ''});
+				this.$store.dispatch('post/getBoard', {payload: '', allRegion: this.region ? false : true});
 			}, 500);
 		} else {
 			this.$store.dispatch('post/updateHeader', false);
