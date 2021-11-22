@@ -44,7 +44,8 @@
 				<!-- <span id="region">{{ post.region }}</span>
 				/ -->
 				<span>	{{ post.tag === 0 ? '소분' : post.tag === 1 ? '나눔' : '완료' }} </span>
-				<!-- <span> {{ post.city }}&#183;{{ post.address }}</span> -->
+				/
+				<span> {{ post.city }} &#183; {{ post.address }}</span>
 			</div>
 			<div class="title__title">
 				<h1>{{ post.title }}</h1>
