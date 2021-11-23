@@ -3,7 +3,7 @@ import axios from 'axios'
 export default {
 	namespaced: true,
 	state: () => ({
-		product: [],
+		product: '',
 		theSearch: {
 			name: '',
 			price: '',
@@ -21,7 +21,7 @@ export default {
 			})
 		},
 		RESET_STATE(state) {
-			state.product = [];
+			state.product = '';
 			state.theSearch = {
 				name: '',
 				price: '',
@@ -44,7 +44,7 @@ export default {
 				res = await _fetchProduct();
 			} catch(e) {
 				console.log('initProduct> ', e);
-				res = [];
+				res = '';
 			} finally {
 				commit('UPDATE_STATE', {
 					product: res,

@@ -69,7 +69,7 @@ export default {
 		async getBoard({ state, commit }, { payload, page, header = true, allRegion = true }) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
-				boardView: [],
+				boardView: '',
 				page: page ? page : state.page,
 				loading: true,
 				header: header,
@@ -89,7 +89,7 @@ export default {
 					boardView = data.results;
 				} catch(e) {
 					console.log('getBoard> ', e);
-					boardView = [];
+					boardView = '';
 					totalPage = 1;
 				} finally {
 					commit('UPDATE_STATE', {
@@ -103,8 +103,8 @@ export default {
 		async searchPostWithId({ commit, state }, payload) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
-				post: {},
-				comments: [],
+				post: '',
+				comments: '',
 				loading: true
 			});
 			let post;
@@ -114,8 +114,8 @@ export default {
 				comments = await _fetchComment(payload);
 			} catch (e) {
 				console.log('searchPostWithId> ', e);
-				post = {};
-				comments = [];
+				post = '';
+				comments = '';
 			} finally {
 				commit('UPDATE_STATE', {
 					post: post,
@@ -131,8 +131,8 @@ export default {
 				console.log('deletePost> ', e);
 			} finally {
 				commit('UPDATE_STATE', {
-					post: {},
-					comments: [],
+					post: '',
+					comments: '',
 				});
 			}
 		},
