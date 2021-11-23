@@ -155,7 +155,7 @@ export default {
 			this.updateTag(3);
 			this.updateSearch();
 			this.updateBoard(true);
-			this.getBoard({payload: '', page: 1, header: true, allRegion: !!!this.isLogin});
+			this.getBoard({payload: '', page: 1, header: true, allRegion: !this.isLogin});
 			this.updateMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -171,7 +171,7 @@ export default {
 				this.updateTag(3);
 				this.updateSearch(this.search);
 				this.searchProduct(this.search);
-				this.getBoard({payload:this.search, page: 1, header: true, allRegion: !!!this.isLogin});
+				this.getBoard({payload:this.search, page: 1, header: true, allRegion: !this.isLogin});
 				this.search = '';
 				this.$router.push('/search');
 			}

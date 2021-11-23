@@ -51,6 +51,7 @@ export default {
 				dispatch("loggedIn")
 				dispatch("post/updateHeader", false, { root: true })
 				dispatch("post/updatePage", 1, { root: true })
+				dispatch("post/updateRegion", userInfo.region, { root: true })
 				router.go(0)
 				router.go(-1)
 			})
@@ -59,7 +60,7 @@ export default {
 				alert("아이디와 비밀번호를 확인하세요")
 			})
 		},
-		loggedIn({ commit }) {
+		loggedIn({ commit, dispatch }) {
 			let sessionRefresh = sessionStorage.getItem("refresh_token")
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"))
 			let config = { "token" : sessionRefresh }
@@ -87,10 +88,11 @@ export default {
 				})
 			})
 		},
-		logout({ commit }) {
+		logout({ commit, dispatch }) {
 			sessionStorage.clear()
 			commit("destroyToken")
 			commit("logout")
+			dispatch("post/updateRegion", null, { root: true })
 		}
 	}
 }
