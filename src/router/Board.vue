@@ -99,9 +99,10 @@ export default {
 				this.loggedIn = true;
 			}
 			if (!this.header && !this.fromSearch) {
-				this.$store.dispatch('post/getBoard', {payload: '', allRegion: userInfo ? false : true});
-			}
-			else {
+				this.$store.dispatch('post/getBoard', {payload: '', allRegion: !userInfo});
+			} else if (!this.header && ret) {
+				this.$store.dispatch('post/getBoard', {payload: this.postSearch ? this.postSearch : '', allRegion: !userInfo});
+			} else {
 				this.$store.dispatch('post/updateHeader', false);
 			}
 		}, 400);

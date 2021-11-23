@@ -1,7 +1,7 @@
 <template>
 	<div class="menu-bar">
 		<div class="dropdown-wrapper">
-			<div class="region-wrapper" v-if="loggedIn">
+			<div class="region-wrapper" v-if="loggedIn || isLogin">
 				<select class="dropdown" id="selectRegion" @change="setRegion($event)">
 					<option value=1 selected>내 지역</option>
 					<option	value=0>전 지역</option>
@@ -28,7 +28,6 @@ export default {
 	computed: {
 		...mapState('product', [
 			'postSearch',
-			'theSearch',
 			'loading'
 		]),
 		...mapState('post', [
@@ -36,6 +35,9 @@ export default {
 			'boardView',
 			'board',
 			'header'
+		]),
+		...mapState('login', [
+			'isLogin',
 		]),
 		tag: {
 			get() {
@@ -54,7 +56,6 @@ export default {
 	data() {
 		return {
 			seoulList,
-			search: this.theSearch,
 			isAllRegion: '',
 			headerReset: false,
 			items: ['전체', '소분', '나눔', '완료']
@@ -67,29 +68,19 @@ export default {
 			'updateBoard'
 		]),
 		setRegion(e) {
-			this.search = this.postSearch;
-			const payload = this.search ? this.search : '';
-			const header = !this.search && this.fromSearch ? false : true;
-			let allRegion;
-			if (!this.headerReset) {
-				allRegion = e.target.value == 0 ? true : false;
-			} else {
-				allRegion = false;
-			}
-			this.headerReset = false;
+			const payload = this.postSearch ? this.postSearch : '';
+			const header = !this.postSearch && this.fromSearch ? false : true;
+			const allRegion = e.target.value == 0 ? true : false;
 			this.updateBoard(false);
 			this.isAllRegion = allRegion;
 			this.getBoard({payload, page: 1, header, allRegion});
 		},
 		apply(e) {
-			this.search = this.postSearch;
 			this.tag = e.target.value === '소분' ? 0 :
 										e.target.value === '나눔' ? 1 :
 										e.target.value === '완료' ? 2 : 3;
-			const payload = this.search ? this.search : '';
-			const header = !this.search && this.fromSearch ? false : true;
-			this.isAllRegion = this.headerReset ? false : this.isAllRegion;
-			this.headerReset = false;
+			const payload = this.postSearch ? this.postSearch : '';
+			const header = !this.postSearch && this.fromSearch ? false : true;
 			this.updateBoard(false);
 			this.getBoard({payload, page: 1, header, allRegion: this.isAllRegion});
 		},
@@ -116,9 +107,8 @@ export default {
 	},
 	watch: {
 		board(value) {
-			if (value) {
+			if (value && (this.loggedIn || this.isLogin)) {
 				document.getElementById('selectRegion').value = 1;
-				this.headerReset = true;
 			}
 			this.updateBoard(false);
 		}
