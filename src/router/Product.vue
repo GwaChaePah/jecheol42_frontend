@@ -40,7 +40,12 @@ export default {
 			'theSearch',
 			'loading'
 		]),
-		...mapState('post', ['mobileWidth'])
+		...mapState('post', [
+			'mobileWidth',
+		]),
+		...mapState('login', [
+			'isLogin',
+		])
 	},
 	created() {
 		this.initProduct();
@@ -61,7 +66,7 @@ export default {
 		]),
 		apply(value) {
 			this.searchProduct(value);
-			this.getBoard({payload: value, page: 1});
+			this.getBoard({payload: value, page: 1, allRegion: !this.isLogin});
 			this.$router.push('/search');
 		},
 		getMonth() {
