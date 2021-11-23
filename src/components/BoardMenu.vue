@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import seoulList from '~/json/seoul.json';
 import axios from 'axios';
 import { mapState, mapActions } from 'vuex';
 
@@ -55,7 +54,6 @@ export default {
 	},
 	data() {
 		return {
-			seoulList,
 			isAllRegion: '',
 			headerReset: false,
 			items: ['전체', '소분', '나눔', '완료']
@@ -77,8 +75,8 @@ export default {
 		},
 		apply(e) {
 			this.tag = e.target.value === '소분' ? 0 :
-										e.target.value === '나눔' ? 1 :
-										e.target.value === '완료' ? 2 : 3;
+								e.target.value === '나눔' ? 1 :
+								e.target.value === '완료' ? 2 : 3;
 			const payload = this.postSearch ? this.postSearch : '';
 			const header = !this.postSearch && this.fromSearch ? false : true;
 			this.updateBoard(false);

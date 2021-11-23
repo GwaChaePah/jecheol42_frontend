@@ -108,12 +108,16 @@ export default {
 			'scrollPosition',
 			'comments'
 		]),
+		...mapState('login', [
+			'isLogin',
+		])
 	},
 	methods: {
 		...mapActions('post', [
 			'updateMobileNav',
 			'getBoard',
 			'updateTag',
+			'updateBoard',
 			'updateHeader',
 			'deletePost',
 		]),
@@ -130,8 +134,8 @@ export default {
 		toBoard() {
 			this.updateTag(3);
 			this.updateSearch();
-			this.getBoard({payload: '', page: 1, header: true});
-			this.updateMobileNav(null);
+			this.updateBoard(true);
+			this.getBoard({payload: '', page: 1, header: true, allRegion: !!!this.isLogin});			this.updateMobileNav(null);
 			this.$router.push('/board');
 		},
 		createdTime() {
