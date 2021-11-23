@@ -43,7 +43,7 @@ export default {
 			}
 		},
 		toBack() {
-			this.$store.dispatch('post/updateHeader', true);
+			this.$store.dispatch('post/updateHeader', false);
 			this.$router.back();
 		},
 		toTop() {
