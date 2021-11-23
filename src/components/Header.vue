@@ -99,7 +99,6 @@ export default {
 			'scrollPosition',
 			'loading',
 			'region',
-			'board'
 		]),
 		...mapState('login', [
 			'isLogin',
@@ -111,12 +110,15 @@ export default {
 		window.addEventListener("scroll", this.updateScroll);
 	},
 	created() {
-		if (window.location.protocol !== 'https:') {
-			console.log('remember to turn RELOCATION URL on')
-			// window.location.href = 'https://jecheol42.herokuapp.com';
-		}
-		window.addEventListener("resize", this.checkScreen);
-		this.checkScreen();
+			if (window.location.protocol !== 'https:') {
+				console.log('remember to turn RELOCATION URL on')
+				// window.location.href = 'https://jecheol42.herokuapp.com';
+			}
+			window.addEventListener("resize", this.checkScreen);
+			this.checkScreen();
+			setTimeout(() => {
+				this.checkUser();
+			}, 200);
 	},
 	unmounted() {
 		window.removeEventListener("resize", this.checkScreen);
@@ -130,6 +132,7 @@ export default {
 			'getBoard',
 			'updateTag',
 			'updateRegion',
+			'updateRegionTag',
 			'updateBoard'
 		]),
 		...mapActions('product', [
@@ -154,8 +157,9 @@ export default {
 		toBoard() {
 			this.updateTag(3);
 			this.updateSearch();
-			this.updateBoard(true);
-			this.getBoard({payload: '', page: 1, header: true, allRegion: !this.isLogin});
+			this.updateRegionTag(0);
+			this.checkUser();
+			this.getBoard({payload: '', page: 1, header: true});
 			this.updateMobileNav(null);
 			this.$router.push('/board');
 		},
@@ -171,7 +175,8 @@ export default {
 				this.updateTag(3);
 				this.updateSearch(this.search);
 				this.searchProduct(this.search);
-				this.getBoard({payload:this.search, page: 1, header: true, allRegion: !this.isLogin});
+				this.updateRegionTag(0);
+				this.getBoard({payload:this.search, page: 1, header: true});
 				this.search = '';
 				this.$router.push('/search');
 			}
@@ -191,6 +196,12 @@ export default {
 				this.updateScrollPosition(false);
 			}
 		},
+		checkUser() {
+			if (this.isLogin && !this.region) {
+				const userInfo = JSON.parse(sessionStorage.getItem("userInfo")).region;
+				this.updateRegion(userInfo);
+			}
+		}
 	}
 }
 </script>

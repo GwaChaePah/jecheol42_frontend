@@ -16,7 +16,7 @@ export default {
 		scrollPosition: false,
 		header: false,
 		region: '',
-		board: false
+		regionTag: ''
 	}),
 	mutations: {
 		UPDATE_STATE(state, payload) {
@@ -31,9 +31,9 @@ export default {
 				region: payload
 			});
 		},
-		updateBoard({ commit }, payload) {
+		updateRegionTag({ commit }, payload) {
 			commit('UPDATE_STATE', {
-				board: payload
+				regionTag: payload
 			});
 		},
 		updateMobileNav({ commit }, payload) {
@@ -66,7 +66,7 @@ export default {
 				header: payload
 			});
 		},
-		async getBoard({ state, commit }, { payload, page, header = true, allRegion = true }) {
+		async getBoard({ state, commit }, { payload, page, header = true}) {
 			if (state.loading) return;
 			commit('UPDATE_STATE', {
 				boardView: '',
@@ -83,7 +83,7 @@ export default {
 				let boardView;
 				let totalPage;
 				try {
-					const regionTemp = allRegion ? 0 : state.region;
+					const regionTemp = state.regionTag != 0 ? '' : state.region;
 					const data = await _fetchBoard(payload, state.boardTag, state.page, regionTemp);
 					totalPage = calcTotalPage(data.count);
 					boardView = data.results;
@@ -207,25 +207,16 @@ export default {
 	},
 }
 async function _fetchBoard(payload, tag, page, region) {
-	const search = payload ? encodeURI(payload) : '';
-	let data;
-	if (tag !== '' && tag !== 3) {
-		if (region) {
-			data = await axios.get(`board/api?search=${search}&tag=${tag}&page=${page}&region=${region}`)
-				.then(res => res.data);
-		} else {
-			data = await axios.get(`board/api?search=${search}&tag=${tag}&page=${page}`)
-				.then(res => res.data);
-		}
-	} else {
-		if (region) {
-			data = await axios.get(`board/api?search=${search}&page=${page}&region=${region}`)
-				.then(res => res.data);
-		} else {
-			data = await axios.get(`board/api?search=${search}&page=${page}`)
-				.then(res => res.data);
-		}
-	}
+	const searchQuery = payload ? `search=${encodeURI(payload)}` : '';
+	const tagQuery = (tag !== '' && tag !== 3) ? searchQuery ?
+										`&tag=${tag}` : `tag=${tag}` : '';
+	const pageQuery = page ? (searchQuery || tagQuery)?
+										`&page=${page}` : `page=${page}` : '';
+	const regionQuery = region ? (searchQuery || tagQuery || pageQuery) ?
+										`&region=${region}` : `region=${region}` : '';
+	const url = 'board/api?'.concat(searchQuery.concat(tagQuery.concat(pageQuery.concat(regionQuery))));
+	const data = await axios.get(url)
+		.then(res => res.data);
 	for (let i = 0; i < data.results.length; i++) {
 		const date = data.results[i].created_at.slice(0, 10).replaceAll('-', '.');
 		const time = data.results[i].created_at.slice(11, 16);

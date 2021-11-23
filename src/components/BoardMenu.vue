@@ -1,10 +1,10 @@
 <template>
 	<div class="menu-bar">
 		<div class="dropdown-wrapper">
-			<div class="region-wrapper" v-if="loggedIn || isLogin">
-				<select class="dropdown" id="selectRegion" @change="setRegion($event)">
-					<option value=1 selected>내 지역</option>
-					<option	value=0>전 지역</option>
+			<div class="region-wrapper" v-if="isLogin">
+				<select class="dropdown" v-model="tagRegion" @change="setRegion($event)">
+					<option value=0 selected>내 지역</option>
+					<option	value=1>전 지역</option>
 				</select>
 			</div>
 			<select class="dropdown" v-model="tag" @change="apply($event)">
@@ -23,7 +23,7 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'BoardMenu',
-	props: ['fromSearch', 'loggedIn'],
+	props: ['fromSearch'],
 	computed: {
 		...mapState('product', [
 			'postSearch',
@@ -32,12 +32,20 @@ export default {
 		...mapState('post', [
 			'boardTag',
 			'boardView',
-			'board',
+			'regionTag',
 			'header'
 		]),
 		...mapState('login', [
 			'isLogin',
 		]),
+		tagRegion: {
+			get() {
+				return this.regionTag;
+			},
+			set (value) {
+				this.$store.dispatch('post/updateRegionTag', value);
+			}
+		},
 		tag: {
 			get() {
 				const tag = this.boardTag === 3 ? '전체' :
@@ -55,7 +63,6 @@ export default {
 	data() {
 		return {
 			isAllRegion: '',
-			headerReset: false,
 			items: ['전체', '소분', '나눔', '완료']
 		}
 	},
@@ -68,10 +75,8 @@ export default {
 		setRegion(e) {
 			const payload = this.postSearch ? this.postSearch : '';
 			const header = !this.postSearch && this.fromSearch ? false : true;
-			const allRegion = e.target.value == 0 ? true : false;
-			this.updateBoard(false);
-			this.isAllRegion = allRegion;
-			this.getBoard({payload, page: 1, header, allRegion});
+			this.tagRegion = e.target.value;
+			this.getBoard({payload, page: 1, header});
 		},
 		apply(e) {
 			this.tag = e.target.value === '소분' ? 0 :
@@ -79,8 +84,7 @@ export default {
 								e.target.value === '완료' ? 2 : 3;
 			const payload = this.postSearch ? this.postSearch : '';
 			const header = !this.postSearch && this.fromSearch ? false : true;
-			this.updateBoard(false);
-			this.getBoard({payload, page: 1, header, allRegion: this.isAllRegion});
+			this.getBoard({payload, page: 1, header});
 		},
 		createPost() {
 			let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -102,15 +106,12 @@ export default {
 		} else {
 			this.tag = 3;
 		}
-	},
-	watch: {
-		board(value) {
-			if (value && (this.loggedIn || this.isLogin)) {
-				document.getElementById('selectRegion').value = 1;
-			}
-			this.updateBoard(false);
+		if (this.regionTag !== '') {
+			this.tagRegion = this.regionTag;
+		} else {
+			this.tagRegion = 0;
 		}
-	}
+	},
 }
 </script>
 

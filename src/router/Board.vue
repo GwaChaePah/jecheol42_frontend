@@ -2,7 +2,7 @@
 	<div class="l_main">
 		<div class="l_wrapper" :class="{'content': (hasHeader && !fromSearch)}" >
 			<h3 v-show="postSearch">[ {{ postSearch }} ]</h3>
-			<BoardMenu :fromSearch="fromSearch" :loggedIn="loggedIn"/>
+			<BoardMenu :fromSearch="fromSearch"/>
 		</div>
 		<div v-if="!mobileWidth">
 			<div class="l_wrapper">
@@ -77,31 +77,27 @@ export default {
 			'boardView',
 			'mobileWidth',
 			'loading',
+			'regionTag',
 			'boardTag',
 			'header',
 			'region',
 		]),
+		...mapState('login', ['isLogin'])
 	},
 	data() {
 		return {
 			hasHeader: true,
 			search: this.postSearch,
-			loggedIn: false
 		}
 	},
 	created() {
 		setTimeout(() => {
-			const ret = this.$store.state.login.isLogin;
-			let userInfo = '';
-			if (ret) {
-				userInfo = JSON.parse(sessionStorage.getItem("userInfo")).region;
-				this.$store.dispatch('post/updateRegion', userInfo);
-				this.loggedIn = true;
+			if (!this.region && this.isLogin) {
+				const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+				this.$store.dispatch('post/updateRegion', userInfo.region);
 			}
 			if (!this.header && !this.fromSearch) {
-				this.$store.dispatch('post/getBoard', {payload: '', allRegion: !userInfo});
-			} else if (!this.header && ret) {
-				this.$store.dispatch('post/getBoard', {payload: this.postSearch ? this.postSearch : '', allRegion: !userInfo});
+				this.$store.dispatch('post/getBoard', {payload: ''});
 			} else {
 				this.$store.dispatch('post/updateHeader', false);
 			}
