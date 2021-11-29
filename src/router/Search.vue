@@ -19,6 +19,7 @@
 						</p>
 						<p class="search-average">
 							<span>5년 평균 : <strong class="search-price">{{ theSearch.average_price }}</strong><strong class="search-unit">{{ theSearch.unit }}</strong></span>
+							<span class="resource">&lt;자료제공: 한국농수산식품유통공사(aT-Kamis)&gt;</span>
 						</p>
 					</div>
 					<div v-else>
@@ -159,6 +160,12 @@ export default {
 				&:before {
 					content: '/';
 				}
+			}
+			.resource {
+				font-size: .8em;
+				display: block;
+				margin: .5em 0 0;
+				color: gray;
 			}
 		}
 	}
