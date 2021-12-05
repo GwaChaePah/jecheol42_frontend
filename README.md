@@ -1,4 +1,4 @@
-![logo](static/제철42_가로.svg)
+![logo](static/제철42_부스_로고01.png)
 
 # FRONT-END
 
